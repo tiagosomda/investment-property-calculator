@@ -35,237 +35,237 @@ investment-property-calculator/
 
 ---
 
-## Phase 0: Project Setup (Foundation)
+## Phase 0: Project Setup (Foundation) ✅ COMPLETED
 
-### Step 0.1: Initialize React + TypeScript + Vite
-- [ ] Create Vite project with React + TypeScript template
-- [ ] Install dependencies: `npm create vite@latest . -- --template react-ts`
-- [ ] Verify dev server runs: `npm run dev`
+### Step 0.1: Initialize React + TypeScript + Vite ✅
+- [x] Create Vite project with React + TypeScript template
+- [x] Install dependencies: `npm create vite@latest . -- --template react-ts`
+- [x] Verify dev server runs: `npm run dev`
 
-### Step 0.2: Configure Tailwind CSS
-- [ ] Install Tailwind CSS and dependencies
-- [ ] Create `tailwind.config.js` with mobile-first breakpoints
-- [ ] Create `postcss.config.js`
-- [ ] Add Tailwind directives to main CSS file
-- [ ] Test with a simple styled component
+### Step 0.2: Configure Tailwind CSS ✅
+- [x] Install Tailwind CSS and dependencies
+- [x] Create `tailwind.config.js` with mobile-first breakpoints
+- [x] Create `postcss.config.js`
+- [x] Add Tailwind directives to main CSS file
+- [x] Test with a simple styled component
 
-### Step 0.3: Setup GitHub Pages Configuration
-- [ ] Configure `vite.config.ts` with correct base path for GitHub Pages
-- [ ] Add `homepage` field to `package.json`
-- [ ] Update build output directory if needed
+### Step 0.3: Setup GitHub Pages Configuration ✅
+- [x] Configure `vite.config.ts` with correct base path for GitHub Pages
+- [x] Add `homepage` field to `package.json`
+- [x] Update build output directory if needed
 
-### Step 0.4: Create .gitignore
-- [ ] Create `.gitignore` with Node.js, React, and build artifacts
-- [ ] Include `dist/`, `node_modules/`, `.env`, etc.
+### Step 0.4: Create .gitignore ✅
+- [x] Create `.gitignore` with Node.js, React, and build artifacts
+- [x] Include `dist/`, `node_modules/`, `.env`, etc.
 
-### Step 0.5: Setup GitHub Actions Workflow
-- [ ] Create `.github/workflows/deploy.yml`
-- [ ] Configure workflow to build and deploy to GitHub Pages
-- [ ] Test deployment with basic app
+### Step 0.5: Setup GitHub Actions Workflow ✅
+- [x] Create `.github/workflows/deploy.yml`
+- [x] Configure workflow to build and deploy to GitHub Pages
+- [x] Test deployment with basic app
 
-### Step 0.6: Create Basic Project Structure
-- [ ] Create `src/components/` directory
-- [ ] Create `src/contexts/` directory
-- [ ] Create `src/hooks/` directory
-- [ ] Create `src/utils/` directory
-- [ ] Create `src/types/` directory
-- [ ] Create `scripts/` directory
+### Step 0.6: Create Basic Project Structure ✅
+- [x] Create `src/components/` directory
+- [x] Create `src/contexts/` directory
+- [x] Create `src/hooks/` directory
+- [x] Create `src/utils/` directory
+- [x] Create `src/types/` directory
+- [x] Create `scripts/` directory
 
-### Step 0.7: Define TypeScript Types
-- [ ] Create `src/types/property.ts` with Property interface
-- [ ] Create `src/types/unit.ts` with Unit and Revenue interfaces
-- [ ] Create `src/types/expense.ts` with Expense interfaces
-- [ ] Create `src/types/comparison.ts` with comparison interfaces
-
----
-
-## Phase 1: Component 1 - Property Details
-
-### Step 1.1: Create Property Details Component Shell
-- [ ] Create `src/components/PropertyDetails/PropertyDetails.tsx`
-- [ ] Create basic mobile-responsive layout with sections
-- [ ] Add component to main App
-
-### Step 1.2: Basic Information Section
-- [ ] Create input field: Purchase Price (number, required, formatted as currency)
-- [ ] Create input field: Down Payment (%, default 20%)
-- [ ] Create input field: Interest Rate (%, default 7.0%)
-- [ ] Create input field: Loan Term (years, default 30)
-- [ ] Create input field: Property Address (optional text)
-- [ ] Add validation and error states
-
-### Step 1.3: Initial Costs Section
-- [ ] Create input field: Closing Costs (%, default 3.5%)
-- [ ] Create input field: Initial Renovations ($)
-- [ ] Create input field: Furnishing Budget ($)
-- [ ] Create input field: Other Upfront Costs ($ with editable label)
-- [ ] Calculate and display total initial investment
-
-### Step 1.4: Property-Level Expenses Section
-- [ ] Create input field: Property Tax Rate (%, default 1.0%)
-- [ ] Create input field: Base Insurance ($ monthly, default $250)
-- [ ] Create input field: HOA/Condo Fees ($ monthly, default $0)
-
-### Step 1.5: Property State Management
-- [ ] Create `src/contexts/PropertyContext.tsx`
-- [ ] Implement useReducer for property state
-- [ ] Create actions: UPDATE_BASIC_INFO, UPDATE_INITIAL_COSTS, UPDATE_PROPERTY_EXPENSES
-- [ ] Connect PropertyDetails component to context
-
-### Step 1.6: Local Storage Persistence
-- [ ] Create `src/hooks/useLocalStorage.ts`
-- [ ] Auto-save property data to localStorage on change
-- [ ] Load property data from localStorage on mount
+### Step 0.7: Define TypeScript Types ✅
+- [x] Create `src/types/property.ts` with Property interface
+- [x] Create `src/types/unit.ts` with Unit and Revenue interfaces
+- [x] Create `src/types/expense.ts` with Expense interfaces
+- [x] Create `src/types/comparison.ts` with comparison interfaces
 
 ---
 
-## Phase 2: Component 2 - Unit Configuration (Basic)
+## Phase 1: Component 1 - Property Details ✅ COMPLETED
 
-### Step 2.1: Unit List Component
-- [ ] Create `src/components/Units/UnitList.tsx`
-- [ ] Display list of units (empty state initially)
-- [ ] Add "Add Unit" button (mobile-friendly)
-- [ ] Add component to main App
+### Step 1.1: Create Property Details Component Shell ✅
+- [x] Create `src/components/PropertyDetails/PropertyDetails.tsx`
+- [x] Create basic mobile-responsive layout with sections
+- [x] Add component to main App
 
-### Step 2.2: Unit Card Component Shell
-- [ ] Create `src/components/Units/UnitCard.tsx`
-- [ ] Create collapsible/expandable card layout (mobile-friendly)
-- [ ] Add Unit Label input field
-- [ ] Add Remove Unit button
-- [ ] Add unit type selector (radio buttons: STR/MTR/LTR)
+### Step 1.2: Basic Information Section ✅
+- [x] Create input field: Purchase Price (number, required, formatted as currency)
+- [x] Create input field: Down Payment (%, default 20%)
+- [x] Create input field: Interest Rate (%, default 7.0%)
+- [x] Create input field: Loan Term (years, default 30)
+- [x] Create input field: Property Address (optional text)
+- [x] Add validation and error states
 
-### Step 2.3: STR Revenue Inputs
-- [ ] Create `src/components/Units/STRInputs.tsx`
-- [ ] Add Nightly Rate input ($)
-- [ ] Add Occupancy Rate input (%, default 80%)
-- [ ] Add Average Stay Length input (nights, default 2.5)
-- [ ] Display calculated monthly turnovers
-- [ ] Display calculated gross monthly revenue
+### Step 1.3: Initial Costs Section ✅
+- [x] Create input field: Closing Costs (%, default 3.5%)
+- [x] Create input field: Initial Renovations ($)
+- [x] Create input field: Furnishing Budget ($)
+- [x] Create input field: Other Upfront Costs ($ with editable label)
+- [x] Calculate and display total initial investment
 
-### Step 2.4: MTR Revenue Inputs
-- [ ] Create `src/components/Units/MTRInputs.tsx`
-- [ ] Add Daily Rate OR Monthly Rate toggle
-- [ ] Add rate input field (switches based on toggle)
-- [ ] Add Occupancy Rate input (%, default 50%)
-- [ ] Add Average Booking Length input (days, default 15)
-- [ ] Display calculated gross monthly revenue
+### Step 1.4: Property-Level Expenses Section ✅
+- [x] Create input field: Property Tax Rate (%, default 1.0%)
+- [x] Create input field: Base Insurance ($ monthly, default $250)
+- [x] Create input field: HOA/Condo Fees ($ monthly, default $0)
 
-### Step 2.5: LTR Revenue Inputs
-- [ ] Create `src/components/Units/LTRInputs.tsx`
-- [ ] Add Monthly Rent input ($)
-- [ ] Add Annual Vacancy Rate input (%, default 5%)
-- [ ] Display calculated effective monthly revenue
+### Step 1.5: Property State Management ✅
+- [x] Create `src/contexts/PropertyContext.tsx`
+- [x] Implement useReducer for property state
+- [x] Create actions: UPDATE_BASIC_INFO, UPDATE_INITIAL_COSTS, UPDATE_PROPERTY_EXPENSES
+- [x] Connect PropertyDetails component to context
 
-### Step 2.6: Unit State Management
-- [ ] Add unit management to PropertyContext
-- [ ] Create actions: ADD_UNIT, REMOVE_UNIT, UPDATE_UNIT
-- [ ] Implement unit array state
-- [ ] Connect UnitList and UnitCard to context
+### Step 1.6: Local Storage Persistence ✅
+- [x] Create `src/hooks/useLocalStorage.ts`
+- [x] Auto-save property data to localStorage on change
+- [x] Load property data from localStorage on mount
 
 ---
 
-## Phase 3: Component 3 - Expense System (Basic)
+## Phase 2: Component 2 - Unit Configuration (Basic) ✅ COMPLETED
 
-### Step 3.1: Expense List Component
-- [ ] Create `src/components/Expenses/ExpenseList.tsx`
-- [ ] Display expense items for a unit
-- [ ] Add "Add Expense" button
-- [ ] Style for mobile (collapsible/expandable)
+### Step 2.1: Unit List Component ✅
+- [x] Create `src/components/Units/UnitList.tsx`
+- [x] Display list of units (empty state initially)
+- [x] Add "Add Unit" button (mobile-friendly)
+- [x] Add component to main App
 
-### Step 3.2: Expense Item Component
-- [ ] Create `src/components/Expenses/ExpenseItem.tsx`
-- [ ] Add Expense Name input
-- [ ] Add Calculation Type dropdown (Fixed Monthly, % Revenue, Per Occurrence, etc.)
-- [ ] Add Value input (conditional based on type)
-- [ ] Add Remove button
+### Step 2.2: Unit Card Component Shell ✅
+- [x] Create `src/components/Units/UnitCard.tsx`
+- [x] Create collapsible/expandable card layout (mobile-friendly)
+- [x] Add Unit Label input field
+- [x] Add Remove Unit button
+- [x] Add unit type selector (radio buttons: STR/MTR/LTR)
 
-### Step 3.3: Frequency Input (Conditional)
-- [ ] Create conditional Frequency input (for "Per Occurrence" type)
-- [ ] Add frequency type dropdown (Daily/Weekly/Monthly/Per Booking)
-- [ ] Add occurrence count input
+### Step 2.3: STR Revenue Inputs ✅
+- [x] Create `src/components/Units/STRInputs.tsx`
+- [x] Add Nightly Rate input ($)
+- [x] Add Occupancy Rate input (%, default 80%)
+- [x] Add Average Stay Length input (nights, default 2.5)
+- [x] Display calculated monthly turnovers
+- [x] Display calculated gross monthly revenue
 
-### Step 3.4: System Default Expense Templates
-- [ ] Create `src/utils/expenseTemplates.ts`
-- [ ] Define STR default expenses (from design doc)
-- [ ] Define MTR default expenses
-- [ ] Define LTR default expenses
-- [ ] Create function to load template by unit type
+### Step 2.4: MTR Revenue Inputs ✅
+- [x] Create `src/components/Units/MTRInputs.tsx`
+- [x] Add Daily Rate OR Monthly Rate toggle
+- [x] Add rate input field (switches based on toggle)
+- [x] Add Occupancy Rate input (%, default 50%)
+- [x] Add Average Booking Length input (days, default 15)
+- [x] Display calculated gross monthly revenue
 
-### Step 3.5: Auto-populate Expenses on Unit Creation
-- [ ] Update ADD_UNIT action to load default expense template
-- [ ] Apply appropriate template based on unit type (STR/MTR/LTR)
+### Step 2.5: LTR Revenue Inputs ✅
+- [x] Create `src/components/Units/LTRInputs.tsx`
+- [x] Add Monthly Rent input ($)
+- [x] Add Annual Vacancy Rate input (%, default 5%)
+- [x] Display calculated effective monthly revenue
 
-### Step 3.6: Expense Calculation Engine (Basic)
-- [ ] Create `src/utils/calculations.ts`
-- [ ] Implement calculateExpense() for each calculation type
-- [ ] Implement calculateTotalExpenses() for a unit
-- [ ] Display total expenses per unit
-
----
-
-## Phase 4: Component 4 - Calculations & Summary
-
-### Step 4.1: Mortgage Calculator Utility
-- [ ] Create `src/utils/mortgageCalculator.ts`
-- [ ] Implement monthly payment calculation (P&I)
-- [ ] Implement amortization schedule generator
-- [ ] Calculate principal paydown for Year 1
-
-### Step 4.2: Per-Unit Summary Component
-- [ ] Create `src/components/Summary/UnitSummary.tsx`
-- [ ] Display Gross Revenue
-- [ ] Display Total Operating Expenses (itemized)
-- [ ] Display Net Operating Income (NOI)
-- [ ] Add to each UnitCard
-
-### Step 4.3: Property-Level Summary Component
-- [ ] Create `src/components/Summary/PropertySummary.tsx`
-- [ ] Calculate and display Total Monthly Revenue (all units)
-- [ ] Calculate and display Total Monthly Expenses (units + property-level)
-- [ ] Display Mortgage Payment (P&I)
-- [ ] Display Monthly Cash Flow
-- [ ] Display Annual Cash Flow
-
-### Step 4.4: Return Metrics Component
-- [ ] Create `src/components/Summary/ReturnMetrics.tsx`
-- [ ] Calculate and display Total Investment
-- [ ] Calculate and display Cash-on-Cash Return
-- [ ] Calculate and display Total Return (Year 1)
-- [ ] Display Principal Paydown (Year 1)
-
-### Step 4.5: Mobile-Optimized Summary Layout
-- [ ] Design card-based layout for mobile
-- [ ] Add expand/collapse sections for detailed breakdowns
-- [ ] Ensure key metrics are prominently displayed
-- [ ] Test responsive design on various screen sizes
+### Step 2.6: Unit State Management ✅
+- [x] Add unit management to PropertyContext
+- [x] Create actions: ADD_UNIT, REMOVE_UNIT, UPDATE_UNIT
+- [x] Implement unit array state
+- [x] Connect UnitList and UnitCard to context
 
 ---
 
-## Phase 5: Comparison Dashboard
+## Phase 3: Component 3 - Expense System (Basic) ✅ COMPLETED
 
-### Step 5.1: Comparison Context Setup
-- [ ] Add comparison rates to PropertyContext (HYSA, Index Funds)
-- [ ] Create settings for default comparison rates
-- [ ] Add inputs to configure comparison rates
+### Step 3.1: Expense List Component ✅
+- [x] Create `src/components/Expenses/ExpenseList.tsx`
+- [x] Display expense items for a unit
+- [x] Add "Add Expense" button
+- [x] Style for mobile (collapsible/expandable)
 
-### Step 5.2: Comparison Table Component
-- [ ] Create `src/components/Comparison/ComparisonTable.tsx`
-- [ ] Calculate returns for HYSA (3% default)
-- [ ] Calculate returns for Index Funds (10% total, 2% dividend)
-- [ ] Display side-by-side comparison table
-- [ ] Make table mobile-responsive (possibly card-based stacking)
+### Step 3.2: Expense Item Component ✅
+- [x] Create `src/components/Expenses/ExpenseItem.tsx`
+- [x] Add Expense Name input
+- [x] Add Calculation Type dropdown (Fixed Monthly, % Revenue, Per Occurrence, etc.)
+- [x] Add Value input (conditional based on type)
+- [x] Add Remove button
 
-### Step 5.3: Qualitative Comparison Metrics
-- [ ] Add Liquidity comparison row
-- [ ] Add Work Required comparison row (calculate from DIY hours)
-- [ ] Add visual indicators (icons, color coding)
+### Step 3.3: Frequency Input (Conditional) ✅
+- [x] Create conditional Frequency input (for "Per Occurrence" type)
+- [x] Add frequency type dropdown (Daily/Weekly/Monthly/Per Booking)
+- [x] Add occurrence count input
 
-### Step 5.4: Year 5 Wealth Projection
-- [ ] Implement compound growth calculator
-- [ ] Calculate 5-year projection for property (cash flow + equity)
-- [ ] Calculate 5-year projection for HYSA
-- [ ] Calculate 5-year projection for Index Funds
-- [ ] Display in comparison table
+### Step 3.4: System Default Expense Templates ✅
+- [x] Create `src/utils/expenseTemplates.ts`
+- [x] Define STR default expenses (from design doc)
+- [x] Define MTR default expenses
+- [x] Define LTR default expenses
+- [x] Create function to load template by unit type
+
+### Step 3.5: Auto-populate Expenses on Unit Creation ✅
+- [x] Update ADD_UNIT action to load default expense template
+- [x] Apply appropriate template based on unit type (STR/MTR/LTR)
+
+### Step 3.6: Expense Calculation Engine (Basic) ✅
+- [x] Create `src/utils/calculations.ts`
+- [x] Implement calculateExpense() for each calculation type
+- [x] Implement calculateTotalExpenses() for a unit
+- [x] Display total expenses per unit
+
+---
+
+## Phase 4: Component 4 - Calculations & Summary ✅ COMPLETED
+
+### Step 4.1: Mortgage Calculator Utility ✅
+- [x] Create `src/utils/mortgageCalculator.ts`
+- [x] Implement monthly payment calculation (P&I)
+- [x] Implement amortization schedule generator
+- [x] Calculate principal paydown for Year 1
+
+### Step 4.2: Per-Unit Summary Component ✅
+- [x] Create `src/components/Summary/UnitSummary.tsx`
+- [x] Display Gross Revenue
+- [x] Display Total Operating Expenses (itemized)
+- [x] Display Net Operating Income (NOI)
+- [x] Add to each UnitCard
+
+### Step 4.3: Property-Level Summary Component ✅
+- [x] Create `src/components/Summary/PropertySummary.tsx`
+- [x] Calculate and display Total Monthly Revenue (all units)
+- [x] Calculate and display Total Monthly Expenses (units + property-level)
+- [x] Display Mortgage Payment (P&I)
+- [x] Display Monthly Cash Flow
+- [x] Display Annual Cash Flow
+
+### Step 4.4: Return Metrics Component ✅
+- [x] Create `src/components/Summary/ReturnMetrics.tsx` (integrated into PropertySummary)
+- [x] Calculate and display Total Investment
+- [x] Calculate and display Cash-on-Cash Return
+- [x] Calculate and display Total Return (Year 1)
+- [x] Display Principal Paydown (Year 1)
+
+### Step 4.5: Mobile-Optimized Summary Layout ✅
+- [x] Design card-based layout for mobile
+- [x] Add expand/collapse sections for detailed breakdowns
+- [x] Ensure key metrics are prominently displayed
+- [x] Test responsive design on various screen sizes
+
+---
+
+## Phase 5: Comparison Dashboard ✅ COMPLETED
+
+### Step 5.1: Comparison Context Setup ✅
+- [x] Add comparison rates to PropertyContext (HYSA, Index Funds)
+- [x] Create settings for default comparison rates
+- [x] Add inputs to configure comparison rates
+
+### Step 5.2: Comparison Table Component ✅
+- [x] Create `src/components/Comparison/ComparisonDashboard.tsx`
+- [x] Calculate returns for HYSA (3% default)
+- [x] Calculate returns for Index Funds (10% total, 2% dividend)
+- [x] Display side-by-side comparison table
+- [x] Make table mobile-responsive (possibly card-based stacking)
+
+### Step 5.3: Qualitative Comparison Metrics ✅
+- [x] Add Liquidity comparison row
+- [x] Add Work Required comparison row (calculate from DIY hours)
+- [x] Add visual indicators (icons, color coding)
+
+### Step 5.4: Year 5 Wealth Projection ✅
+- [x] Implement compound growth calculator
+- [x] Calculate 5-year projection for property (cash flow + equity)
+- [x] Calculate 5-year projection for HYSA
+- [x] Calculate 5-year projection for Index Funds
+- [x] Display in comparison table
 
 ---
 
