@@ -41,18 +41,16 @@ function AppContent() {
     setActiveTab('property');
   };
 
-  if (currentView === 'home') {
-    return (
-      <HomePage
-        onSelectProject={handleSelectProject}
-        onCreateProject={handleCreateProject}
-        onOpenTemplateSettings={() => setShowTemplateSettings(true)}
-      />
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <>
+      {currentView === 'home' ? (
+        <HomePage
+          onSelectProject={handleSelectProject}
+          onCreateProject={handleCreateProject}
+          onOpenTemplateSettings={() => setShowTemplateSettings(true)}
+        />
+      ) : (
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Header */}
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
@@ -151,12 +149,14 @@ function AppContent() {
           </p>
         </div>
       </div>
+        </div>
+      )}
 
-      {/* Template Settings Modal */}
+      {/* Template Settings Modal - Available in both views */}
       {showTemplateSettings && (
         <TemplateSettings onClose={() => setShowTemplateSettings(false)} />
       )}
-    </div>
+    </>
   );
 }
 
