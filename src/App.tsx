@@ -4,19 +4,34 @@ import { PropertyDetails } from './components/PropertyDetails';
 import { UnitList } from './components/Units';
 import { PropertySummary } from './components/Summary';
 import { ComparisonDashboard } from './components/Comparison';
+import { TemplateSettings } from './components/Templates';
+import { AppreciationScenarios, SensitivityAnalysis } from './components/Advanced';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState<'property' | 'units' | 'summary'>('property');
+  const [showTemplateSettings, setShowTemplateSettings] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-blue-600 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-2xl sm:text-3xl font-bold">Investment Property Calculator</h1>
-          <p className="text-blue-100 text-sm sm:text-base mt-1">
-            Calculate returns on multi-unit rental properties
-          </p>
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold">Investment Property Calculator</h1>
+              <p className="text-blue-100 text-sm sm:text-base mt-1">
+                Calculate returns on multi-unit rental properties
+              </p>
+            </div>
+            <button
+              onClick={() => setShowTemplateSettings(true)}
+              className="px-3 py-2 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
+              title="Expense Templates Settings"
+            >
+              ⚙️ Templates
+            </button>
+          </div>
         </div>
       </div>
 
@@ -66,6 +81,8 @@ function AppContent() {
           <div className="space-y-6">
             <PropertySummary />
             <ComparisonDashboard />
+            <AppreciationScenarios />
+            <SensitivityAnalysis />
           </div>
         )}
       </div>
@@ -79,15 +96,22 @@ function AppContent() {
           </p>
         </div>
       </div>
+
+      {/* Template Settings Modal */}
+      {showTemplateSettings && (
+        <TemplateSettings onClose={() => setShowTemplateSettings(false)} />
+      )}
     </div>
   );
 }
 
 function App() {
   return (
-    <PropertyProvider>
-      <AppContent />
-    </PropertyProvider>
+    <ErrorBoundary>
+      <PropertyProvider>
+        <AppContent />
+      </PropertyProvider>
+    </ErrorBoundary>
   );
 }
 

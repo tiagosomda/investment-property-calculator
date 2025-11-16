@@ -182,6 +182,76 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
               className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
+          <div className="col-span-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={expense.isDIY || false}
+                onChange={(e) =>
+                  updateExpense(expense.id, {
+                    isDIY: e.target.checked,
+                    outsourcedCost: e.target.checked ? expense.value : undefined,
+                  })
+                }
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-xs font-medium text-gray-700">
+                DIY (Do It Yourself) Option
+              </span>
+            </label>
+          </div>
+
+          {expense.isDIY && (
+            <>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  Outsourced Cost
+                </label>
+                <div className="relative">
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                    $
+                  </span>
+                  <input
+                    type="number"
+                    value={expense.outsourcedCost || 0}
+                    onChange={(e) =>
+                      updateExpense(expense.id, {
+                        outsourcedCost: parseFloat(e.target.value) || 0,
+                      })
+                    }
+                    step="0.01"
+                    className="w-full pl-6 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  DIY Hours/Month
+                </label>
+                <input
+                  type="number"
+                  value={expense.diyHours || 0}
+                  onChange={(e) =>
+                    updateExpense(expense.id, { diyHours: parseFloat(e.target.value) || 0 })
+                  }
+                  step="0.5"
+                  min="0"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="col-span-2 bg-blue-50 rounded p-2 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Sweat Equity Savings:</span>
+                  <span className="font-semibold text-green-600">
+                    ${((expense.outsourcedCost || 0) - calculatedAmount).toFixed(2)}/mo
+                  </span>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

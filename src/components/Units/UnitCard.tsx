@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Unit } from '../../types';
 import { useProperty } from '../../contexts';
 import { Card, Button } from '../ui';
@@ -12,7 +12,7 @@ interface UnitCardProps {
   unit: Unit;
 }
 
-export function UnitCard({ unit }: UnitCardProps) {
+export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
   const { dispatch } = useProperty();
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -77,4 +77,4 @@ export function UnitCard({ unit }: UnitCardProps) {
       )}
     </Card>
   );
-}
+});

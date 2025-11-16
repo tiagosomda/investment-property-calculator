@@ -105,6 +105,20 @@ export const ltrDefaultExpenses: Omit<Expense, 'id'>[] = [
 ];
 
 export function getDefaultExpenses(unitType: UnitType): Omit<Expense, 'id'>[] {
+  // Try to load custom templates from localStorage
+  try {
+    const saved = localStorage.getItem('expense-templates');
+    if (saved) {
+      const templates = JSON.parse(saved);
+      if (templates[unitType]) {
+        return templates[unitType];
+      }
+    }
+  } catch (error) {
+    console.error('Error loading custom templates:', error);
+  }
+
+  // Fall back to system defaults
   switch (unitType) {
     case 'STR':
       return strDefaultExpenses;
