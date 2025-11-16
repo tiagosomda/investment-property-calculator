@@ -4,14 +4,48 @@
 
 A multi-unit property investment calculator that allows users to model different rental strategies (STR/MTR/LTR) with configurable expenses and compare returns against alternative investments.
 
+**Key Features:**
+- Multi-project management (create, save, load multiple investment opportunities)
+- Light/Dark/System theme support
+- Mobile-first responsive design
+- Local browser storage (no server required)
+
 -----
 
 ## User Flow
 
+1. **Project Selection** - Choose existing project or create new investment opportunity
 1. **Property Setup** - Enter basic property and financing details
 1. **Unit Configuration** - Add units and define rental strategy for each
 1. **Expense Configuration** - Customize operating expenses with flexible calculation types
 1. **Review & Compare** - View cash flow projections and compare to alternative investments
+
+-----
+
+## Component 0: Project Management
+
+### Home Page
+
+**Project List:**
+- Grid view of all saved investment opportunities
+- Each project card shows:
+  - Project name and description
+  - Created and last updated dates
+  - Open and Delete actions
+- Sort by most recently updated
+
+**Project Operations:**
+- **Create New Project** - Form with name (required) and description (optional)
+- **Open Project** - Navigate to calculator view for selected project
+- **Delete Project** - Remove project with confirmation (cannot be undone)
+- **Theme Toggle** - Switch between Light/Dark/System theme
+
+### Data Persistence
+
+- All projects saved to browser localStorage
+- Each project stored with unique ID
+- Automatic save on any state change
+- Current project ID tracked for session continuity
 
 -----
 
@@ -295,3 +329,45 @@ indexDividendRate: number
 - Unit array state
 - Expense configuration state
 - Calculated results (derived state)
+
+-----
+
+## UI/UX Features
+
+### Theme System
+
+**Theme Options:**
+- **Light Mode** - Traditional light background with dark text
+- **Dark Mode** - Dark background with light text, reduced eye strain
+- **System** - Automatically follows OS/browser theme preference
+
+**Implementation:**
+- Theme toggle dropdown in header (both home and calculator views)
+- Preference saved to localStorage
+- System preference detection with automatic updates
+- Comprehensive dark mode styling across all components
+- Smooth transitions between themes
+
+### Responsive Design
+
+**Mobile-First Approach:**
+- Optimized for phone screens (320px+)
+- Touch-friendly tap targets
+- Responsive typography (text scales appropriately)
+- Grid layouts adapt from 1 column (mobile) to 2 columns (tablet+)
+- Sticky tab navigation for easy access
+- Horizontal scroll for tabs on narrow screens
+
+**Component Responsiveness:**
+- Cards and inputs scale appropriately
+- Theme toggle shows icon only on mobile, icon + label on desktop
+- Header elements stack/flex based on screen size
+- Form elements use full width on mobile
+
+### Accessibility
+
+- Focus indicators on all interactive elements
+- ARIA labels on buttons
+- Semantic HTML structure
+- Keyboard navigation support
+- High contrast ratios in both light and dark modes
