@@ -23,11 +23,11 @@ export function UnitSummary({ unit }: UnitSummaryProps) {
       <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Monthly Summary</h4>
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-700 dark:text-gray-300">Gross Revenue:</span>
+          <span className="text-gray-700 dark:text-gray-200">Gross Revenue:</span>
           <span className="font-semibold text-green-600 dark:text-green-400">{formatCurrency(revenue)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-700 dark:text-gray-300">Operating Expenses:</span>
+          <span className="text-gray-700 dark:text-gray-200">Operating Expenses:</span>
           <span className="font-semibold text-red-600 dark:text-red-400">-{formatCurrency(expenses)}</span>
         </div>
         <div className="border-t border-gray-200 dark:border-gray-600 pt-2 flex justify-between">

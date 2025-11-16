@@ -54,11 +54,11 @@ export function STRInputs({ unit, updateUnit }: STRInputsProps) {
 
       <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 text-sm">
         <div className="flex justify-between mb-1">
-          <span className="text-gray-700 dark:text-gray-300">Monthly Turnovers:</span>
+          <span className="text-gray-700 dark:text-gray-200">Monthly Turnovers:</span>
           <span className="font-semibold text-gray-900 dark:text-white">{monthlyTurnovers.toFixed(1)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-700 dark:text-gray-300">Gross Monthly Revenue:</span>
+          <span className="text-gray-700 dark:text-gray-200">Gross Monthly Revenue:</span>
           <span className="font-semibold text-green-600 dark:text-green-400">
             ${grossRevenue.toFixed(0)}
           </span>

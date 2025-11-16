@@ -63,7 +63,7 @@ export function AppreciationScenarios() {
   return (
     <Card title="Property Appreciation Scenarios">
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
           Projection Period
         </label>
         <div className="flex gap-2">
@@ -74,7 +74,7 @@ export function AppreciationScenarios() {
               className={`px-4 py-2 rounded font-medium transition-colors ${
                 years === y
                   ? 'bg-blue-600 dark:bg-blue-700 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
               }`}
             >
               {y} years
@@ -89,7 +89,7 @@ export function AppreciationScenarios() {
             <tr className="border-b border-gray-200 dark:border-gray-700">
               <th className="text-left py-2 pr-4 font-semibold text-gray-900 dark:text-white">Metric</th>
               {appreciationRates.map((rate) => (
-                <th key={rate} className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
+                <th key={rate} className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">
                   {rate}% Annual
                 </th>
               ))}
@@ -97,7 +97,7 @@ export function AppreciationScenarios() {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Current Value</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Current Value</td>
               {appreciationRates.map((rate) => (
                 <td key={rate} className="text-right py-2 px-2 text-gray-900 dark:text-white">
                   {formatCurrency(property.purchasePrice)}
@@ -105,7 +105,7 @@ export function AppreciationScenarios() {
               ))}
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Future Value (Year {years})</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Future Value (Year {years})</td>
               {appreciationRates.map((rate) => (
                 <td key={rate} className="text-right py-2 px-2 font-semibold text-gray-900 dark:text-white">
                   {formatCurrency(calculateScenario(rate).futureValue)}
@@ -113,7 +113,7 @@ export function AppreciationScenarios() {
               ))}
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Appreciation Gain</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Appreciation Gain</td>
               {appreciationRates.map((rate) => {
                 const scenario = calculateScenario(rate);
                 return (
@@ -129,7 +129,7 @@ export function AppreciationScenarios() {
               })}
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Total Cash Flow ({years} yrs)</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Total Cash Flow ({years} yrs)</td>
               {appreciationRates.map((rate) => (
                 <td key={rate} className="text-right py-2 px-2 text-gray-900 dark:text-white">
                   {formatCurrency(calculateScenario(rate).totalCashFlow)}
@@ -137,7 +137,7 @@ export function AppreciationScenarios() {
               ))}
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Equity Built</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Equity Built</td>
               {appreciationRates.map((rate) => {
                 const scenario = calculateScenario(rate);
                 return (

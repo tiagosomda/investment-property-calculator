@@ -67,13 +67,13 @@ export function ComparisonDashboard() {
               <th className="text-right py-2 px-2 font-semibold text-blue-900 dark:text-blue-200 bg-blue-50 dark:bg-blue-900/30">
                 This Property
               </th>
-              <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">HYSA</th>
-              <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">Index Funds</th>
+              <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">HYSA</th>
+              <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">Index Funds</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Initial Investment</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Initial Investment</td>
               <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(totalInvestment)}
               </td>
@@ -81,7 +81,7 @@ export function ComparisonDashboard() {
               <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(totalInvestment)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Annual Cash Return</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Annual Cash Return</td>
               <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(annualCashFlow)}
               </td>
@@ -89,7 +89,7 @@ export function ComparisonDashboard() {
               <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(indexCashReturn)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Annual Total Return</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Annual Total Return</td>
               <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(totalReturn)}
               </td>
@@ -97,7 +97,7 @@ export function ComparisonDashboard() {
               <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(indexAnnualReturn)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Return Rate</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Return Rate</td>
               <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatPercent(totalInvestment > 0 ? (totalReturn / totalInvestment) * 100 : 0)}
               </td>
@@ -107,7 +107,7 @@ export function ComparisonDashboard() {
               </td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Year 5 Wealth</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Year 5 Wealth</td>
               <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(property5Year)}
               </td>
@@ -115,7 +115,7 @@ export function ComparisonDashboard() {
               <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(index5Year)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Liquidity</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Liquidity</td>
               <td className="text-right py-2 px-2 bg-blue-50 dark:bg-blue-900/30">
                 <span className="text-orange-600 dark:text-orange-400 font-semibold">Low</span>
               </td>
@@ -127,7 +127,7 @@ export function ComparisonDashboard() {
               </td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">Work Required</td>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Work Required</td>
               <td className="text-right py-2 px-2 bg-blue-50 dark:bg-blue-900/30">
                 <span className="text-orange-600 dark:text-orange-400 font-semibold">Moderate-High</span>
               </td>

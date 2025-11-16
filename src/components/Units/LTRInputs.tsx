@@ -43,7 +43,7 @@ export function LTRInputs({ unit, updateUnit }: LTRInputsProps) {
 
       <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-700 dark:text-gray-300">Effective Monthly Revenue:</span>
+          <span className="text-gray-700 dark:text-gray-200">Effective Monthly Revenue:</span>
           <span className="font-semibold text-green-600 dark:text-green-400">
             ${effectiveRevenue.toFixed(0)}
           </span>

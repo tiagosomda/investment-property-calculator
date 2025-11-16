@@ -73,7 +73,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
       {isExpanded && (
         <div className="space-y-3 mt-3">
           <div>
-            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
               Calculation Type
             </label>
             <select
@@ -94,7 +94,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
               Value
             </label>
             <div className="relative">
@@ -125,7 +125,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           {expense.calculationType === 'per-occurrence' && (
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Frequency
                 </label>
                 <select
@@ -149,7 +149,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Count
                 </label>
                 <input
@@ -171,7 +171,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           )}
 
           <div>
-            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
               Notes (optional)
             </label>
             <textarea
@@ -196,7 +196,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                 }
                 className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
               />
-              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-200">
                 DIY (Do It Yourself) Option
               </span>
             </label>
@@ -205,7 +205,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           {expense.isDIY && (
             <>
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Outsourced Cost
                 </label>
                 <div className="relative">
@@ -227,7 +227,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">
                   DIY Hours/Month
                 </label>
                 <input
@@ -244,7 +244,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
 
               <div className="col-span-2 bg-blue-50 dark:bg-blue-900/30 rounded p-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-gray-700 dark:text-gray-300">Sweat Equity Savings:</span>
+                  <span className="text-gray-700 dark:text-gray-200">Sweat Equity Savings:</span>
                   <span className="font-semibold text-green-600 dark:text-green-400">
                     ${((expense.outsourcedCost || 0) - calculatedAmount).toFixed(2)}/mo
                   </span>

@@ -103,13 +103,13 @@ export function SensitivityAnalysis() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-300">
+                  <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-200">
                     Scenario
                   </th>
-                  <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
+                  <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">
                     Monthly Cash Flow
                   </th>
-                  <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
+                  <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">
                     Change
                   </th>
                 </tr>
@@ -123,7 +123,7 @@ export function SensitivityAnalysis() {
                       key={scenario.label}
                       className={isBaseline ? 'bg-blue-50 dark:bg-blue-900/30' : ''}
                     >
-                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{scenario.label}</td>
+                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">{scenario.label}</td>
                       <td
                         className={`text-right py-2 px-2 font-semibold ${
                           scenario.cashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
@@ -161,13 +161,13 @@ export function SensitivityAnalysis() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-300">
+                    <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-200">
                       Scenario
                     </th>
-                    <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
+                    <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">
                       Monthly Cash Flow
                     </th>
-                    <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
+                    <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">
                       Change
                     </th>
                   </tr>
@@ -181,7 +181,7 @@ export function SensitivityAnalysis() {
                         key={scenario.label}
                         className={isBaseline ? 'bg-blue-50 dark:bg-blue-900/30' : ''}
                       >
-                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{scenario.label}</td>
+                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">{scenario.label}</td>
                         <td
                           className={`text-right py-2 px-2 font-semibold ${
                             scenario.cashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
