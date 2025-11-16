@@ -1,0 +1,116 @@
+import { Unit, MTRRevenue } from '../../types';
+import { Input } from '../ui';
+import { calculateUnitMonthlyRevenue } from '../../utils';
+
+interface MTRInputsProps {
+  unit: Unit;
+  updateUnit: (updates: Partial<Unit>) => void;
+}
+
+export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
+  const revenue = unit.revenue as MTRRevenue;
+
+  const updateRevenue = (updates: Partial<MTRRevenue>) => {
+    updateUnit({ revenue: { ...revenue, ...updates } });
+  };
+
+  const grossRevenue = calculateUnitMonthlyRevenue(unit);
+
+  return (
+    <div className="space-y-4">
+      <div className="mb-3">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Rate Type
+        </label>
+        <div className="flex gap-2">
+          <button
+            onClick={() =>
+              updateRevenue({
+                rateType: 'daily',
+                dailyRate: revenue.dailyRate || 0,
+                monthlyRate: undefined,
+              })
+            }
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              revenue.rateType === 'daily'
+                ? 'bg-blue-600 text-white'
+                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            Daily Rate
+          </button>
+          <button
+            onClick={() =>
+              updateRevenue({
+                rateType: 'monthly',
+                monthlyRate: revenue.monthlyRate || 0,
+                dailyRate: undefined,
+              })
+            }
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              revenue.rateType === 'monthly'
+                ? 'bg-blue-600 text-white'
+                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            Monthly Rate
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {revenue.rateType === 'daily' ? (
+          <Input
+            label="Daily Rate"
+            type="number"
+            value={revenue.dailyRate || 0}
+            onChange={(value) => updateRevenue({ dailyRate: parseFloat(value) || 0 })}
+            prefix="$"
+            step="10"
+            min="0"
+          />
+        ) : (
+          <Input
+            label="Monthly Rate"
+            type="number"
+            value={revenue.monthlyRate || 0}
+            onChange={(value) => updateRevenue({ monthlyRate: parseFloat(value) || 0 })}
+            prefix="$"
+            step="100"
+            min="0"
+          />
+        )}
+
+        <Input
+          label="Occupancy Rate"
+          type="number"
+          value={revenue.occupancyPercent}
+          onChange={(value) => updateRevenue({ occupancyPercent: parseFloat(value) || 0 })}
+          suffix="%"
+          step="1"
+          min="0"
+          max="100"
+        />
+
+        <Input
+          label="Average Booking Length"
+          type="number"
+          value={revenue.avgBookingLength}
+          onChange={(value) => updateRevenue({ avgBookingLength: parseFloat(value) || 0 })}
+          suffix="days"
+          step="1"
+          min="0"
+        />
+      </div>
+
+      <div className="bg-blue-50 rounded-lg p-3 text-sm">
+        <div className="flex justify-between">
+          <span className="text-gray-700">Gross Monthly Revenue:</span>
+          <span className="font-semibold text-green-600">
+            ${grossRevenue.toFixed(0)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
