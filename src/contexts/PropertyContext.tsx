@@ -1,8 +1,11 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { Property, Unit, ComparisonRates } from '../types';
-import { generateExpenseId, getDefaultExpenses } from '../utils';
+import { Property, Unit, ComparisonRates, Project } from '../types';
+import { generateExpenseId, getDefaultExpenses, getProject, saveProject } from '../utils';
 
 interface PropertyState {
+  projectId: string | null;
+  projectName: string;
+  projectDescription?: string;
   property: Property;
   units: Unit[];
   comparison: ComparisonRates;
@@ -14,7 +17,8 @@ type PropertyAction =
   | { type: 'REMOVE_UNIT'; payload: string }
   | { type: 'UPDATE_UNIT'; payload: { id: string; updates: Partial<Unit> } }
   | { type: 'UPDATE_COMPARISON'; payload: Partial<ComparisonRates> }
-  | { type: 'LOAD_STATE'; payload: PropertyState };
+  | { type: 'LOAD_PROJECT'; payload: Project }
+  | { type: 'UPDATE_PROJECT_INFO'; payload: { name?: string; description?: string } };
 
 const defaultProperty: Property = {
   purchasePrice: 0,
@@ -39,6 +43,9 @@ const defaultComparison: ComparisonRates = {
 };
 
 const initialState: PropertyState = {
+  projectId: null,
+  projectName: 'Untitled Project',
+  projectDescription: '',
   property: defaultProperty,
   units: [],
   comparison: defaultComparison,
@@ -115,8 +122,22 @@ function propertyReducer(state: PropertyState, action: PropertyAction): Property
         comparison: { ...state.comparison, ...action.payload },
       };
 
-    case 'LOAD_STATE':
-      return action.payload;
+    case 'LOAD_PROJECT':
+      return {
+        projectId: action.payload.id,
+        projectName: action.payload.name,
+        projectDescription: action.payload.description,
+        property: action.payload.property,
+        units: action.payload.units,
+        comparison: action.payload.comparison,
+      };
+
+    case 'UPDATE_PROJECT_INFO':
+      return {
+        ...state,
+        projectName: action.payload.name ?? state.projectName,
+        projectDescription: action.payload.description ?? state.projectDescription,
+      };
 
     default:
       return state;
@@ -126,6 +147,7 @@ function propertyReducer(state: PropertyState, action: PropertyAction): Property
 interface PropertyContextType {
   state: PropertyState;
   dispatch: React.Dispatch<PropertyAction>;
+  loadProject: (projectId: string) => void;
 }
 
 const PropertyContext = createContext<PropertyContextType | undefined>(undefined);
@@ -133,30 +155,32 @@ const PropertyContext = createContext<PropertyContextType | undefined>(undefined
 export function PropertyProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(propertyReducer, initialState);
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('investment-calculator-state');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        dispatch({ type: 'LOAD_STATE', payload: parsed });
-      }
-    } catch (error) {
-      console.error('Error loading state from localStorage:', error);
+  const loadProject = (projectId: string) => {
+    const project = getProject(projectId);
+    if (project) {
+      dispatch({ type: 'LOAD_PROJECT', payload: project });
     }
-  }, []);
+  };
 
-  // Save to localStorage on state change
+  // Save project on state change
   useEffect(() => {
-    try {
-      localStorage.setItem('investment-calculator-state', JSON.stringify(state));
-    } catch (error) {
-      console.error('Error saving state to localStorage:', error);
+    if (state.projectId) {
+      const project: Project = {
+        id: state.projectId,
+        name: state.projectName,
+        description: state.projectDescription,
+        property: state.property,
+        units: state.units,
+        comparison: state.comparison,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      saveProject(project);
     }
   }, [state]);
 
   return (
-    <PropertyContext.Provider value={{ state, dispatch }}>
+    <PropertyContext.Provider value={{ state, dispatch, loadProject }}>
       {children}
     </PropertyContext.Provider>
   );

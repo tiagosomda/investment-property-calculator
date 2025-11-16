@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { PropertyProvider } from './contexts';
+import { useState, useEffect } from 'react';
+import { PropertyProvider, useProperty } from './contexts';
 import { PropertyDetails } from './components/PropertyDetails';
 import { UnitList } from './components/Units';
 import { PropertySummary } from './components/Summary';
@@ -7,26 +7,76 @@ import { ComparisonDashboard } from './components/Comparison';
 import { TemplateSettings } from './components/Templates';
 import { AppreciationScenarios, SensitivityAnalysis } from './components/Advanced';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { HomePage } from './components/Home';
+import { getCurrentProjectId } from './utils';
 
 function AppContent() {
+  const { state, loadProject } = useProperty();
+  const [currentView, setCurrentView] = useState<'home' | 'calculator'>('home');
   const [activeTab, setActiveTab] = useState<'property' | 'units' | 'summary'>('property');
   const [showTemplateSettings, setShowTemplateSettings] = useState(false);
+
+  // Check if there's a current project on mount
+  useEffect(() => {
+    const currentProjectId = getCurrentProjectId();
+    if (currentProjectId) {
+      loadProject(currentProjectId);
+      setCurrentView('calculator');
+    }
+  }, []);
+
+  const handleSelectProject = (projectId: string) => {
+    loadProject(projectId);
+    setCurrentView('calculator');
+  };
+
+  const handleCreateProject = (projectId: string) => {
+    loadProject(projectId);
+    setCurrentView('calculator');
+  };
+
+  const handleBackToHome = () => {
+    setCurrentView('home');
+    setActiveTab('property');
+  };
+
+  if (currentView === 'home') {
+    return (
+      <HomePage
+        onSelectProject={handleSelectProject}
+        onCreateProject={handleCreateProject}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-blue-600 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-start">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Investment Property Calculator</h1>
-              <p className="text-blue-100 text-sm sm:text-base mt-1">
-                Calculate returns on multi-unit rental properties
-              </p>
+          <div className="flex justify-between items-start gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleBackToHome}
+                  className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
+                  title="Back to Projects"
+                >
+                  ← Projects
+                </button>
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
+                  {state.projectDescription && (
+                    <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                      {state.projectDescription}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
             <button
               onClick={() => setShowTemplateSettings(true)}
-              className="px-3 py-2 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
+              className="px-3 py-2 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
               title="Expense Templates Settings"
             >
               ⚙️ Templates
