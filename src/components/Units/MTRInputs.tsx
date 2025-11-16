@@ -33,8 +33,8 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
             }
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               revenue.rateType === 'daily'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                ? 'bg-blue-600 dark:bg-blue-700 text-white'
+                : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}
           >
             Daily Rate
@@ -49,8 +49,8 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
             }
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               revenue.rateType === 'monthly'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                ? 'bg-blue-600 dark:bg-blue-700 text-white'
+                : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}
           >
             Monthly Rate
@@ -103,10 +103,10 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
         />
       </div>
 
-      <div className="bg-blue-50 rounded-lg p-3 text-sm">
+      <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-700">Gross Monthly Revenue:</span>
-          <span className="font-semibold text-green-600">
+          <span className="text-gray-700 dark:text-gray-300">Gross Monthly Revenue:</span>
+          <span className="font-semibold text-green-600 dark:text-green-400">
             ${grossRevenue.toFixed(0)}
           </span>
         </div>

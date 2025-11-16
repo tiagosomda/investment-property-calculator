@@ -16,7 +16,7 @@ export function SensitivityAnalysis() {
   if (units.length === 0) {
     return (
       <Card title="Sensitivity Analysis">
-        <p className="text-gray-500 text-center py-8">
+        <p className="text-gray-500 dark:text-gray-400 text-center py-8">
           Add at least one unit to see sensitivity analysis
         </p>
       </Card>
@@ -96,37 +96,37 @@ export function SensitivityAnalysis() {
       <div className="space-y-6">
         {/* Occupancy Sensitivity */}
         <div>
-          <h3 className="text-md font-semibold text-gray-900 mb-3">
+          <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">
             Occupancy Rate Impact
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-4 font-semibold text-gray-700">
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-300">
                     Scenario
                   </th>
-                  <th className="text-right py-2 px-2 font-semibold text-gray-700">
+                  <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
                     Monthly Cash Flow
                   </th>
-                  <th className="text-right py-2 px-2 font-semibold text-gray-700">
+                  <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
                     Change
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {occupancyScenarios.map((scenario) => {
                   const change = scenario.cashFlow - baselineCashFlow;
                   const isBaseline = scenario.value === 0;
                   return (
                     <tr
                       key={scenario.label}
-                      className={isBaseline ? 'bg-blue-50' : ''}
+                      className={isBaseline ? 'bg-blue-50 dark:bg-blue-900/30' : ''}
                     >
-                      <td className="py-2 pr-4 text-gray-700">{scenario.label}</td>
+                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{scenario.label}</td>
                       <td
                         className={`text-right py-2 px-2 font-semibold ${
-                          scenario.cashFlow >= 0 ? 'text-green-600' : 'text-red-600'
+                          scenario.cashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                         }`}
                       >
                         {formatCurrency(scenario.cashFlow)}
@@ -134,10 +134,10 @@ export function SensitivityAnalysis() {
                       <td
                         className={`text-right py-2 px-2 ${
                           change > 0
-                            ? 'text-green-600'
+                            ? 'text-green-600 dark:text-green-400'
                             : change < 0
-                            ? 'text-red-600'
-                            : 'text-gray-600'
+                            ? 'text-red-600 dark:text-red-400'
+                            : 'text-gray-600 dark:text-gray-400'
                         }`}
                       >
                         {change > 0 ? '+' : ''}
@@ -154,37 +154,37 @@ export function SensitivityAnalysis() {
         {/* Rate Sensitivity (STR only) */}
         {strUnit && (
           <div>
-            <h3 className="text-md font-semibold text-gray-900 mb-3">
+            <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">
               Nightly Rate Impact (STR)
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-2 pr-4 font-semibold text-gray-700">
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-2 pr-4 font-semibold text-gray-700 dark:text-gray-300">
                       Scenario
                     </th>
-                    <th className="text-right py-2 px-2 font-semibold text-gray-700">
+                    <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
                       Monthly Cash Flow
                     </th>
-                    <th className="text-right py-2 px-2 font-semibold text-gray-700">
+                    <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-300">
                       Change
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {rateScenarios.map((scenario) => {
                     const change = scenario.cashFlow - baselineCashFlow;
                     const isBaseline = scenario.value === 0;
                     return (
                       <tr
                         key={scenario.label}
-                        className={isBaseline ? 'bg-blue-50' : ''}
+                        className={isBaseline ? 'bg-blue-50 dark:bg-blue-900/30' : ''}
                       >
-                        <td className="py-2 pr-4 text-gray-700">{scenario.label}</td>
+                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{scenario.label}</td>
                         <td
                           className={`text-right py-2 px-2 font-semibold ${
-                            scenario.cashFlow >= 0 ? 'text-green-600' : 'text-red-600'
+                            scenario.cashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                           }`}
                         >
                           {formatCurrency(scenario.cashFlow)}
@@ -192,10 +192,10 @@ export function SensitivityAnalysis() {
                         <td
                           className={`text-right py-2 px-2 ${
                             change > 0
-                              ? 'text-green-600'
+                              ? 'text-green-600 dark:text-green-400'
                               : change < 0
-                              ? 'text-red-600'
-                              : 'text-gray-600'
+                              ? 'text-red-600 dark:text-red-400'
+                              : 'text-gray-600 dark:text-gray-400'
                           }`}
                         >
                           {change > 0 ? '+' : ''}
@@ -210,7 +210,7 @@ export function SensitivityAnalysis() {
           </div>
         )}
 
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-gray-500 dark:text-gray-400">
           <p>
             * Sensitivity analysis shows how changes in key variables affect monthly cash
             flow. Use this to understand your risk exposure.
