@@ -40,7 +40,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
   ];
 
   return (
-    <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-gray-50 dark:bg-gray-700">
       <div className="flex justify-between items-start mb-2">
         <div className="flex-1">
           <input
@@ -48,22 +48,22 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
             value={expense.name}
             onChange={(e) => updateExpense(expense.id, { name: e.target.value })}
             placeholder="Expense name..."
-            className="w-full px-2 py-1 text-sm font-medium bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none"
+            className="w-full px-2 py-1 text-sm font-medium bg-transparent text-gray-900 dark:text-white border-b border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:border-blue-500 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500"
           />
-          <div className="text-xs text-gray-600 mt-1">
+          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
             ${calculatedAmount.toFixed(2)}/month
           </div>
         </div>
         <div className="flex gap-1">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="px-2 py-1 text-xs text-gray-600 hover:text-gray-900"
+            className="px-2 py-1 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
           >
             {isExpanded ? '▲' : '▼'}
           </button>
           <button
             onClick={() => removeExpense(expense.id)}
-            className="px-2 py-1 text-xs text-red-600 hover:text-red-800"
+            className="px-2 py-1 text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
           >
             ✕
           </button>
@@ -73,7 +73,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
       {isExpanded && (
         <div className="space-y-3 mt-3">
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
               Calculation Type
             </label>
             <select
@@ -83,7 +83,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                   calculationType: e.target.value as CalculationType,
                 })
               }
-              className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
             >
               {calculationTypes.map((type) => (
                 <option key={type.value} value={type.value}>
@@ -94,17 +94,17 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
               Value
             </label>
             <div className="relative">
               {expense.calculationType.includes('percent') && (
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">
                   %
                 </span>
               )}
               {expense.calculationType === 'fixed-monthly' && (
-                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">
                   $
                 </span>
               )}
@@ -115,7 +115,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                   updateExpense(expense.id, { value: parseFloat(e.target.value) || 0 })
                 }
                 step="0.01"
-                className={`w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 ${
                   expense.calculationType === 'fixed-monthly' ? 'pl-6' : ''
                 } ${expense.calculationType.includes('percent') ? 'pr-6' : ''}`}
               />
@@ -125,7 +125,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           {expense.calculationType === 'per-occurrence' && (
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Frequency
                 </label>
                 <select
@@ -138,7 +138,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                       },
                     })
                   }
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
                 >
                   {frequencyTypes.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -149,7 +149,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Count
                 </label>
                 <input
@@ -164,14 +164,14 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                     })
                   }
                   min="1"
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
               Notes (optional)
             </label>
             <textarea
@@ -179,7 +179,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
               onChange={(e) => updateExpense(expense.id, { notes: e.target.value })}
               placeholder="Add notes or assumptions..."
               rows={2}
-              className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
@@ -194,9 +194,9 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                     outsourcedCost: e.target.checked ? expense.value : undefined,
                   })
                 }
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
               />
-              <span className="text-xs font-medium text-gray-700">
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
                 DIY (Do It Yourself) Option
               </span>
             </label>
@@ -205,11 +205,11 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           {expense.isDIY && (
             <>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Outsourced Cost
                 </label>
                 <div className="relative">
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 text-sm">
                     $
                   </span>
                   <input
@@ -221,13 +221,13 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                       })
                     }
                     step="0.01"
-                    className="w-full pl-6 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-6 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
                   DIY Hours/Month
                 </label>
                 <input
@@ -238,14 +238,14 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                   }
                   step="0.5"
                   min="0"
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              <div className="col-span-2 bg-blue-50 rounded p-2 text-xs">
+              <div className="col-span-2 bg-blue-50 dark:bg-blue-900/30 rounded p-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Sweat Equity Savings:</span>
-                  <span className="font-semibold text-green-600">
+                  <span className="text-gray-700 dark:text-gray-300">Sweat Equity Savings:</span>
+                  <span className="font-semibold text-green-600 dark:text-green-400">
                     ${((expense.outsourcedCost || 0) - calculatedAmount).toFixed(2)}/mo
                   </span>
                 </div>

@@ -6,9 +6,10 @@ import { Card, Button, ThemeToggle } from '../ui';
 interface HomePageProps {
   onSelectProject: (projectId: string) => void;
   onCreateProject: (projectId: string) => void;
+  onOpenTemplateSettings: () => void;
 }
 
-export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
+export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSettings }: HomePageProps) {
   const [projects, setProjects] = useState<ProjectListItem[]>(getAllProjects());
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
@@ -57,7 +58,16 @@ export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
                 Compare and analyze multiple investment opportunities
               </p>
             </div>
-            <ThemeToggle />
+            <div className="flex gap-2">
+              <button
+                onClick={onOpenTemplateSettings}
+                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                title="Expense Templates Settings"
+              >
+                ⚙️ Templates
+              </button>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>

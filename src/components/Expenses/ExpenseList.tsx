@@ -49,7 +49,7 @@ export function ExpenseList({ unit, updateUnit }: ExpenseListProps) {
       ))}
 
       {unit.expenses.length === 0 && (
-        <p className="text-gray-500 text-sm text-center py-4">
+        <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">
           No expenses added yet.
         </p>
       )}

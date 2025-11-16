@@ -46,6 +46,7 @@ function AppContent() {
       <HomePage
         onSelectProject={handleSelectProject}
         onCreateProject={handleCreateProject}
+        onOpenTemplateSettings={() => setShowTemplateSettings(true)}
       />
     );
   }
@@ -76,7 +77,6 @@ function AppContent() {
               </div>
             </div>
             <div className="flex gap-2">
-              <ThemeToggle />
               <button
                 onClick={() => setShowTemplateSettings(true)}
                 className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
@@ -84,6 +84,7 @@ function AppContent() {
               >
                 ⚙️ Templates
               </button>
+              <ThemeToggle />
             </div>
           </div>
         </div>
