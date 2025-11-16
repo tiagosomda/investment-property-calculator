@@ -17,8 +17,8 @@ export interface Property {
   loanTerm: number;
   propertyAddress?: string;
   mlsNumber?: string;
-  referenceUrls: ReferenceUrl[];
-  referenceNotes: ReferenceNote[];
+  referenceUrls?: ReferenceUrl[];
+  referenceNotes?: ReferenceNote[];
   closingCostsPercent: number;
   renovationBudget: number;
   furnishingBudget: number;

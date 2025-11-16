@@ -16,18 +16,18 @@ export function PropertyDetails() {
       label: '',
       url: '',
     };
-    updateProperty({ referenceUrls: [...property.referenceUrls, newUrl] });
+    updateProperty({ referenceUrls: [...(property.referenceUrls || []), newUrl] });
   };
 
   const updateReferenceUrl = (id: string, updates: Partial<ReferenceUrl>) => {
-    const updatedUrls = property.referenceUrls.map((url) =>
+    const updatedUrls = (property.referenceUrls || []).map((url) =>
       url.id === id ? { ...url, ...updates } : url
     );
     updateProperty({ referenceUrls: updatedUrls });
   };
 
   const removeReferenceUrl = (id: string) => {
-    updateProperty({ referenceUrls: property.referenceUrls.filter((url) => url.id !== id) });
+    updateProperty({ referenceUrls: (property.referenceUrls || []).filter((url) => url.id !== id) });
   };
 
   const addReferenceNote = () => {
@@ -36,18 +36,18 @@ export function PropertyDetails() {
       label: '',
       text: '',
     };
-    updateProperty({ referenceNotes: [...property.referenceNotes, newNote] });
+    updateProperty({ referenceNotes: [...(property.referenceNotes || []), newNote] });
   };
 
   const updateReferenceNote = (id: string, updates: Partial<ReferenceNote>) => {
-    const updatedNotes = property.referenceNotes.map((note) =>
+    const updatedNotes = (property.referenceNotes || []).map((note) =>
       note.id === id ? { ...note, ...updates } : note
     );
     updateProperty({ referenceNotes: updatedNotes });
   };
 
   const removeReferenceNote = (id: string) => {
-    updateProperty({ referenceNotes: property.referenceNotes.filter((note) => note.id !== id) });
+    updateProperty({ referenceNotes: (property.referenceNotes || []).filter((note) => note.id !== id) });
   };
 
   return (
@@ -126,13 +126,13 @@ export function PropertyDetails() {
                 + Add Link
               </Button>
             </div>
-            {property.referenceUrls.length === 0 ? (
+            {(!property.referenceUrls || property.referenceUrls.length === 0) ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 italic">
                 No reference links added. Click "Add Link" to add Zillow, zoning info, or other URLs.
               </p>
             ) : (
               <div className="space-y-3">
-                {property.referenceUrls.map((url) => (
+                {(property.referenceUrls || []).map((url) => (
                   <div key={url.id} className="border dark:border-gray-700 rounded-lg p-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <Input
@@ -188,13 +188,13 @@ export function PropertyDetails() {
                 + Add Note
               </Button>
             </div>
-            {property.referenceNotes.length === 0 ? (
+            {(!property.referenceNotes || property.referenceNotes.length === 0) ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 italic">
                 No notes added. Click "Add Note" to add custom text fields.
               </p>
             ) : (
               <div className="space-y-3">
-                {property.referenceNotes.map((note) => (
+                {(property.referenceNotes || []).map((note) => (
                   <div key={note.id} className="border dark:border-gray-700 rounded-lg p-3">
                     <div className="space-y-3">
                       <div className="flex gap-2 items-end">
