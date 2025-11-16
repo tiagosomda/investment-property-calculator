@@ -1,9 +1,24 @@
+export interface ReferenceUrl {
+  id: string;
+  label: string;
+  url: string;
+}
+
+export interface ReferenceNote {
+  id: string;
+  label: string;
+  text: string;
+}
+
 export interface Property {
   purchasePrice: number;
   downPaymentPercent: number;
   interestRate: number;
   loanTerm: number;
   propertyAddress?: string;
+  mlsNumber?: string;
+  referenceUrls: ReferenceUrl[];
+  referenceNotes: ReferenceNote[];
   closingCostsPercent: number;
   renovationBudget: number;
   furnishingBudget: number;
