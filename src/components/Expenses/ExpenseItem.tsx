@@ -8,9 +8,10 @@ interface ExpenseItemProps {
   updateExpense: (id: string, updates: Partial<Expense>) => void;
   removeExpense: (id: string) => void;
   unit: Unit;
+  readOnly?: boolean;
 }
 
-export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: ExpenseItemProps) {
+export function ExpenseItem({ expense, updateExpense, removeExpense, unit, readOnly = false }: ExpenseItemProps) {
   const { state } = useProperty();
   const [isExpanded, setIsExpanded] = useState(!expense.name);
 
@@ -48,7 +49,8 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
             value={expense.name}
             onChange={(e) => updateExpense(expense.id, { name: e.target.value })}
             placeholder="Expense name..."
-            className="w-full px-2 py-1 text-sm font-medium bg-transparent text-gray-900 dark:text-white border-b border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:border-blue-500 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500"
+            disabled={readOnly}
+            className={`w-full px-2 py-1 text-sm font-medium bg-transparent text-gray-900 dark:text-white border-b border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:border-blue-500 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500 ${readOnly ? 'cursor-not-allowed opacity-60' : ''}`}
           />
           <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
             ${calculatedAmount.toFixed(2)}/month
@@ -61,12 +63,14 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
           >
             {isExpanded ? '▲' : '▼'}
           </button>
-          <button
-            onClick={() => removeExpense(expense.id)}
-            className="px-2 py-1 text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
-          >
-            ✕
-          </button>
+          {!readOnly && (
+            <button
+              onClick={() => removeExpense(expense.id)}
+              className="px-2 py-1 text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+            >
+              ✕
+            </button>
+          )}
         </div>
       </div>
 
@@ -83,7 +87,8 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                   calculationType: e.target.value as CalculationType,
                 })
               }
-              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
+              disabled={readOnly}
+              className={`w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
             >
               {calculationTypes.map((type) => (
                 <option key={type.value} value={type.value}>
@@ -115,9 +120,10 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                   updateExpense(expense.id, { value: parseFloat(e.target.value) || 0 })
                 }
                 step="0.01"
+                disabled={readOnly}
                 className={`w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 ${
                   expense.calculationType === 'fixed-monthly' ? 'pl-6' : ''
-                } ${expense.calculationType.includes('percent') ? 'pr-6' : ''}`}
+                } ${expense.calculationType.includes('percent') ? 'pr-6' : ''} ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
               />
             </div>
           </div>
@@ -138,7 +144,8 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                       },
                     })
                   }
-                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
+                  disabled={readOnly}
+                  className={`w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
                 >
                   {frequencyTypes.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -164,7 +171,8 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                     })
                   }
                   min="1"
-                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
+                  disabled={readOnly}
+                  className={`w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
                 />
               </div>
             </div>
@@ -179,12 +187,13 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
               onChange={(e) => updateExpense(expense.id, { notes: e.target.value })}
               placeholder="Add notes or assumptions..."
               rows={2}
-              className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
+              disabled={readOnly}
+              className={`w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500 ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
             />
           </div>
 
           <div className="col-span-2">
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className={`flex items-center gap-2 ${readOnly ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}>
               <input
                 type="checkbox"
                 checked={expense.isDIY || false}
@@ -194,6 +203,7 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                     outsourcedCost: e.target.checked ? expense.value : undefined,
                   })
                 }
+                disabled={readOnly}
                 className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
               />
               <span className="text-xs font-medium text-gray-700 dark:text-gray-200">
@@ -221,7 +231,8 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                       })
                     }
                     step="0.01"
-                    className="w-full pl-6 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
+                    disabled={readOnly}
+                    className={`w-full pl-6 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
                   />
                 </div>
               </div>
@@ -238,7 +249,8 @@ export function ExpenseItem({ expense, updateExpense, removeExpense, unit }: Exp
                   }
                   step="0.5"
                   min="0"
-                  className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500"
+                  disabled={readOnly}
+                  className={`w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded focus:ring-2 focus:ring-blue-500 ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
                 />
               </div>
 

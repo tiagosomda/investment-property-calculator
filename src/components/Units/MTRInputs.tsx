@@ -3,11 +3,12 @@ import { Input } from '../ui';
 import { calculateUnitMonthlyRevenue } from '../../utils';
 
 interface MTRInputsProps {
+  readOnly?: boolean;
   unit: Unit;
   updateUnit: (updates: Partial<Unit>) => void;
 }
 
-export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
+export function MTRInputs({ unit, updateUnit, readOnly = false }: MTRInputsProps) {
   const revenue = unit.revenue as MTRRevenue;
 
   const updateRevenue = (updates: Partial<MTRRevenue>) => {
@@ -31,11 +32,12 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
                 monthlyRate: undefined,
               })
             }
+            disabled={readOnly}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               revenue.rateType === 'daily'
                 ? 'bg-blue-600 dark:bg-blue-700 text-white'
                 : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
+            } ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             Daily Rate
           </button>
@@ -47,11 +49,12 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
                 dailyRate: undefined,
               })
             }
+            disabled={readOnly}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               revenue.rateType === 'monthly'
                 ? 'bg-blue-600 dark:bg-blue-700 text-white'
                 : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
+            } ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             Monthly Rate
           </button>
@@ -68,6 +71,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
             prefix="$"
             step="10"
             min="0"
+            disabled={readOnly}
           />
         ) : (
           <Input
@@ -78,6 +82,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
             prefix="$"
             step="100"
             min="0"
+            disabled={readOnly}
           />
         )}
 
@@ -90,6 +95,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
           step="1"
           min="0"
           max="100"
+          disabled={readOnly}
         />
 
         <Input
@@ -100,6 +106,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
           suffix="days"
           step="1"
           min="0"
+          disabled={readOnly}
         />
       </div>
 

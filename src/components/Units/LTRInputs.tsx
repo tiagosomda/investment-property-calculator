@@ -3,11 +3,12 @@ import { Input } from '../ui';
 import { calculateUnitMonthlyRevenue } from '../../utils';
 
 interface LTRInputsProps {
+  readOnly?: boolean;
   unit: Unit;
   updateUnit: (updates: Partial<Unit>) => void;
 }
 
-export function LTRInputs({ unit, updateUnit }: LTRInputsProps) {
+export function LTRInputs({ unit, updateUnit, readOnly = false }: LTRInputsProps) {
   const revenue = unit.revenue as LTRRevenue;
 
   const updateRevenue = (updates: Partial<LTRRevenue>) => {
@@ -27,6 +28,7 @@ export function LTRInputs({ unit, updateUnit }: LTRInputsProps) {
           prefix="$"
           step="100"
           min="0"
+          disabled={readOnly}
         />
 
         <Input
@@ -38,6 +40,7 @@ export function LTRInputs({ unit, updateUnit }: LTRInputsProps) {
           step="1"
           min="0"
           max="100"
+          disabled={readOnly}
         />
       </div>
 

@@ -5,9 +5,10 @@ import { calculateSTRMonthlyTurnovers, calculateUnitMonthlyRevenue } from '../..
 interface STRInputsProps {
   unit: Unit;
   updateUnit: (updates: Partial<Unit>) => void;
+  readOnly?: boolean;
 }
 
-export function STRInputs({ unit, updateUnit }: STRInputsProps) {
+export function STRInputs({ unit, updateUnit, readOnly = false }: STRInputsProps) {
   const revenue = unit.revenue as STRRevenue;
 
   const updateRevenue = (updates: Partial<STRRevenue>) => {
@@ -28,6 +29,7 @@ export function STRInputs({ unit, updateUnit }: STRInputsProps) {
           prefix="$"
           step="10"
           min="0"
+          disabled={readOnly}
         />
 
         <Input
@@ -39,6 +41,7 @@ export function STRInputs({ unit, updateUnit }: STRInputsProps) {
           step="1"
           min="0"
           max="100"
+          disabled={readOnly}
         />
 
         <Input
@@ -49,6 +52,7 @@ export function STRInputs({ unit, updateUnit }: STRInputsProps) {
           suffix="nights"
           step="0.5"
           min="0"
+          disabled={readOnly}
         />
       </div>
 
