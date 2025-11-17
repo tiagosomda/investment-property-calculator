@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getSharedProject } from '../firebase/firestore';
 import { Project } from '../types';
-import { PropertySummary } from '../components/Summary';
 import { Card } from '../components/ui';
 
 export function SharedPropertyPage() {

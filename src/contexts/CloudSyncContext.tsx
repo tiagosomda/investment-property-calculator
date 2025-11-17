@@ -1,14 +1,13 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, useRef, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useRef, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import {
   saveProjectToFirestore,
   getProjectFromFirestore,
   getUserProjects,
-  deleteProjectFromFirestore,
   createUserProfile,
 } from '../firebase/firestore';
-import { Project, ProjectListItem } from '../types';
-import { getAllProjects, saveProject, getProject, deleteProject } from '../utils/projectManager';
+import { ProjectListItem } from '../types';
+import { getAllProjects, saveProject, getProject } from '../utils/projectManager';
 
 interface CloudSyncContextType {
   isSyncing: boolean;

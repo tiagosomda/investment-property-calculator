@@ -17,7 +17,6 @@ import { Project, ProjectListItem } from '../types';
 // Collection references
 const USERS_COLLECTION = 'users';
 const PROPERTIES_COLLECTION = 'properties';
-const TEMPLATES_COLLECTION = 'templates';
 const SHARED_PROPERTIES_COLLECTION = 'sharedProperties';
 
 // User profile
