@@ -3,8 +3,8 @@ import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 // Firebase configuration
-// TODO: Replace with your actual Firebase config from Firebase Console
 // Get this from: Firebase Console > Project Settings > General > Your apps > SDK setup and configuration
+// Or run: firebase apps:sdkconfig web --project YOUR_PROJECT_ID
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',

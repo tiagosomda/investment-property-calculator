@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CalculatorView } from './CalculatorView';
 import { HomePage } from './components/Home';
 import { LoginPage, ProfilePage, SharedPropertyPage } from './pages';
@@ -7,6 +7,7 @@ import { useAuth } from './contexts';
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
