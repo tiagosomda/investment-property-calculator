@@ -20,6 +20,7 @@ export function CalculatorView() {
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [isShared, setIsShared] = useState(false);
   const [shareLoading, setShareLoading] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -81,10 +82,7 @@ export function CalculatorView() {
       const url = `${window.location.origin}/shared/${state.projectId}`;
       setShareUrl(url);
       setIsShared(true);
-
-      // Copy to clipboard
-      await navigator.clipboard.writeText(url);
-      alert('Share link copied to clipboard!');
+      setShowShareModal(true);
     } catch (error) {
       console.error('Error sharing project:', error);
       alert('Failed to share project');
@@ -113,8 +111,13 @@ export function CalculatorView() {
 
   const copyShareUrl = async () => {
     if (shareUrl) {
-      await navigator.clipboard.writeText(shareUrl);
-      alert('Link copied to clipboard!');
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Link copied to clipboard!');
+      } catch (error) {
+        console.error('Failed to copy to clipboard:', error);
+        alert('Failed to copy link');
+      }
     }
   };
 
@@ -170,49 +173,33 @@ export function CalculatorView() {
               <div className="flex gap-2">
                 {/* Share Button */}
                 {user && (
-                  <div className="relative group">
-                    <button
-                      onClick={isShared ? copyShareUrl : handleShareProject}
-                      disabled={shareLoading}
-                      className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50"
-                      title={isShared ? 'Copy share link' : 'Share project publicly'}
-                    >
-                      {isShared ? '🔗 Shared' : '📤 Share'}
-                    </button>
-                    {isShared && (
-                      <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 z-10 hidden group-hover:block">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                          Share link:
-                        </p>
-                        <p className="text-xs text-gray-900 dark:text-white font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded break-all mb-2">
-                          {shareUrl}
-                        </p>
-                        <button
-                          onClick={handleUnshareProject}
-                          className="text-xs text-red-600 dark:text-red-400 hover:underline"
-                        >
-                          Unshare project
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                  <button
+                    onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
+                    disabled={shareLoading}
+                    className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
+                    title={isShared ? 'Manage share link' : 'Share project publicly'}
+                  >
+                    <span>{isShared ? '🔗' : '📤'}</span>
+                    <span>{isShared ? 'Shared' : 'Share'}</span>
+                  </button>
                 )}
 
                 <button
                   onClick={() => setShowTemplateSettings(true)}
-                  className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                  className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
                   title="Expense Templates Settings"
                 >
-                  ⚙️ Templates
+                  <span>⚙️</span>
+                  <span>Templates</span>
                 </button>
 
-                {/* User Icon */}
+                {/* User Profile/Login */}
                 <Link
                   to={user ? '/profile' : '/login'}
                   className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                   title={user ? 'Profile' : 'Sign In'}
                 >
-                  <span className="text-lg">{user ? '👤' : '🔓'}</span>
+                  <span>{user ? 'Profile' : 'Login'}</span>
                   {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
                 </Link>
 
@@ -273,23 +260,64 @@ export function CalculatorView() {
             </div>
           )}
         </div>
-
-        {/* Footer */}
-        <div className="mt-12 bg-gray-800 text-gray-300 py-6">
-          <div className="container mx-auto px-4 text-center text-sm">
-            <p>Investment Property Calculator - Built with React & TypeScript</p>
-            <p className="mt-1 text-gray-400">
-              {cloudSyncEnabled
-                ? 'Data is synced to the cloud and saved locally'
-                : 'Data is saved locally in your browser'}
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* Template Settings Modal */}
       {showTemplateSettings && (
         <TemplateSettings onClose={() => setShowTemplateSettings(false)} />
+      )}
+
+      {/* Share Modal */}
+      {showShareModal && isShared && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              Share Project
+            </h2>
+
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              This project is publicly shared. Anyone with the link can view it.
+            </p>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Share Link:
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={shareUrl || ''}
+                  readOnly
+                  className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white font-mono"
+                />
+                <button
+                  onClick={copyShareUrl}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={async () => {
+                  await handleUnshareProject();
+                  setShowShareModal(false);
+                }}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Unshare
+              </button>
+              <button
+                onClick={() => setShowShareModal(false)}
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
