@@ -115,20 +115,15 @@ def check_prerequisites():
 
     prerequisites = {
         "Firebase CLI": "firebase --version",
-        "FlutterFire CLI": "flutterfire --version",
-        "Python 3.8+": "python --version",
-        "Flutter": "flutter --version"
+        "Python 3.8+": "python --version"
     }
 
     all_installed = True
-    flutterfire_accessible = False
 
     for tool, command in prerequisites.items():
         output = run_command(command, check=False, capture=True)
         if output:
             print_success(f"{tool} installed: {output.split()[0] if output else 'Found'}")
-            if tool == "FlutterFire CLI":
-                flutterfire_accessible = True
         else:
             print_error(f"{tool} not found")
             all_installed = False
@@ -136,14 +131,6 @@ def check_prerequisites():
     if not all_installed:
         print_error("\nMissing prerequisites. Please install:")
         print_info("Firebase CLI: npm install -g firebase-tools")
-        print_info("FlutterFire CLI: dart pub global activate flutterfire_cli")
-        if not flutterfire_accessible:
-            print_warning("\nNote: If FlutterFire CLI is installed but not found:")
-            print_info("Add Dart global packages to PATH:")
-            if sys.platform == 'win32':
-                print_info("  Windows: Add %LOCALAPPDATA%\\Pub\\Cache\\bin to PATH")
-            else:
-                print_info("  Unix/Mac: Add $HOME/.pub-cache/bin to PATH")
         sys.exit(1)
 
     # Check Firebase login
@@ -156,7 +143,7 @@ def check_prerequisites():
     else:
         print_success("Firebase CLI authenticated")
 
-    return flutterfire_accessible
+    return True
 
 
 def get_project_root() -> Path:
@@ -222,7 +209,7 @@ def configure_environment(environment: str) -> Dict[str, Any]:
     print(f"\n{Colors.BOLD}Firebase Project Configuration{Colors.ENDC}")
     config['projectId'] = prompt_user_input(
         "Firebase Project ID",
-        config.get('projectId', f"letter-tracing-{environment}")
+        config.get('projectId', f"investment-property-calculator-{environment}")
     )
 
     # Authentication providers
@@ -241,18 +228,7 @@ def configure_environment(environment: str) -> Dict[str, Any]:
     config['authProviders']['google']['enabled'] = enable_google
     if enable_google:
         print_info("Google Sign-In will be configured in Firebase Console")
-        print_info("You'll need to add OAuth client IDs for iOS/Android/Web")
-
-    # Apple Sign-In
-    enable_apple = prompt_user_input(
-        "Enable Apple Sign-In? (y/n)",
-        "y" if config['authProviders']['apple']['enabled'] else "n"
-    ).lower() == 'y'
-
-    config['authProviders']['apple']['enabled'] = enable_apple
-    if enable_apple:
-        print_info("Apple Sign-In will be configured in Firebase Console")
-        print_info("You'll need Apple Developer account credentials")
+        print_info("You'll need to add OAuth client IDs for Web")
 
     # Firestore region
     print(f"\n{Colors.BOLD}Firestore Configuration{Colors.ENDC}")
@@ -533,78 +509,62 @@ def deploy_firestore_indexes(config: Dict[str, Any]) -> bool:
         os.chdir(original_dir)
 
 
-def configure_flutter_app(config: Dict[str, Any], flutterfire_accessible: bool):
+def configure_web_app(config: Dict[str, Any]):
     """
-    Configure Flutter app with FlutterFire CLI or provide manual instructions.
+    Retrieve Firebase Web configuration and provide setup instructions.
 
     Args:
         config: Environment configuration
-        flutterfire_accessible: Whether FlutterFire CLI is in PATH
     """
-    print_header("Configuring Flutter App")
+    print_header("Configuring Web App")
 
     project_id = config['projectId']
     environment = config['environment']
     project_root = get_project_root()
 
-    print_info("This will configure Firebase for your Flutter app")
+    print_info("This will retrieve Firebase configuration for your React web app")
     print_info(f"Project: {project_id}")
     print_info(f"Environment: {environment}")
 
-    if not flutterfire_accessible:
-        print_warning("\nFlutterFire CLI is not accessible in PATH")
-        print_warning("Skipping automatic Flutter configuration")
-        print_info("\nTo configure manually, run these commands:")
-        print_info(f"1. cd {project_root / 'src'}")
-
-        command = f"flutterfire configure --project={project_id}"
-        if environment != "production":
-            command += f" --out=lib/firebase_options_{environment}.dart"
-
-        print_info(f"2. {command}")
-        print_info("\nOr retrieve configuration manually:")
-        print_info(f"   firebase apps:sdkconfig web --project {project_id}")
-        print_info(f"   firebase apps:sdkconfig ios --project {project_id}")
-        return
-
-    # Change to project root
+    # Change to firebase directory
+    firebase_dir = project_root / "firebase"
     original_dir = os.getcwd()
-    os.chdir(project_root / "src")
+    os.chdir(firebase_dir)
 
     try:
-        # Run flutterfire configure
-        print_info("\nRunning: flutterfire configure")
-        print_warning("You'll be prompted to select platforms (iOS, Android, Web)")
+        print_info("\nRetrieving Firebase web app configuration...")
 
-        command = f"flutterfire configure --project={project_id}"
+        # Try to get the web app configuration
+        result = run_command(
+            f"firebase apps:sdkconfig web --project {project_id}",
+            check=False,
+            capture=True
+        )
 
-        # Add environment suffix to configuration file
-        if environment != "production":
-            command += f" --out=lib/firebase_options_{environment}.dart"
+        if result:
+            print_success("Firebase web configuration retrieved!")
+            print_info("\nFirebase Configuration:")
+            print(f"{Colors.OKCYAN}{result}{Colors.ENDC}")
 
-        success = run_command(command, check=False)
-
-        if success:
-            print_success("Flutter Firebase configuration complete")
+            print_info("\nNext steps:")
+            print_info("1. Copy the configuration above")
+            print_info("2. Create a file: src/firebase/config.ts")
+            print_info("3. Add Firebase initialization code")
         else:
-            print_warning("FlutterFire configuration failed")
+            print_warning("Could not retrieve web app configuration")
             print_info("\nTo configure manually:")
-            print_info(f"   firebase apps:sdkconfig web --project {project_id}")
-            print_info(f"   firebase apps:sdkconfig ios --project {project_id}")
-            return
+            print_info(f"1. Go to: https://console.firebase.google.com/project/{project_id}/settings/general")
+            print_info("2. Scroll to 'Your apps' section")
+            print_info("3. Click 'Add app' and select Web (</>)")
+            print_info("4. Register your app and copy the configuration")
+            print_info("5. Create src/firebase/config.ts with the Firebase config")
 
-        # Provide next steps
-        print_info("\nNext steps:")
-        if environment != "production":
-            print_info(f"1. Import firebase_options_{environment}.dart in your app")
-            print_info(f"2. Use environment-specific initialization")
-        else:
-            print_info("1. Import firebase_options.dart in your app")
+        # Provide React setup instructions
+        print_info("\n4. Install Firebase dependencies:")
+        print_info("   npm install firebase")
 
-        print_info("2. Add Firebase dependencies to pubspec.yaml:")
-        print_info("   - firebase_core")
-        print_info("   - firebase_auth")
-        print_info("   - cloud_firestore")
+        print_info("\n5. Initialize Firebase in your React app:")
+        print_info("   See example configuration in the setup summary below")
 
     finally:
         os.chdir(original_dir)
@@ -629,14 +589,18 @@ def print_summary(config: Dict[str, Any]):
     print_success("✓ Firebase project initialized")
     print_success("✓ Firestore security rules deployed")
     print_success("✓ Firestore indexes deployed")
-    print_success("✓ Flutter app configured")
+    print_success("✓ Web app configuration retrieved")
 
     print(f"\n{Colors.BOLD}Authentication Providers:{Colors.ENDC}")
     print_success("✓ Email/Password")
     if config['authProviders']['google']['enabled']:
         print_success("✓ Google Sign-In (requires console configuration)")
-    if config['authProviders']['apple']['enabled']:
-        print_success("✓ Apple Sign-In (requires console configuration)")
+
+    print(f"\n{Colors.BOLD}Firestore Collections:{Colors.ENDC}")
+    print_info("- users/{userId} - User profiles and preferences")
+    print_info("- properties/{propertyId} - Saved investment calculations")
+    print_info("- templates/{templateId} - Pre-configured templates")
+    print_info("- sharedProperties/{propertyId} - Publicly shared calculations")
 
     print(f"\n{Colors.BOLD}Next Steps:{Colors.ENDC}")
     print_info("1. Configure authentication providers in Firebase Console:")
@@ -644,21 +608,32 @@ def print_summary(config: Dict[str, Any]):
 
     if config['authProviders']['google']['enabled']:
         print_info("\n2. For Google Sign-In:")
-        print_info("   - Add OAuth 2.0 client IDs for iOS/Android/Web")
-        print_info("   - Download google-services.json (Android)")
-        print_info("   - Download GoogleService-Info.plist (iOS)")
+        print_info("   - Go to Authentication > Sign-in method")
+        print_info("   - Enable Google provider")
+        print_info("   - Add authorized domains")
 
-    if config['authProviders']['apple']['enabled']:
-        print_info("\n3. For Apple Sign-In:")
-        print_info("   - Enable in Apple Developer account")
-        print_info("   - Configure Service ID, Team ID, Key ID")
+    print_info("\n3. Install Firebase SDK:")
+    print_info("   npm install firebase")
 
-    print_info("\n4. Add Firebase packages to Flutter:")
-    print_info("   cd src && flutter pub add firebase_core firebase_auth cloud_firestore")
+    print_info("\n4. Create Firebase configuration file (src/firebase/config.ts):")
+    print_info("""
+   import { initializeApp } from 'firebase/app';
+   import { getAuth } from 'firebase/auth';
+   import { getFirestore } from 'firebase/firestore';
 
-    print_info("\n5. Initialize Firebase in your Flutter app (lib/main.dart):")
-    print_info("   import 'firebase_options.dart';")
-    print_info("   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);")
+   const firebaseConfig = {
+     // Use the config from 'firebase apps:sdkconfig web'
+   };
+
+   export const app = initializeApp(firebaseConfig);
+   export const auth = getAuth(app);
+   export const db = getFirestore(app);
+   """)
+
+    print_info("\n5. Create authentication hooks and context in your React app")
+    print_info("   - AuthContext for managing user state")
+    print_info("   - Login/Signup components")
+    print_info("   - Protected routes")
 
     print(f"\n{Colors.OKCYAN}Firebase Console: https://console.firebase.google.com/project/{project_id}{Colors.ENDC}")
 
@@ -667,12 +642,7 @@ def main():
     """Main script execution."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Setup Firebase environment')
-    parser.add_argument(
-        '--env',
-        choices=['staging', 'production'],
-        help='Environment to configure (staging or production)'
-    )
+    parser = argparse.ArgumentParser(description='Setup Firebase environment for Investment Property Calculator')
     parser.add_argument(
         '--non-interactive',
         action='store_true',
@@ -681,21 +651,13 @@ def main():
     args = parser.parse_args()
 
     print_header("Firebase Environment Setup")
+    print_info("Investment Property Calculator - React Web App")
 
-    # Check prerequisites and get FlutterFire CLI status
-    flutterfire_accessible = check_prerequisites()
+    # Check prerequisites
+    check_prerequisites()
 
-    # Select environment
-    if args.env:
-        environment = args.env
-        print(f"\n{Colors.BOLD}Environment: {environment}{Colors.ENDC}")
-    else:
-        print(f"\n{Colors.BOLD}Select environment to configure:{Colors.ENDC}")
-        print("1. Staging")
-        print("2. Production")
-
-        choice = prompt_user_input("Enter choice (1 or 2)", "1")
-        environment = "staging" if choice == "1" else "production"
+    # Use production environment (single environment setup)
+    environment = "production"
 
     # Configure environment
     if args.non_interactive:
@@ -745,12 +707,9 @@ def main():
             print_warning("Could not verify indexes deployment")
             print_info("You can deploy indexes later with: python deploy_indexes.py")
 
-    # Configure Flutter app
-    if args.non_interactive:
-        print_info("\nSkipping Flutter app configuration in non-interactive mode")
-        print_info("Using existing firebase_options files")
-    else:
-        configure_flutter_app(config, flutterfire_accessible)
+    # Configure web app
+    if not args.non_interactive:
+        configure_web_app(config)
 
     # Print summary
     print_summary(config)

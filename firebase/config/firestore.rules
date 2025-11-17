@@ -12,58 +12,46 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
-    // Users collection
+    // Users collection - user profiles and preferences
     match /users/{userId} {
       // Users can only read/write their own profile
       allow read, write: if isSignedIn() && isOwner(userId);
     }
 
-    // Private creations collection
-    match /creations/{creationId} {
-      // Users can only read their own creations
+    // Property calculations collection - saved investment calculations
+    match /properties/{propertyId} {
+      // Users can only read their own property calculations
       allow read: if isSignedIn() && isOwner(resource.data.userId);
 
-      // Users can create creations with their own userId
+      // Users can create properties with their own userId
       allow create: if isSignedIn() && isOwner(request.resource.data.userId);
 
-      // Users can update/delete their own creations
+      // Users can update/delete their own properties
       allow update, delete: if isSignedIn() && isOwner(resource.data.userId);
     }
 
-    // Deletion tombstones collection
-    match /deleted_creations/{creationId} {
-      // Users can only read their own deletion records
+    // Calculation templates collection - pre-configured templates
+    match /templates/{templateId} {
+      // Users can only read their own templates
       allow read: if isSignedIn() && isOwner(resource.data.userId);
 
-      // Users can only create deletion records for their own creations
+      // Users can create templates with their own userId
       allow create: if isSignedIn() && isOwner(request.resource.data.userId);
 
-      // Tombstones are immutable (no updates or deletes by clients)
-      allow update, delete: if false;
+      // Users can update/delete their own templates
+      allow update, delete: if isSignedIn() && isOwner(resource.data.userId);
     }
 
-    // Public creations collection (full data)
-    match /publicCreations/{creationId} {
-      // Anyone can read (including unauthenticated)
+    // Shared properties collection (optional - for sharing calculations)
+    match /sharedProperties/{propertyId} {
+      // Anyone can read shared properties (including unauthenticated)
       allow read: if true;
 
-      // Only the author can write/update/delete
+      // Only the owner can create/update/delete
       allow create: if isSignedIn() &&
-                       isOwner(request.resource.data.authorId);
+                       isOwner(request.resource.data.userId);
       allow update, delete: if isSignedIn() &&
-                               isOwner(resource.data.authorId);
-    }
-
-    // Public creation index (lightweight)
-    match /publicCreationIndex/{creationId} {
-      // Anyone can read
-      allow read: if true;
-
-      // Only the author can write/update/delete
-      allow create: if isSignedIn() &&
-                       isOwner(request.resource.data.authorId);
-      allow update, delete: if isSignedIn() &&
-                               isOwner(resource.data.authorId);
+                               isOwner(resource.data.userId);
     }
   }
 }

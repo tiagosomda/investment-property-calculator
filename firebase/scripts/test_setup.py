@@ -13,15 +13,15 @@ if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-def test_flutterfire_check():
-    """Test FlutterFire CLI detection"""
+def test_python_check():
+    """Test Python installation"""
     print("\n" + "="*60)
-    print("TEST 1: FlutterFire CLI Detection")
+    print("TEST 1: Python Installation")
     print("="*60)
 
     try:
         result = subprocess.run(
-            "flutterfire --version",
+            "python --version",
             shell=True,
             check=False,
             capture_output=True,
@@ -31,15 +31,14 @@ def test_flutterfire_check():
         )
 
         if result.returncode == 0:
-            print("✓ FlutterFire CLI is accessible")
-            print(f"  Output: {result.stdout.strip()}")
+            print("✓ Python is accessible")
+            print(f"  Version: {result.stdout.strip()}")
             return True
         else:
-            print("✗ FlutterFire CLI not in PATH")
-            print("  (This is expected - script will handle gracefully)")
+            print("✗ Python not found")
             return False
     except Exception as e:
-        print(f"✗ Error checking FlutterFire CLI: {e}")
+        print(f"✗ Error checking Python: {e}")
         return False
 
 def test_firebase_cli():
@@ -76,9 +75,27 @@ def test_indexes_verification():
     print("TEST 3: Index Verification (Production)")
     print("="*60)
 
+    # Read project ID from production.json if available
+    try:
+        from pathlib import Path
+        import json
+        config_path = Path(__file__).parent.parent / "config" / "production.json"
+        if config_path.exists():
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+                project_id = config.get('projectId', '')
+        else:
+            project_id = ''
+    except:
+        project_id = ''
+
+    if not project_id:
+        print("⚠ No project configured yet - run setup_firebase_env.py first")
+        return False
+
     try:
         result = subprocess.run(
-            "firebase firestore:indexes --project letter-tracing-app",
+            f"firebase firestore:indexes --project {project_id}",
             shell=True,
             check=False,
             capture_output=True,
@@ -143,10 +160,11 @@ def main():
     """Run all tests"""
     print("\n" + "="*60)
     print("Firebase Setup Script Validation")
+    print("Investment Property Calculator - React Web App")
     print("="*60)
 
     results = {
-        "FlutterFire CLI Detection": test_flutterfire_check(),
+        "Python Installation": test_python_check(),
         "Firebase CLI Check": test_firebase_cli(),
         "Index Verification": test_indexes_verification(),
         "Script Import & Syntax": test_script_imports(),
@@ -165,12 +183,13 @@ def main():
     if all_passed:
         print("\n✓ All tests passed! Script is ready to use.")
     else:
-        print("\n⚠ Some tests failed, but script should still work with graceful fallbacks.")
+        print("\n⚠ Some tests failed. Check the failures above.")
 
     print("\nKey Points:")
-    print("- FlutterFire CLI not in PATH is EXPECTED and handled gracefully")
-    print("- Script will provide manual instructions as fallback")
-    print("- All other functionality should work correctly")
+    print("- Scripts are configured for React web app (not Flutter)")
+    print("- Single production environment setup")
+    print("- Web app configuration will be retrieved via Firebase CLI")
+    print("- All functionality should work correctly")
 
     return 0 if all_passed else 1
 

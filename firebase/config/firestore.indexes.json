@@ -1,35 +1,7 @@
 {
   "indexes": [
     {
-      "collectionGroup": "publicCreationIndex",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "tags",
-          "arrayConfig": "CONTAINS"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "publicCreationIndex",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "authorId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "creations",
+      "collectionGroup": "properties",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -43,13 +15,51 @@
       ]
     },
     {
-      "collectionGroup": "publicCreations",
+      "collectionGroup": "properties",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "authorId",
+          "fieldPath": "userId",
           "order": "ASCENDING"
         },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "templates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "sharedProperties",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "sharedProperties",
+      "queryScope": "COLLECTION",
+      "fields": [
         {
           "fieldPath": "createdAt",
           "order": "DESCENDING"

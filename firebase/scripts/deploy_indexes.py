@@ -108,8 +108,16 @@ def select_environment() -> Optional[str]:
         print_error("No projects configured in .firebaserc")
         return None
 
-    print(f"\n{Colors.BOLD}Select environment:{Colors.ENDC}")
     environments = list(projects.keys())
+
+    # If only one environment (production), auto-select it
+    if len(environments) == 1:
+        env = environments[0]
+        project_id = projects[env]
+        print(f"\n{Colors.BOLD}Using environment: {env} ({project_id}){Colors.ENDC}")
+        return env
+
+    print(f"\n{Colors.BOLD}Select environment:{Colors.ENDC}")
 
     for i, env in enumerate(environments, 1):
         project_id = projects[env]
