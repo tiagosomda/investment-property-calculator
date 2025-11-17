@@ -3,7 +3,7 @@ import { Card, Input, Button } from '../ui';
 import { ReferenceUrl, ReferenceNote } from '../../types';
 
 export function PropertyDetails() {
-  const { state, dispatch } = useProperty();
+  const { state, dispatch, readOnly } = useProperty();
   const { property } = state;
 
   const updateProperty = (updates: Partial<typeof property>) => {
@@ -61,6 +61,7 @@ export function PropertyDetails() {
               value={property.propertyAddress || ''}
               onChange={(value) => updateProperty({ propertyAddress: value })}
               placeholder="123 Main St, City, State"
+              disabled={readOnly}
             />
           </div>
 
@@ -70,6 +71,7 @@ export function PropertyDetails() {
             value={property.mlsNumber || ''}
             onChange={(value) => updateProperty({ mlsNumber: value })}
             placeholder="MLS-12345678"
+            disabled={readOnly}
           />
 
           <Input
@@ -81,6 +83,7 @@ export function PropertyDetails() {
             required
             step="1000"
             min="0"
+            disabled={readOnly}
           />
 
           <Input
@@ -92,6 +95,7 @@ export function PropertyDetails() {
             step="0.1"
             min="0"
             max="100"
+            disabled={readOnly}
           />
 
           <Input
@@ -102,6 +106,7 @@ export function PropertyDetails() {
             suffix="%"
             step="0.1"
             min="0"
+            disabled={readOnly}
           />
 
           <Input
@@ -112,6 +117,7 @@ export function PropertyDetails() {
             suffix="years"
             step="1"
             min="1"
+            disabled={readOnly}
           />
         </div>
       </Card>
@@ -122,9 +128,11 @@ export function PropertyDetails() {
           <div>
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Reference Links</h3>
-              <Button onClick={addReferenceUrl} size="sm">
-                + Add Link
-              </Button>
+              {!readOnly && (
+                <Button onClick={addReferenceUrl} size="sm">
+                  + Add Link
+                </Button>
+              )}
             </div>
             {(!property.referenceUrls || property.referenceUrls.length === 0) ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 italic">
@@ -141,6 +149,7 @@ export function PropertyDetails() {
                         value={url.label}
                         onChange={(value) => updateReferenceUrl(url.id, { label: value })}
                         placeholder="e.g., Zillow Listing, Zoning Info"
+                        disabled={readOnly}
                       />
                       <div className="flex gap-2 items-end">
                         <div className="flex-1">
@@ -150,16 +159,19 @@ export function PropertyDetails() {
                             value={url.url}
                             onChange={(value) => updateReferenceUrl(url.id, { url: value })}
                             placeholder="https://..."
+                            disabled={readOnly}
                           />
                         </div>
-                        <Button
-                          onClick={() => removeReferenceUrl(url.id)}
-                          variant="danger"
-                          size="sm"
-                          className="mb-4"
-                        >
-                          Remove
-                        </Button>
+                        {!readOnly && (
+                          <Button
+                            onClick={() => removeReferenceUrl(url.id)}
+                            variant="danger"
+                            size="sm"
+                            className="mb-4"
+                          >
+                            Remove
+                          </Button>
+                        )}
                       </div>
                     </div>
                     {url.url && (
@@ -184,9 +196,11 @@ export function PropertyDetails() {
           <div>
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Notes & Details</h3>
-              <Button onClick={addReferenceNote} size="sm">
-                + Add Note
-              </Button>
+              {!readOnly && (
+                <Button onClick={addReferenceNote} size="sm">
+                  + Add Note
+                </Button>
+              )}
             </div>
             {(!property.referenceNotes || property.referenceNotes.length === 0) ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 italic">
@@ -205,16 +219,19 @@ export function PropertyDetails() {
                             value={note.label}
                             onChange={(value) => updateReferenceNote(note.id, { label: value })}
                             placeholder="e.g., Renovation Notes, Seller Info"
+                            disabled={readOnly}
                           />
                         </div>
-                        <Button
-                          onClick={() => removeReferenceNote(note.id)}
-                          variant="danger"
-                          size="sm"
-                          className="mb-4"
-                        >
-                          Remove
-                        </Button>
+                        {!readOnly && (
+                          <Button
+                            onClick={() => removeReferenceNote(note.id)}
+                            variant="danger"
+                            size="sm"
+                            className="mb-4"
+                          >
+                            Remove
+                          </Button>
+                        )}
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
@@ -225,7 +242,8 @@ export function PropertyDetails() {
                           onChange={(e) => updateReferenceNote(note.id, { text: e.target.value })}
                           placeholder="Add your notes here..."
                           rows={3}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          disabled={readOnly}
+                          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
                         />
                       </div>
                     </div>
@@ -248,6 +266,7 @@ export function PropertyDetails() {
             helpText="% of purchase price"
             step="0.1"
             min="0"
+            disabled={readOnly}
           />
 
           <Input
@@ -258,6 +277,7 @@ export function PropertyDetails() {
             prefix="$"
             step="100"
             min="0"
+            disabled={readOnly}
           />
 
           <Input
@@ -268,6 +288,7 @@ export function PropertyDetails() {
             prefix="$"
             step="100"
             min="0"
+            disabled={readOnly}
           />
 
           <Input
@@ -278,6 +299,7 @@ export function PropertyDetails() {
             prefix="$"
             step="100"
             min="0"
+            disabled={readOnly}
           />
         </div>
       </Card>
@@ -293,6 +315,7 @@ export function PropertyDetails() {
             helpText="% of property value (annual)"
             step="0.1"
             min="0"
+            disabled={readOnly}
           />
 
           <Input
@@ -304,6 +327,7 @@ export function PropertyDetails() {
             suffix="/mo"
             step="10"
             min="0"
+            disabled={readOnly}
           />
 
           <Input
@@ -315,6 +339,7 @@ export function PropertyDetails() {
             suffix="/mo"
             step="10"
             min="0"
+            disabled={readOnly}
           />
         </div>
       </Card>

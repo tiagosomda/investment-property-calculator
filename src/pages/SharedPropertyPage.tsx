@@ -74,7 +74,7 @@ export function SharedPropertyPage() {
   }
 
   return (
-    <PropertyProvider>
+    <PropertyProvider readOnly={true}>
       <CalculatorView readOnly={true} projectId={projectId} />
     </PropertyProvider>
   );

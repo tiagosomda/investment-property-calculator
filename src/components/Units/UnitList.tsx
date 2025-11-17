@@ -4,7 +4,7 @@ import { Card, Button } from '../ui';
 import { UnitCard } from './UnitCard';
 
 export function UnitList() {
-  const { state, dispatch } = useProperty();
+  const { state, dispatch, readOnly } = useProperty();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newUnitType, setNewUnitType] = useState<'STR' | 'MTR' | 'LTR'>('STR');
   const [newUnitLabel, setNewUnitLabel] = useState('');
@@ -25,12 +25,14 @@ export function UnitList() {
       <Card>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Units</h2>
-          <Button onClick={() => setShowAddForm(!showAddForm)} size="sm">
-            {showAddForm ? 'Cancel' : '+ Add Unit'}
-          </Button>
+          {!readOnly && (
+            <Button onClick={() => setShowAddForm(!showAddForm)} size="sm">
+              {showAddForm ? 'Cancel' : '+ Add Unit'}
+            </Button>
+          )}
         </div>
 
-        {showAddForm && (
+        {!readOnly && showAddForm && (
           <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="mb-3">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">

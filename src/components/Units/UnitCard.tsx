@@ -13,7 +13,7 @@ interface UnitCardProps {
 }
 
 export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
-  const { dispatch } = useProperty();
+  const { dispatch, readOnly } = useProperty();
   const [isExpanded, setIsExpanded] = useState(true);
 
   const handleRemove = () => {
@@ -35,7 +35,8 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
               type="text"
               value={unit.label}
               onChange={(e) => updateUnit({ label: e.target.value })}
-              className="text-lg font-semibold bg-transparent text-gray-900 dark:text-white border-b border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:border-blue-500 focus:outline-none"
+              disabled={readOnly}
+              className={`text-lg font-semibold bg-transparent text-gray-900 dark:text-white border-b border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:border-blue-500 focus:outline-none ${readOnly ? 'cursor-not-allowed opacity-60' : ''}`}
             />
             <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded">
               {unit.type}
@@ -50,9 +51,11 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
           >
             {isExpanded ? 'Collapse' : 'Expand'}
           </Button>
-          <Button onClick={handleRemove} variant="danger" size="sm">
-            Remove
-          </Button>
+          {!readOnly && (
+            <Button onClick={handleRemove} variant="danger" size="sm">
+              Remove
+            </Button>
+          )}
         </div>
       </div>
 
@@ -60,14 +63,14 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
         <div className="space-y-6">
           <div>
             <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">Revenue</h3>
-            {unit.type === 'STR' && <STRInputs unit={unit} updateUnit={updateUnit} />}
-            {unit.type === 'MTR' && <MTRInputs unit={unit} updateUnit={updateUnit} />}
-            {unit.type === 'LTR' && <LTRInputs unit={unit} updateUnit={updateUnit} />}
+            {unit.type === 'STR' && <STRInputs unit={unit} updateUnit={updateUnit} readOnly={readOnly} />}
+            {unit.type === 'MTR' && <MTRInputs unit={unit} updateUnit={updateUnit} readOnly={readOnly} />}
+            {unit.type === 'LTR' && <LTRInputs unit={unit} updateUnit={updateUnit} readOnly={readOnly} />}
           </div>
 
           <div>
             <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">Expenses</h3>
-            <ExpenseList unit={unit} updateUnit={updateUnit} />
+            <ExpenseList unit={unit} updateUnit={updateUnit} readOnly={readOnly} />
           </div>
 
           <div className="border-t border-gray-200 dark:border-gray-700 pt-4">

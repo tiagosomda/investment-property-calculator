@@ -151,11 +151,17 @@ interface PropertyContextType {
   state: PropertyState;
   dispatch: React.Dispatch<PropertyAction>;
   loadProject: (projectId: string) => void;
+  readOnly: boolean;
 }
 
 const PropertyContext = createContext<PropertyContextType | undefined>(undefined);
 
-export function PropertyProvider({ children }: { children: ReactNode }) {
+interface PropertyProviderProps {
+  children: ReactNode;
+  readOnly?: boolean;
+}
+
+export function PropertyProvider({ children, readOnly = false }: PropertyProviderProps) {
   const [state, dispatch] = useReducer(propertyReducer, initialState);
 
   const loadProject = (projectId: string) => {
@@ -165,9 +171,9 @@ export function PropertyProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Save project on state change
+  // Save project on state change (disabled in read-only mode)
   useEffect(() => {
-    if (state.projectId) {
+    if (state.projectId && !readOnly) {
       const project: Project = {
         id: state.projectId,
         name: state.projectName,
@@ -180,10 +186,10 @@ export function PropertyProvider({ children }: { children: ReactNode }) {
       };
       saveProject(project);
     }
-  }, [state]);
+  }, [state, readOnly]);
 
   return (
-    <PropertyContext.Provider value={{ state, dispatch, loadProject }}>
+    <PropertyContext.Provider value={{ state, dispatch, loadProject, readOnly }}>
       {children}
     </PropertyContext.Provider>
   );
