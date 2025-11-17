@@ -1,0 +1,17 @@
+# Firebase Setup Scripts - Python Dependencies
+
+# No external Python packages required for basic setup
+# All scripts use only Python standard library
+
+# However, if you want to install the Firebase Admin SDK for advanced operations:
+# firebase-admin>=6.0.0
+
+# For enhanced CLI interactions:
+# click>=8.0.0
+# colorama>=0.4.6  # For Windows color support
+
+# For configuration validation:
+# jsonschema>=4.0.0
+
+# Note: The current scripts are designed to work with Python 3.8+ standard library
+# and delegate to Firebase CLI and FlutterFire CLI for all Firebase operations.

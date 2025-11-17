@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "staging": "letter-tracing-app-staging",
+    "default": "letter-tracing-app-staging",
+    "production": "letter-tracing-app"
+  }
+}
