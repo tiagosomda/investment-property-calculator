@@ -87,7 +87,7 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New Project</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Project Name <span className="text-red-500 dark:text-red-400">*</span>
                 </label>
                 <input
@@ -101,7 +101,7 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Description (optional)
                 </label>
                 <textarea
@@ -161,7 +161,7 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
                         {project.description}
                       </p>
                     )}
-                    <div className="text-xs text-gray-500 dark:text-gray-500 space-y-1">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
                       <div>Created: {formatDate(project.createdAt)}</div>
                       <div>Updated: {formatDate(project.updatedAt)}</div>
                     </div>

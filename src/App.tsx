@@ -97,7 +97,7 @@ function AppContent() {
               className={`px-4 py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
                 activeTab === 'property'
                   ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
               }`}
             >
               Property Details
@@ -107,7 +107,7 @@ function AppContent() {
               className={`px-4 py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
                 activeTab === 'units'
                   ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
               }`}
             >
               Units & Expenses
@@ -117,7 +117,7 @@ function AppContent() {
               className={`px-4 py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
                 activeTab === 'summary'
                   ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
               }`}
             >
               Summary & Compare
