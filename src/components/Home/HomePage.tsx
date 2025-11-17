@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ProjectListItem } from '../../types';
-import { getAllProjects, deleteProject, createNewProject, saveProject, setCurrentProjectId } from '../../utils';
+import { getAllProjects, deleteProject, createNewProject, saveProject, setCurrentProjectId, getProject } from '../../utils';
 import { Card, Button, ThemeToggle } from '../ui';
 import { useAuth, useCloudSync } from '../../contexts';
 import { TemplateSettings } from '../Templates';
@@ -44,15 +44,6 @@ export function HomePage() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
@@ -62,7 +53,7 @@ export function HomePage() {
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold">Investment Property Calculator</h1>
               <p className="text-blue-100 text-sm sm:text-base mt-2">
-                Compare and analyze multiple investment opportunities
+                Analyze rental properties and track investment performance
               </p>
             </div>
             <div className="flex gap-2">
@@ -169,45 +160,62 @@ export function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {projects
               .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-              .map((project) => (
-                <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <div onClick={() => handleSelectProject(project.id)}>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                      {project.name}
-                    </h3>
-                    {project.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                        {project.description}
-                      </p>
-                    )}
-                    <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                      <div>Created: {formatDate(project.createdAt)}</div>
-                      <div>Updated: {formatDate(project.updatedAt)}</div>
-                    </div>
-                  </div>
+              .map((project) => {
+                const fullProject = getProject(project.id);
+                const purchasePrice = fullProject?.property.purchasePrice || 0;
+                const downPayment = fullProject?.property.downPaymentPercent || 0;
+                const unitCount = fullProject?.units.length || 0;
 
-                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSelectProject(project.id);
-                      }}
-                      className="flex-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-                    >
-                      Open
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteProject(project.id, project.name);
-                      }}
-                      className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </Card>
-              ))}
+                return (
+                  <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                    <div onClick={() => handleSelectProject(project.id)}>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        {project.name}
+                      </h3>
+                      {project.description && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                          {project.description}
+                        </p>
+                      )}
+                      <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Purchase Price:</span>
+                          <span className="font-semibold">${purchasePrice.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Down Payment:</span>
+                          <span className="font-semibold">{downPayment}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Units:</span>
+                          <span className="font-semibold">{unitCount}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSelectProject(project.id);
+                        }}
+                        className="flex-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                      >
+                        Open
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteProject(project.id, project.name);
+                        }}
+                        className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </Card>
+                );
+              })}
           </div>
         )}
       </div>

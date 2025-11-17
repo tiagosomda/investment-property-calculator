@@ -11,7 +11,12 @@ import { ThemeToggle } from './components/ui';
 import { getCurrentProjectId } from './utils';
 import { shareProject, isProjectShared, unshareProject } from './firebase/firestore';
 
-export function CalculatorView() {
+interface CalculatorViewProps {
+  readOnly?: boolean;
+  projectId?: string;
+}
+
+export function CalculatorView({ readOnly = false, projectId: externalProjectId }: CalculatorViewProps = {}) {
   const { state, loadProject } = useProperty();
   const { user } = useAuth();
   const { cloudSyncEnabled, syncStatus, isSyncing } = useCloudSync();
@@ -26,17 +31,17 @@ export function CalculatorView() {
 
   // Load current project on mount
   useEffect(() => {
-    const currentProjectId = getCurrentProjectId();
-    if (currentProjectId) {
-      loadProject(currentProjectId);
-    } else {
-      // No project selected, go home
+    const projectIdToLoad = externalProjectId || getCurrentProjectId();
+    if (projectIdToLoad) {
+      loadProject(projectIdToLoad);
+    } else if (!readOnly) {
+      // No project selected and not in read-only mode, go home
       navigate('/');
     }
-  }, []);
+  }, [externalProjectId]);
 
-  // Auto-sync when project changes
-  useAutoSync(state.projectId);
+  // Auto-sync when project changes (disabled in read-only mode)
+  useAutoSync(readOnly ? null : state.projectId);
 
   // Check if project is already shared
   useEffect(() => {
@@ -124,19 +129,37 @@ export function CalculatorView() {
   return (
     <>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+        {/* Read-Only Banner */}
+        {readOnly && (
+          <div className="bg-yellow-500 dark:bg-yellow-600 text-yellow-900 dark:text-yellow-100 px-4 py-2 text-center text-sm font-medium">
+            📋 Viewing Shared Project (Read-Only) - <Link to="/" className="underline hover:text-yellow-800 dark:hover:text-yellow-200">Create Your Own</Link>
+          </div>
+        )}
+
         {/* Header */}
         <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
           <div className="container mx-auto px-4 py-6">
             <div className="flex justify-between items-start gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-3">
-                  <button
-                    onClick={handleBackToHome}
-                    className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
-                    title="Back to Projects"
-                  >
-                    ← Projects
-                  </button>
+                  {!readOnly && (
+                    <button
+                      onClick={handleBackToHome}
+                      className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
+                      title="Back to Projects"
+                    >
+                      ← Projects
+                    </button>
+                  )}
+                  {readOnly && (
+                    <Link
+                      to="/"
+                      className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
+                      title="Go to Home"
+                    >
+                      ← Home
+                    </Link>
+                  )}
                   <div>
                     <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
                     {state.projectDescription && (
@@ -147,8 +170,8 @@ export function CalculatorView() {
                   </div>
                 </div>
 
-                {/* Sync Status */}
-                {cloudSyncEnabled && (
+                {/* Sync Status - hide in read-only mode */}
+                {!readOnly && cloudSyncEnabled && (
                   <div className="mt-2 flex items-center gap-2 text-xs text-blue-100">
                     {isSyncing ? (
                       <>
@@ -171,37 +194,42 @@ export function CalculatorView() {
               </div>
 
               <div className="flex gap-2">
-                {/* Share Button */}
-                {user && (
-                  <button
-                    onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
-                    disabled={shareLoading}
-                    className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
-                    title={isShared ? 'Manage share link' : 'Share project publicly'}
-                  >
-                    <span>{isShared ? '🔗' : '📤'}</span>
-                    <span>{isShared ? 'Shared' : 'Share'}</span>
-                  </button>
+                {/* Hide these buttons in read-only mode */}
+                {!readOnly && (
+                  <>
+                    {/* Share Button */}
+                    {user && (
+                      <button
+                        onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
+                        disabled={shareLoading}
+                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
+                        title={isShared ? 'Manage share link' : 'Share project publicly'}
+                      >
+                        <span>{isShared ? '🔗' : '📤'}</span>
+                        <span>{isShared ? 'Shared' : 'Share'}</span>
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => setShowTemplateSettings(true)}
+                      className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
+                      title="Expense Templates Settings"
+                    >
+                      <span>⚙️</span>
+                      <span>Templates</span>
+                    </button>
+
+                    {/* User Profile/Login */}
+                    <Link
+                      to={user ? '/profile' : '/login'}
+                      className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                      title={user ? 'Profile' : 'Sign In'}
+                    >
+                      <span>{user ? 'Profile' : 'Login'}</span>
+                      {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
+                    </Link>
+                  </>
                 )}
-
-                <button
-                  onClick={() => setShowTemplateSettings(true)}
-                  className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
-                  title="Expense Templates Settings"
-                >
-                  <span>⚙️</span>
-                  <span>Templates</span>
-                </button>
-
-                {/* User Profile/Login */}
-                <Link
-                  to={user ? '/profile' : '/login'}
-                  className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-                  title={user ? 'Profile' : 'Sign In'}
-                >
-                  <span>{user ? 'Profile' : 'Login'}</span>
-                  {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
-                </Link>
 
                 <ThemeToggle />
               </div>
