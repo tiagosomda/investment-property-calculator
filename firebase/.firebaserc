@@ -2,6 +2,6 @@
   "projects": {
     "staging": "letter-tracing-app-staging",
     "default": "letter-tracing-app-staging",
-    "production": "letter-tracing-app"
+    "production": "investment-property-calc-45fc5"
   }
 }

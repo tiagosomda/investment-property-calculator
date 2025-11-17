@@ -68,19 +68,20 @@ export function HomePage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setShowTemplateSettings(true)}
-                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
                 title="Expense Templates Settings"
               >
-                ⚙️ Templates
+                <span>⚙️</span>
+                <span>Templates</span>
               </button>
 
-              {/* User Icon */}
+              {/* User Profile/Login */}
               <Link
                 to={user ? '/profile' : '/login'}
                 className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                 title={user ? 'Profile' : 'Sign In'}
               >
-                <span className="text-lg">{user ? '👤' : '🔓'}</span>
+                <span>{user ? 'Profile' : 'Login'}</span>
                 {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
               </Link>
 
@@ -209,21 +210,6 @@ export function HomePage() {
               ))}
           </div>
         )}
-      </div>
-
-      {/* Footer */}
-      <div className="mt-12 bg-gray-800 text-gray-300 py-6">
-        <div className="container mx-auto px-4 text-center text-sm">
-          <p>Investment Property Calculator - Built with React & TypeScript</p>
-          <p className="mt-1 text-gray-400">
-            {cloudSyncEnabled
-              ? 'Data is synced to the cloud and saved locally'
-              : 'Data is saved locally in your browser'}
-          </p>
-          {isSyncing && (
-            <p className="mt-1 text-blue-400">Syncing...</p>
-          )}
-        </div>
       </div>
 
       {/* Template Settings Modal */}

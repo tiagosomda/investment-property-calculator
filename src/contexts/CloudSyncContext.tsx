@@ -36,10 +36,34 @@ export function CloudSyncProvider({ children }: { children: ReactNode }) {
   const syncTimeoutRef = useRef<NodeJS.Timeout>();
   const projectsToSyncRef = useRef<Set<string>>(new Set());
 
-  // Check if cloud sync is enabled
+  // Check if cloud sync is enabled - enable by default when user logs in
   useEffect(() => {
-    const enabled = localStorage.getItem('cloud-sync-enabled') === 'true';
-    setCloudSyncEnabled(enabled && !!user);
+    const initializeCloudSync = async () => {
+      if (user) {
+        const syncSetting = localStorage.getItem('cloud-sync-enabled');
+
+        // If no setting exists (first login), enable by default
+        if (syncSetting === null) {
+          try {
+            // Create user profile if it doesn't exist
+            await createUserProfile(user.uid, user.email!, user.displayName || undefined);
+            localStorage.setItem('cloud-sync-enabled', 'true');
+            setCloudSyncEnabled(true);
+          } catch (error) {
+            console.error('Error initializing cloud sync:', error);
+            // Still enable cloud sync even if profile creation fails
+            localStorage.setItem('cloud-sync-enabled', 'true');
+            setCloudSyncEnabled(true);
+          }
+        } else {
+          setCloudSyncEnabled(syncSetting === 'true');
+        }
+      } else {
+        setCloudSyncEnabled(false);
+      }
+    };
+
+    initializeCloudSync();
   }, [user]);
 
   // Merge strategy: Last write wins
