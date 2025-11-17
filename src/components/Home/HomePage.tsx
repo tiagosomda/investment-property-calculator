@@ -1,17 +1,18 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ProjectListItem } from '../../types';
-import { getAllProjects, deleteProject, createNewProject, saveProject } from '../../utils';
+import { getAllProjects, deleteProject, createNewProject, saveProject, setCurrentProjectId } from '../../utils';
 import { Card, Button, ThemeToggle } from '../ui';
+import { useAuth, useCloudSync } from '../../contexts';
+import { TemplateSettings } from '../Templates';
 
-interface HomePageProps {
-  onSelectProject: (projectId: string) => void;
-  onCreateProject: (projectId: string) => void;
-  onOpenTemplateSettings: () => void;
-}
-
-export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSettings }: HomePageProps) {
+export function HomePage() {
+  const { user } = useAuth();
+  const { cloudSyncEnabled, isSyncing } = useCloudSync();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectListItem[]>(getAllProjects());
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showTemplateSettings, setShowTemplateSettings] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
 
@@ -23,11 +24,17 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
 
     const newProject = createNewProject(newProjectName.trim(), newProjectDescription.trim());
     saveProject(newProject);
+    setCurrentProjectId(newProject.id);
     setProjects(getAllProjects());
     setNewProjectName('');
     setNewProjectDescription('');
     setShowCreateForm(false);
-    onCreateProject(newProject.id);
+    navigate('/calculator');
+  };
+
+  const handleSelectProject = (projectId: string) => {
+    setCurrentProjectId(projectId);
+    navigate('/calculator');
   };
 
   const handleDeleteProject = (id: string, name: string) => {
@@ -60,12 +67,23 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
             </div>
             <div className="flex gap-2">
               <button
-                onClick={onOpenTemplateSettings}
+                onClick={() => setShowTemplateSettings(true)}
                 className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
                 title="Expense Templates Settings"
               >
                 ⚙️ Templates
               </button>
+
+              {/* User Icon */}
+              <Link
+                to={user ? '/profile' : '/login'}
+                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                title={user ? 'Profile' : 'Sign In'}
+              >
+                <span className="text-lg">{user ? '👤' : '🔓'}</span>
+                {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
+              </Link>
+
               <ThemeToggle />
             </div>
           </div>
@@ -152,7 +170,7 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
               .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
               .map((project) => (
                 <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <div onClick={() => onSelectProject(project.id)}>
+                  <div onClick={() => handleSelectProject(project.id)}>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                       {project.name}
                     </h3>
@@ -171,7 +189,7 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        onSelectProject(project.id);
+                        handleSelectProject(project.id);
                       }}
                       className="flex-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                     >
@@ -197,9 +215,21 @@ export function HomePage({ onSelectProject, onCreateProject, onOpenTemplateSetti
       <div className="mt-12 bg-gray-800 text-gray-300 py-6">
         <div className="container mx-auto px-4 text-center text-sm">
           <p>Investment Property Calculator - Built with React & TypeScript</p>
-          <p className="mt-1 text-gray-400">All data is saved locally in your browser</p>
+          <p className="mt-1 text-gray-400">
+            {cloudSyncEnabled
+              ? 'Data is synced to the cloud and saved locally'
+              : 'Data is saved locally in your browser'}
+          </p>
+          {isSyncing && (
+            <p className="mt-1 text-blue-400">Syncing...</p>
+          )}
         </div>
       </div>
+
+      {/* Template Settings Modal */}
+      {showTemplateSettings && (
+        <TemplateSettings onClose={() => setShowTemplateSettings(false)} />
+      )}
     </div>
   );
 }
