@@ -1,0 +1,12 @@
+# Environment-specific configuration files (contain secrets)
+staging.json
+production.json
+
+# Firebase service account keys
+*-service-account.json
+*.pem
+*.p8
+
+# Local test configurations
+local.json
+test.json

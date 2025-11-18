@@ -3,11 +3,12 @@ import { Input } from '../ui';
 import { calculateUnitMonthlyRevenue } from '../../utils';
 
 interface LTRInputsProps {
+  readOnly?: boolean;
   unit: Unit;
   updateUnit: (updates: Partial<Unit>) => void;
 }
 
-export function LTRInputs({ unit, updateUnit }: LTRInputsProps) {
+export function LTRInputs({ unit, updateUnit, readOnly = false }: LTRInputsProps) {
   const revenue = unit.revenue as LTRRevenue;
 
   const updateRevenue = (updates: Partial<LTRRevenue>) => {
@@ -27,6 +28,7 @@ export function LTRInputs({ unit, updateUnit }: LTRInputsProps) {
           prefix="$"
           step="100"
           min="0"
+          disabled={readOnly}
         />
 
         <Input
@@ -38,13 +40,14 @@ export function LTRInputs({ unit, updateUnit }: LTRInputsProps) {
           step="1"
           min="0"
           max="100"
+          disabled={readOnly}
         />
       </div>
 
-      <div className="bg-blue-50 rounded-lg p-3 text-sm">
+      <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-700">Effective Monthly Revenue:</span>
-          <span className="font-semibold text-green-600">
+          <span className="text-gray-700 dark:text-gray-200">Effective Monthly Revenue:</span>
+          <span className="font-semibold text-green-600 dark:text-green-400">
             ${effectiveRevenue.toFixed(0)}
           </span>
         </div>

@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ProjectListItem } from '../../types';
-import { getAllProjects, deleteProject, createNewProject, saveProject } from '../../utils';
+import { getAllProjects, deleteProject, createNewProject, saveProject, setCurrentProjectId, getProject } from '../../utils';
 import { Card, Button, ThemeToggle } from '../ui';
+import { useAuth, useCloudSync } from '../../contexts';
+import { TemplateSettings } from '../Templates';
 
-interface HomePageProps {
-  onSelectProject: (projectId: string) => void;
-  onCreateProject: (projectId: string) => void;
-}
-
-export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
+export function HomePage() {
+  const { user } = useAuth();
+  const { cloudSyncEnabled, isSyncing } = useCloudSync();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectListItem[]>(getAllProjects());
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showTemplateSettings, setShowTemplateSettings] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
 
@@ -22,11 +24,17 @@ export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
 
     const newProject = createNewProject(newProjectName.trim(), newProjectDescription.trim());
     saveProject(newProject);
+    setCurrentProjectId(newProject.id);
     setProjects(getAllProjects());
     setNewProjectName('');
     setNewProjectDescription('');
     setShowCreateForm(false);
-    onCreateProject(newProject.id);
+    navigate('/calculator');
+  };
+
+  const handleSelectProject = (projectId: string) => {
+    setCurrentProjectId(projectId);
+    navigate('/calculator');
   };
 
   const handleDeleteProject = (id: string, name: string) => {
@@ -34,15 +42,6 @@ export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
       deleteProject(id);
       setProjects(getAllProjects());
     }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
   };
 
   return (
@@ -54,10 +53,31 @@ export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold">Investment Property Calculator</h1>
               <p className="text-blue-100 text-sm sm:text-base mt-2">
-                Compare and analyze multiple investment opportunities
+                Analyze rental properties and track investment performance
               </p>
             </div>
-            <ThemeToggle />
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowTemplateSettings(true)}
+                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
+                title="Expense Templates Settings"
+              >
+                <span>⚙️</span>
+                <span>Templates</span>
+              </button>
+
+              {/* User Profile/Login */}
+              <Link
+                to={user ? '/profile' : '/login'}
+                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                title={user ? 'Profile' : 'Sign In'}
+              >
+                <span>{user ? 'Profile' : 'Login'}</span>
+                {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
+              </Link>
+
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
@@ -77,7 +97,7 @@ export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New Project</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Project Name <span className="text-red-500 dark:text-red-400">*</span>
                 </label>
                 <input
@@ -91,7 +111,7 @@ export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Description (optional)
                 </label>
                 <textarea
@@ -140,56 +160,70 @@ export function HomePage({ onSelectProject, onCreateProject }: HomePageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {projects
               .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-              .map((project) => (
-                <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <div onClick={() => onSelectProject(project.id)}>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                      {project.name}
-                    </h3>
-                    {project.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                        {project.description}
-                      </p>
-                    )}
-                    <div className="text-xs text-gray-500 dark:text-gray-500 space-y-1">
-                      <div>Created: {formatDate(project.createdAt)}</div>
-                      <div>Updated: {formatDate(project.updatedAt)}</div>
-                    </div>
-                  </div>
+              .map((project) => {
+                const fullProject = getProject(project.id);
+                const purchasePrice = fullProject?.property.purchasePrice || 0;
+                const downPayment = fullProject?.property.downPaymentPercent || 0;
+                const unitCount = fullProject?.units.length || 0;
 
-                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectProject(project.id);
-                      }}
-                      className="flex-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-                    >
-                      Open
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteProject(project.id, project.name);
-                      }}
-                      className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </Card>
-              ))}
+                return (
+                  <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                    <div onClick={() => handleSelectProject(project.id)}>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        {project.name}
+                      </h3>
+                      {project.description && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                          {project.description}
+                        </p>
+                      )}
+                      <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Purchase Price:</span>
+                          <span className="font-semibold">${purchasePrice.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Down Payment:</span>
+                          <span className="font-semibold">{downPayment}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Units:</span>
+                          <span className="font-semibold">{unitCount}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSelectProject(project.id);
+                        }}
+                        className="flex-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                      >
+                        Open
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteProject(project.id, project.name);
+                        }}
+                        className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </Card>
+                );
+              })}
           </div>
         )}
       </div>
 
-      {/* Footer */}
-      <div className="mt-12 bg-gray-800 text-gray-300 py-6">
-        <div className="container mx-auto px-4 text-center text-sm">
-          <p>Investment Property Calculator - Built with React & TypeScript</p>
-          <p className="mt-1 text-gray-400">All data is saved locally in your browser</p>
-        </div>
-      </div>
+      {/* Template Settings Modal */}
+      {showTemplateSettings && (
+        <TemplateSettings onClose={() => setShowTemplateSettings(false)} />
+      )}
     </div>
   );
 }

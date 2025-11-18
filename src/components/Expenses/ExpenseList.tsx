@@ -6,9 +6,10 @@ import { generateExpenseId } from '../../utils';
 interface ExpenseListProps {
   unit: Unit;
   updateUnit: (updates: Partial<Unit>) => void;
+  readOnly?: boolean;
 }
 
-export function ExpenseList({ unit, updateUnit }: ExpenseListProps) {
+export function ExpenseList({ unit, updateUnit, readOnly = false }: ExpenseListProps) {
   const addExpense = () => {
     const newExpense: Expense = {
       id: generateExpenseId(),
@@ -45,18 +46,21 @@ export function ExpenseList({ unit, updateUnit }: ExpenseListProps) {
           updateExpense={updateExpense}
           removeExpense={removeExpense}
           unit={unit}
+          readOnly={readOnly}
         />
       ))}
 
       {unit.expenses.length === 0 && (
-        <p className="text-gray-500 text-sm text-center py-4">
+        <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">
           No expenses added yet.
         </p>
       )}
 
-      <Button onClick={addExpense} variant="secondary" size="sm" className="w-full">
-        + Add Expense
-      </Button>
+      {!readOnly && (
+        <Button onClick={addExpense} variant="secondary" size="sm" className="w-full">
+          + Add Expense
+        </Button>
+      )}
     </div>
   );
 }

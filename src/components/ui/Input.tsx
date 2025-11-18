@@ -11,6 +11,7 @@ interface InputProps {
   max?: string;
   required?: boolean;
   helpText?: string;
+  disabled?: boolean;
 }
 
 export function Input({
@@ -26,10 +27,11 @@ export function Input({
   max,
   required,
   helpText,
+  disabled,
 }: InputProps) {
   return (
     <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
         {label}
         {required && <span className="text-red-500 dark:text-red-400 ml-1">*</span>}
       </label>
@@ -47,9 +49,10 @@ export function Input({
           step={step}
           min={min}
           max={max}
+          disabled={disabled}
           className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
             prefix ? 'pl-8' : ''
-          } ${suffix ? 'pr-12' : ''}`}
+          } ${suffix ? 'pr-12' : ''} ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`}
         />
         {suffix && (
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">

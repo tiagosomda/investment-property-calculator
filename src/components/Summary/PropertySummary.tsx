@@ -57,40 +57,40 @@ export function PropertySummary() {
       <div className="space-y-6">
         {/* Revenue & Expenses */}
         <div>
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Monthly Cash Flow</h3>
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Monthly Cash Flow</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-700">Total Revenue ({units.length} units):</span>
-              <span className="font-semibold text-green-600">
+              <span className="text-gray-700 dark:text-gray-200">Total Revenue ({units.length} units):</span>
+              <span className="font-semibold text-green-600 dark:text-green-400">
                 {formatCurrency(totalMonthlyRevenue)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-700 pl-4">Unit Expenses:</span>
-              <span className="text-red-600">-{formatCurrency(totalUnitExpenses)}</span>
+              <span className="text-gray-700 dark:text-gray-200 pl-4">Unit Expenses:</span>
+              <span className="text-red-600 dark:text-red-400">-{formatCurrency(totalUnitExpenses)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-700 pl-4">Property Expenses:</span>
-              <span className="text-red-600">-{formatCurrency(propertyExpenses)}</span>
+              <span className="text-gray-700 dark:text-gray-200 pl-4">Property Expenses:</span>
+              <span className="text-red-600 dark:text-red-400">-{formatCurrency(propertyExpenses)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-700 pl-4">Mortgage (P&I):</span>
-              <span className="text-red-600">-{formatCurrency(mortgage.monthlyPayment)}</span>
+              <span className="text-gray-700 dark:text-gray-200 pl-4">Mortgage (P&I):</span>
+              <span className="text-red-600 dark:text-red-400">-{formatCurrency(mortgage.monthlyPayment)}</span>
             </div>
-            <div className="border-t pt-2 flex justify-between">
-              <span className="font-semibold text-gray-900">Monthly Cash Flow:</span>
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-2 flex justify-between">
+              <span className="font-semibold text-gray-900 dark:text-white">Monthly Cash Flow:</span>
               <span
                 className={`font-bold text-lg ${
-                  monthlyCashFlow >= 0 ? 'text-green-600' : 'text-red-600'
+                  monthlyCashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}
               >
                 {formatCurrency(monthlyCashFlow)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="font-semibold text-gray-900">Annual Cash Flow:</span>
+              <span className="font-semibold text-gray-900 dark:text-white">Annual Cash Flow:</span>
               <span
-                className={`font-bold ${annualCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}
+                className={`font-bold ${annualCashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
               >
                 {formatCurrency(annualCashFlow)}
               </span>
@@ -99,33 +99,33 @@ export function PropertySummary() {
         </div>
 
         {/* Return Metrics */}
-        <div className="border-t pt-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Return Metrics</h3>
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Return Metrics</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-700">Total Investment:</span>
-              <span className="font-semibold">{formatCurrency(totalInvestment)}</span>
+              <span className="text-gray-700 dark:text-gray-200">Total Investment:</span>
+              <span className="font-semibold text-gray-900 dark:text-white">{formatCurrency(totalInvestment)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-700">Cash-on-Cash Return:</span>
+              <span className="text-gray-700 dark:text-gray-200">Cash-on-Cash Return:</span>
               <span
                 className={`font-semibold ${
-                  cashOnCashReturn >= 0 ? 'text-green-600' : 'text-red-600'
+                  cashOnCashReturn >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}
               >
                 {formatPercent(cashOnCashReturn)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-700">First Year Principal Paydown:</span>
-              <span className="font-semibold text-blue-600">
+              <span className="text-gray-700 dark:text-gray-200">First Year Principal Paydown:</span>
+              <span className="font-semibold text-blue-600 dark:text-blue-400">
                 {formatCurrency(firstYearPrincipal)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-700">Total Return (Year 1):</span>
+              <span className="text-gray-700 dark:text-gray-200">Total Return (Year 1):</span>
               <span
-                className={`font-semibold ${totalReturn >= 0 ? 'text-green-600' : 'text-red-600'}`}
+                className={`font-semibold ${totalReturn >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
               >
                 {formatPercent(totalReturn)}
               </span>

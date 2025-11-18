@@ -62,87 +62,87 @@ export function ComparisonDashboard() {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b">
-              <th className="text-left py-2 pr-4 font-semibold text-gray-900">Metric</th>
-              <th className="text-right py-2 px-2 font-semibold text-blue-900 bg-blue-50">
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <th className="text-left py-2 pr-4 font-semibold text-gray-900 dark:text-white">Metric</th>
+              <th className="text-right py-2 px-2 font-semibold text-blue-900 dark:text-blue-200 bg-blue-50 dark:bg-blue-900/30">
                 This Property
               </th>
-              <th className="text-right py-2 px-2 font-semibold text-gray-700">HYSA</th>
-              <th className="text-right py-2 px-2 font-semibold text-gray-700">Index Funds</th>
+              <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">HYSA</th>
+              <th className="text-right py-2 px-2 font-semibold text-gray-700 dark:text-gray-200">Index Funds</th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             <tr>
-              <td className="py-2 pr-4 text-gray-700">Initial Investment</td>
-              <td className="text-right py-2 px-2 font-semibold bg-blue-50">
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Initial Investment</td>
+              <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(totalInvestment)}
               </td>
-              <td className="text-right py-2 px-2">{formatCurrency(totalInvestment)}</td>
-              <td className="text-right py-2 px-2">{formatCurrency(totalInvestment)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(totalInvestment)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(totalInvestment)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700">Annual Cash Return</td>
-              <td className="text-right py-2 px-2 font-semibold bg-blue-50">
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Annual Cash Return</td>
+              <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(annualCashFlow)}
               </td>
-              <td className="text-right py-2 px-2">{formatCurrency(hysaAnnualReturn)}</td>
-              <td className="text-right py-2 px-2">{formatCurrency(indexCashReturn)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(hysaAnnualReturn)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(indexCashReturn)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700">Annual Total Return</td>
-              <td className="text-right py-2 px-2 font-semibold bg-blue-50">
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Annual Total Return</td>
+              <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(totalReturn)}
               </td>
-              <td className="text-right py-2 px-2">{formatCurrency(hysaAnnualReturn)}</td>
-              <td className="text-right py-2 px-2">{formatCurrency(indexAnnualReturn)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(hysaAnnualReturn)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(indexAnnualReturn)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700">Return Rate</td>
-              <td className="text-right py-2 px-2 font-semibold bg-blue-50">
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Return Rate</td>
+              <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatPercent(totalInvestment > 0 ? (totalReturn / totalInvestment) * 100 : 0)}
               </td>
-              <td className="text-right py-2 px-2">{formatPercent(comparison.hysaRate)}</td>
-              <td className="text-right py-2 px-2">
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatPercent(comparison.hysaRate)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">
                 {formatPercent(comparison.indexFundTotalRate)}
               </td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700">Year 5 Wealth</td>
-              <td className="text-right py-2 px-2 font-semibold bg-blue-50">
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Year 5 Wealth</td>
+              <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatCurrency(property5Year)}
               </td>
-              <td className="text-right py-2 px-2">{formatCurrency(hysa5Year)}</td>
-              <td className="text-right py-2 px-2">{formatCurrency(index5Year)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(hysa5Year)}</td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(index5Year)}</td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700">Liquidity</td>
-              <td className="text-right py-2 px-2 bg-blue-50">
-                <span className="text-orange-600 font-semibold">Low</span>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Liquidity</td>
+              <td className="text-right py-2 px-2 bg-blue-50 dark:bg-blue-900/30">
+                <span className="text-orange-600 dark:text-orange-400 font-semibold">Low</span>
               </td>
               <td className="text-right py-2 px-2">
-                <span className="text-green-600 font-semibold">High</span>
+                <span className="text-green-600 dark:text-green-400 font-semibold">High</span>
               </td>
               <td className="text-right py-2 px-2">
-                <span className="text-green-600 font-semibold">High</span>
+                <span className="text-green-600 dark:text-green-400 font-semibold">High</span>
               </td>
             </tr>
             <tr>
-              <td className="py-2 pr-4 text-gray-700">Work Required</td>
-              <td className="text-right py-2 px-2 bg-blue-50">
-                <span className="text-orange-600 font-semibold">Moderate-High</span>
+              <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">Work Required</td>
+              <td className="text-right py-2 px-2 bg-blue-50 dark:bg-blue-900/30">
+                <span className="text-orange-600 dark:text-orange-400 font-semibold">Moderate-High</span>
               </td>
               <td className="text-right py-2 px-2">
-                <span className="text-green-600 font-semibold">None</span>
+                <span className="text-green-600 dark:text-green-400 font-semibold">None</span>
               </td>
               <td className="text-right py-2 px-2">
-                <span className="text-green-600 font-semibold">None</span>
+                <span className="text-green-600 dark:text-green-400 font-semibold">None</span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div className="mt-4 text-xs text-gray-500">
+      <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
         <p>
           * Year 5 wealth projection is simplified and assumes consistent cash flow, no
           appreciation, and compound growth for alternative investments.

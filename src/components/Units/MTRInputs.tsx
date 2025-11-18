@@ -3,11 +3,12 @@ import { Input } from '../ui';
 import { calculateUnitMonthlyRevenue } from '../../utils';
 
 interface MTRInputsProps {
+  readOnly?: boolean;
   unit: Unit;
   updateUnit: (updates: Partial<Unit>) => void;
 }
 
-export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
+export function MTRInputs({ unit, updateUnit, readOnly = false }: MTRInputsProps) {
   const revenue = unit.revenue as MTRRevenue;
 
   const updateRevenue = (updates: Partial<MTRRevenue>) => {
@@ -19,7 +20,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
   return (
     <div className="space-y-4">
       <div className="mb-3">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
           Rate Type
         </label>
         <div className="flex gap-2">
@@ -31,11 +32,12 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
                 monthlyRate: undefined,
               })
             }
+            disabled={readOnly}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               revenue.rateType === 'daily'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-            }`}
+                ? 'bg-blue-600 dark:bg-blue-700 text-white'
+                : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700'
+            } ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             Daily Rate
           </button>
@@ -47,11 +49,12 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
                 dailyRate: undefined,
               })
             }
+            disabled={readOnly}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               revenue.rateType === 'monthly'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-            }`}
+                ? 'bg-blue-600 dark:bg-blue-700 text-white'
+                : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700'
+            } ${readOnly ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             Monthly Rate
           </button>
@@ -68,6 +71,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
             prefix="$"
             step="10"
             min="0"
+            disabled={readOnly}
           />
         ) : (
           <Input
@@ -78,6 +82,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
             prefix="$"
             step="100"
             min="0"
+            disabled={readOnly}
           />
         )}
 
@@ -90,6 +95,7 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
           step="1"
           min="0"
           max="100"
+          disabled={readOnly}
         />
 
         <Input
@@ -100,13 +106,14 @@ export function MTRInputs({ unit, updateUnit }: MTRInputsProps) {
           suffix="days"
           step="1"
           min="0"
+          disabled={readOnly}
         />
       </div>
 
-      <div className="bg-blue-50 rounded-lg p-3 text-sm">
+      <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-700">Gross Monthly Revenue:</span>
-          <span className="font-semibold text-green-600">
+          <span className="text-gray-700 dark:text-gray-200">Gross Monthly Revenue:</span>
+          <span className="font-semibold text-green-600 dark:text-green-400">
             ${grossRevenue.toFixed(0)}
           </span>
         </div>
