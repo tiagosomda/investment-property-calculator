@@ -16,13 +16,15 @@ import {
   formatCurrency,
   formatPercent,
 } from '../../utils';
-import { Card, Button, ThemeToggle } from '../ui';
+import { Card, Button, ThemeToggle, ToastContainer } from '../ui';
+import { useToast } from '../../hooks';
 import { useAuth, useCloudSync } from '../../contexts';
 import { TemplateSettings } from '../Templates';
 
 export function HomePage() {
   const { user } = useAuth();
   const { cloudSyncEnabled } = useCloudSync();
+  const { toasts, showToast, removeToast } = useToast();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectListItem[]>(getAllProjects());
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -32,7 +34,7 @@ export function HomePage() {
 
   const handleCreateProject = () => {
     if (!newProjectName.trim()) {
-      alert('Please enter a project name');
+      showToast('Please enter a project name', 'warning');
       return;
     }
 
@@ -212,6 +214,12 @@ export function HomePage() {
                       )}
                       <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
                         <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Total Revenue ({units.length} units):</span>
+                          <span className="font-semibold text-green-600 dark:text-green-400">
+                            {formatCurrency(totalMonthlyRevenue)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
                           <span className="text-gray-500 dark:text-gray-400">Unit Expenses:</span>
                           <span className="font-semibold text-red-600 dark:text-red-400">
                             -{formatCurrency(totalUnitExpenses)}
@@ -283,8 +291,11 @@ export function HomePage() {
 
       {/* Template Settings Modal */}
       {showTemplateSettings && (
-        <TemplateSettings onClose={() => setShowTemplateSettings(false)} />
+        <TemplateSettings onClose={() => setShowTemplateSettings(false)} showToast={showToast} />
       )}
+
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
     </div>
   );
 }

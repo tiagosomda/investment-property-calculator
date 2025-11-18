@@ -6,9 +6,10 @@ import { strDefaultExpenses, mtrDefaultExpenses, ltrDefaultExpenses } from '../.
 
 interface TemplateSettingsProps {
   onClose: () => void;
+  showToast?: (message: string, type: 'success' | 'error' | 'info' | 'warning') => void;
 }
 
-export function TemplateSettings({ onClose }: TemplateSettingsProps) {
+export function TemplateSettings({ onClose, showToast }: TemplateSettingsProps) {
   const [activeTab, setActiveTab] = useState<UnitType>('STR');
   const [templates, setTemplates] = useState(() => {
     const saved = localStorage.getItem('expense-templates');
@@ -60,8 +61,15 @@ export function TemplateSettings({ onClose }: TemplateSettingsProps) {
           try {
             const imported = JSON.parse(event.target.result);
             saveTemplates(type, imported);
+            if (showToast) {
+              showToast('Template imported successfully', 'success');
+            }
           } catch (error) {
-            alert('Failed to import template. Please check the file format.');
+            if (showToast) {
+              showToast('Failed to import template. Please check the file format.', 'error');
+            } else {
+              alert('Failed to import template. Please check the file format.');
+            }
           }
         };
         reader.readAsText(file);

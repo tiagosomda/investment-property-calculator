@@ -17,7 +17,6 @@ import { Project, ProjectListItem } from '../types';
 // Collection references
 const USERS_COLLECTION = 'users';
 const PROPERTIES_COLLECTION = 'properties';
-const SHARED_PROPERTIES_COLLECTION = 'sharedProperties';
 
 // User profile
 export interface UserProfile {
@@ -123,17 +122,18 @@ export async function deleteProjectFromFirestore(projectId: string): Promise<voi
 
 // Share a project publicly
 export async function shareProject(userId: string, project: Project): Promise<string> {
-  // Create a shared version of the project
-  const sharedProjectRef = doc(db, SHARED_PROPERTIES_COLLECTION, project.id);
+  // Update the project to mark it as shared
+  const projectRef = doc(db, PROPERTIES_COLLECTION, project.id);
 
-  const sharedProject: any = {
+  const updatedProject: any = {
     ...project,
     userId,
+    isShared: true,
     createdAt: Timestamp.fromDate(new Date(project.createdAt)),
     updatedAt: serverTimestamp(),
   };
 
-  await setDoc(sharedProjectRef, sharedProject);
+  await setDoc(projectRef, updatedProject);
 
   // Return the shareable ID
   return project.id;
@@ -141,16 +141,20 @@ export async function shareProject(userId: string, project: Project): Promise<st
 
 // Get shared project (public access)
 export async function getSharedProject(projectId: string): Promise<Project | null> {
-  const sharedProjectRef = doc(db, SHARED_PROPERTIES_COLLECTION, projectId);
-  const projectSnap = await getDoc(sharedProjectRef);
+  const projectRef = doc(db, PROPERTIES_COLLECTION, projectId);
+  const projectSnap = await getDoc(projectRef);
 
   if (projectSnap.exists()) {
     const data = projectSnap.data() as FirestoreProject;
-    return {
-      ...data,
-      createdAt: data.createdAt.toDate().toISOString(),
-      updatedAt: data.updatedAt.toDate().toISOString(),
-    };
+
+    // Only return if the project is marked as shared
+    if (data.isShared) {
+      return {
+        ...data,
+        createdAt: data.createdAt.toDate().toISOString(),
+        updatedAt: data.updatedAt.toDate().toISOString(),
+      };
+    }
   }
 
   return null;
@@ -158,13 +162,19 @@ export async function getSharedProject(projectId: string): Promise<Project | nul
 
 // Unshare a project
 export async function unshareProject(projectId: string): Promise<void> {
-  const sharedProjectRef = doc(db, SHARED_PROPERTIES_COLLECTION, projectId);
-  await deleteDoc(sharedProjectRef);
+  const projectRef = doc(db, PROPERTIES_COLLECTION, projectId);
+  await setDoc(projectRef, { isShared: false, updatedAt: serverTimestamp() }, { merge: true });
 }
 
 // Check if project is shared
 export async function isProjectShared(projectId: string): Promise<boolean> {
-  const sharedProjectRef = doc(db, SHARED_PROPERTIES_COLLECTION, projectId);
-  const projectSnap = await getDoc(sharedProjectRef);
-  return projectSnap.exists();
+  const projectRef = doc(db, PROPERTIES_COLLECTION, projectId);
+  const projectSnap = await getDoc(projectRef);
+
+  if (projectSnap.exists()) {
+    const data = projectSnap.data() as FirestoreProject;
+    return data.isShared === true;
+  }
+
+  return false;
 }

@@ -11,6 +11,7 @@ export interface Project {
   comparison: ComparisonRates;
   createdAt: string;
   updatedAt: string;
+  isShared?: boolean;
 }
 
 export interface ProjectListItem {

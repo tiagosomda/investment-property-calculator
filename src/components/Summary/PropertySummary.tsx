@@ -69,7 +69,9 @@ export function PropertySummary() {
               <span className="text-red-600 dark:text-red-400">-{formatCurrency(propertyExpenses)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-700 dark:text-gray-200 pl-4">Mortgage (P&I):</span>
+              <span className="text-gray-700 dark:text-gray-200 pl-4">
+                Mortgage (P&I){mortgage.isOverridden ? ' (custom)' : ''}:
+              </span>
               <span className="text-red-600 dark:text-red-400">-{formatCurrency(mortgage.monthlyPayment)}</span>
             </div>
             <div className="border-t border-gray-200 dark:border-gray-700 pt-2 flex justify-between">

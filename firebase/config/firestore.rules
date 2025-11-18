@@ -1,57 +1,22 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Helper function to check authentication
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    // Helper function to check if user owns document
-    function isOwner(userId) {
-      return request.auth.uid == userId;
-    }
-
-    // Users collection - user profiles and preferences
+    // User profiles - users can only read/write their own profile
     match /users/{userId} {
-      // Users can only read/write their own profile
-      allow read, write: if isSignedIn() && isOwner(userId);
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Property calculations collection - saved investment calculations
-    match /properties/{propertyId} {
-      // Users can only read their own property calculations
-      allow read: if isSignedIn() && isOwner(resource.data.userId);
+    // Properties - authenticated users can CRUD their own, anyone can read shared ones
+    match /properties/{projectId} {
+      // Allow read if project is shared OR user owns the project
+      allow read: if resource.data.isShared == true ||
+                     (request.auth != null && request.auth.uid == resource.data.userId);
 
-      // Users can create properties with their own userId
-      allow create: if isSignedIn() && isOwner(request.resource.data.userId);
+      // Allow create if authenticated
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
 
-      // Users can update/delete their own properties
-      allow update, delete: if isSignedIn() && isOwner(resource.data.userId);
-    }
-
-    // Calculation templates collection - pre-configured templates
-    match /templates/{templateId} {
-      // Users can only read their own templates
-      allow read: if isSignedIn() && isOwner(resource.data.userId);
-
-      // Users can create templates with their own userId
-      allow create: if isSignedIn() && isOwner(request.resource.data.userId);
-
-      // Users can update/delete their own templates
-      allow update, delete: if isSignedIn() && isOwner(resource.data.userId);
-    }
-
-    // Shared properties collection (optional - for sharing calculations)
-    match /sharedProperties/{propertyId} {
-      // Anyone can read shared properties (including unauthenticated)
-      allow read: if true;
-
-      // Only the owner can create/update/delete
-      allow create: if isSignedIn() &&
-                       isOwner(request.resource.data.userId);
-      allow update, delete: if isSignedIn() &&
-                               isOwner(resource.data.userId);
+      // Allow update/delete only if user owns the project
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
   }
 }

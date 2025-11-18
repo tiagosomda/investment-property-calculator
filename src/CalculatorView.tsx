@@ -7,7 +7,8 @@ import { PropertySummary } from './components/Summary';
 import { ComparisonDashboard } from './components/Comparison';
 import { TemplateSettings } from './components/Templates';
 import { AppreciationScenarios, SensitivityAnalysis } from './components/Advanced';
-import { ThemeToggle } from './components/ui';
+import { ThemeToggle, ToastContainer } from './components/ui';
+import { useToast } from './hooks';
 import { getCurrentProjectId } from './utils';
 import { shareProject, isProjectShared, unshareProject } from './firebase/firestore';
 
@@ -20,6 +21,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
   const { state, loadProject } = useProperty();
   const { user } = useAuth();
   const { cloudSyncEnabled, syncStatus, isSyncing } = useCloudSync();
+  const { toasts, showToast, removeToast } = useToast();
   const [activeTab, setActiveTab] = useState<'property' | 'units' | 'summary'>('property');
   const [showTemplateSettings, setShowTemplateSettings] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
@@ -50,7 +52,10 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
         const shared = await isProjectShared(state.projectId);
         setIsShared(shared);
         if (shared) {
-          setShareUrl(`${window.location.origin}/shared/${state.projectId}`);
+          const basePath = import.meta.env.BASE_URL || '/';
+          const baseUrl = `${window.location.origin}${basePath}`;
+          const cleanUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+          setShareUrl(`${cleanUrl}/shared/${state.projectId}`);
         }
       }
     };
@@ -64,7 +69,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
 
   const handleShareProject = async () => {
     if (!user || !state.projectId) {
-      alert('Please sign in to share projects');
+      showToast('Please sign in to share projects', 'warning');
       navigate('/login');
       return;
     }
@@ -84,13 +89,16 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
       };
 
       await shareProject(user.uid, project);
-      const url = `${window.location.origin}/shared/${state.projectId}`;
+      const basePath = import.meta.env.BASE_URL || '/';
+      const baseUrl = `${window.location.origin}${basePath}`;
+      const cleanUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+      const url = `${cleanUrl}/shared/${state.projectId}`;
       setShareUrl(url);
       setIsShared(true);
       setShowShareModal(true);
     } catch (error) {
       console.error('Error sharing project:', error);
-      alert('Failed to share project');
+      showToast('Failed to share project', 'error');
     } finally {
       setShareLoading(false);
     }
@@ -105,10 +113,10 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
       await unshareProject(state.projectId);
       setIsShared(false);
       setShareUrl(null);
-      alert('Project unshared successfully');
+      showToast('Project unshared successfully', 'success');
     } catch (error) {
       console.error('Error unsharing project:', error);
-      alert('Failed to unshare project');
+      showToast('Failed to unshare project', 'error');
     } finally {
       setShareLoading(false);
     }
@@ -118,10 +126,10 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
     if (shareUrl) {
       try {
         await navigator.clipboard.writeText(shareUrl);
-        alert('Link copied to clipboard!');
+        showToast('Link copied to clipboard!', 'success');
       } catch (error) {
         console.error('Failed to copy to clipboard:', error);
-        alert('Failed to copy link');
+        showToast('Failed to copy link', 'error');
       }
     }
   };
@@ -292,7 +300,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
 
       {/* Template Settings Modal */}
       {showTemplateSettings && (
-        <TemplateSettings onClose={() => setShowTemplateSettings(false)} />
+        <TemplateSettings onClose={() => setShowTemplateSettings(false)} showToast={showToast} />
       )}
 
       {/* Share Modal */}
@@ -347,6 +355,9 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
           </div>
         </div>
       )}
+
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
     </>
   );
 }
