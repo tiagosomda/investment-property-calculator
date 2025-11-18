@@ -49,8 +49,24 @@ Get-Content ".env.local" | ForEach-Object {
     # Remove quotes from value
     $value = $value -replace '^["'']|["'']$', ''
 
+    # Skip if value is empty
+    if ([string]::IsNullOrWhiteSpace($value)) {
+        Write-Host "Skipping secret: $key (empty value)" -ForegroundColor Yellow
+        return
+    }
+
     Write-Host "Setting secret: $key" -ForegroundColor Green
+    Write-Host "  Value length: $($value.Length) chars" -ForegroundColor Gray
+    Write-Host "  First 10 chars: $($value.Substring(0, [Math]::Min(10, $value.Length)))..." -ForegroundColor Gray
+
+    # Set the secret
     $value | gh secret set $key --body -
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "  ERROR: Failed to set secret!" -ForegroundColor Red
+    } else {
+        Write-Host "  ✓ Success" -ForegroundColor Green
+    }
 }
 
 Write-Host ""
