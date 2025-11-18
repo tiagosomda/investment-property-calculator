@@ -32,6 +32,8 @@ export interface FirestoreProject extends Omit<Project, 'createdAt' | 'updatedAt
   userId: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
+  isShared?: boolean;
+  sharedWith?: string[];
 }
 
 // Create or update user profile
