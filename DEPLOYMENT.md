@@ -8,6 +8,30 @@ Before you can deploy, you need to configure GitHub Secrets for your Firebase cr
 
 ## Step 1: Add GitHub Secrets
 
+### Option A: Automated (Recommended)
+
+Use the provided script to automatically upload all secrets from your `.env.local` file:
+
+**Prerequisites:**
+- Install GitHub CLI: https://cli.github.com/
+- Authenticate: `gh auth login`
+
+**On macOS/Linux:**
+```bash
+bash setup-secrets.sh
+```
+
+**On Windows (PowerShell):**
+```powershell
+.\setup-secrets.ps1
+```
+
+The script will read your `.env.local` file and upload all environment variables as GitHub Secrets automatically.
+
+### Option B: Manual Setup
+
+If you prefer to add secrets manually:
+
 1. Go to your GitHub repository
 2. Click on **Settings** (top menu)
 3. In the left sidebar, click on **Secrets and variables** → **Actions**
