@@ -6,7 +6,7 @@ import { UnitList } from './components/Units';
 import { PropertySummary } from './components/Summary';
 import { ComparisonDashboard } from './components/Comparison';
 import { AppreciationScenarios, SensitivityAnalysis } from './components/Advanced';
-import { ThemeToggle, ToastContainer, Dropdown, DropdownItem } from './components/ui';
+import { ThemeToggle, ToastContainer } from './components/ui';
 import { useToast } from './hooks';
 import { getCurrentProjectId } from './utils';
 import { shareProject, isProjectShared, unshareProject, addCollaborator, removeCollaborator, getCollaborators } from './firebase/firestore';

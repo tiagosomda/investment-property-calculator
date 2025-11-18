@@ -17,7 +17,7 @@ import {
   formatPercent,
 } from '../../utils';
 import { deleteProjectFromFirestore } from '../../firebase/firestore';
-import { Card, Button, ThemeToggle, ToastContainer, Dropdown, DropdownItem, Modal } from '../ui';
+import { Card, Button, ThemeToggle, ToastContainer, Modal } from '../ui';
 import { useToast } from '../../hooks';
 import { useAuth, useCloudSync } from '../../contexts';
 

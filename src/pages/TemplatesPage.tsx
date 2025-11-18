@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UnitType } from '../types';
-import { Button, ThemeToggle, Dropdown, DropdownItem } from '../components/ui';
+import { Button, ThemeToggle } from '../components/ui';
 import { TemplateEditor } from '../components/Templates/TemplateEditor';
 import { strDefaultExpenses, mtrDefaultExpenses, ltrDefaultExpenses } from '../utils';
 import { useToast } from '../hooks';
