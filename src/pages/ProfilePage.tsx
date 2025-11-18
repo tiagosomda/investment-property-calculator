@@ -76,18 +76,24 @@ export function ProfilePage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
+        <div className="px-4 py-4">
+          <div className="space-y-3">
+            {/* Title Row - Top */}
             <div>
+              <h1 className="text-xl sm:text-2xl font-bold">Profile & Settings</h1>
+            </div>
+
+            {/* Action Buttons Row - Bottom */}
+            <div className="flex justify-between items-center gap-2">
               <button
                 onClick={() => navigate('/')}
-                className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors mb-2"
+                className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
               >
                 ← Back to Projects
               </button>
-              <h1 className="text-2xl font-bold">Profile & Settings</h1>
+
+              <ThemeToggle />
             </div>
-            <ThemeToggle />
           </div>
         </div>
       </div>
