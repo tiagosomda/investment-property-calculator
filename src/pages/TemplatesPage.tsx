@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UnitType } from '../types';
-import { Button, ThemeToggle } from '../components/ui';
+import { Button, ThemeToggle, Dropdown, DropdownItem } from '../components/ui';
 import { TemplateEditor } from '../components/Templates/TemplateEditor';
 import { strDefaultExpenses, mtrDefaultExpenses, ltrDefaultExpenses } from '../utils';
 import { useToast } from '../hooks';
 import { ToastContainer } from '../components/ui';
+import { useAuth, useCloudSync } from '../contexts';
 
 export function TemplatesPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { cloudSyncEnabled } = useCloudSync();
   const { toasts, showToast, removeToast } = useToast();
   const [activeTab, setActiveTab] = useState<UnitType>('STR');
   const [templates, setTemplates] = useState(() => {
@@ -97,8 +100,24 @@ export function TemplatesPage() {
               </div>
             </div>
 
-            {/* Theme Toggle Row */}
-            <div className="flex justify-end">
+            {/* Action Buttons Row */}
+            <div className="flex gap-2 justify-end">
+              <Dropdown
+                trigger={
+                  <>
+                    <span>⋮</span>
+                    <span>Menu</span>
+                  </>
+                }
+              >
+                <DropdownItem
+                  icon="👤"
+                  label={user ? 'Profile' : 'Login'}
+                  href={user ? '/profile' : '/login'}
+                  badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
+                />
+              </Dropdown>
+
               <ThemeToggle />
             </div>
           </div>

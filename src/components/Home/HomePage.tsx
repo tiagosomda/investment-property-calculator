@@ -16,7 +16,7 @@ import {
   formatCurrency,
   formatPercent,
 } from '../../utils';
-import { Card, Button, ThemeToggle, ToastContainer } from '../ui';
+import { Card, Button, ThemeToggle, ToastContainer, Dropdown, DropdownItem } from '../ui';
 import { useToast } from '../../hooks';
 import { useAuth, useCloudSync } from '../../contexts';
 
@@ -80,25 +80,27 @@ export function HomePage() {
             </div>
 
             {/* Action Buttons Row */}
-            <div className="flex gap-2 flex-wrap">
-              <Link
-                to="/templates"
-                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
-                title="Expense Templates Settings"
+            <div className="flex gap-2 justify-end">
+              <Dropdown
+                trigger={
+                  <>
+                    <span>⋮</span>
+                    <span>Menu</span>
+                  </>
+                }
               >
-                <span>⚙️</span>
-                <span>Templates</span>
-              </Link>
-
-              {/* User Profile/Login */}
-              <Link
-                to={user ? '/profile' : '/login'}
-                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-                title={user ? 'Profile' : 'Sign In'}
-              >
-                <span>{user ? 'Profile' : 'Login'}</span>
-                {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
-              </Link>
+                <DropdownItem
+                  icon="⚙️"
+                  label="Templates"
+                  href="/templates"
+                />
+                <DropdownItem
+                  icon="👤"
+                  label={user ? 'Profile' : 'Login'}
+                  href={user ? '/profile' : '/login'}
+                  badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
+                />
+              </Dropdown>
 
               <ThemeToggle />
             </div>

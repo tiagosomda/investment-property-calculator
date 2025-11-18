@@ -6,7 +6,7 @@ import { UnitList } from './components/Units';
 import { PropertySummary } from './components/Summary';
 import { ComparisonDashboard } from './components/Comparison';
 import { AppreciationScenarios, SensitivityAnalysis } from './components/Advanced';
-import { ThemeToggle, ToastContainer } from './components/ui';
+import { ThemeToggle, ToastContainer, Dropdown, DropdownItem } from './components/ui';
 import { useToast } from './hooks';
 import { getCurrentProjectId } from './utils';
 import { shareProject, isProjectShared, unshareProject, addCollaborator, removeCollaborator, getCollaborators } from './firebase/firestore';
@@ -234,10 +234,10 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                 </div>
               </div>
 
-              {/* Action Buttons and Sync Status Row */}
+              {/* Sync Status and Action Buttons Row */}
               <div className="flex justify-between items-center gap-4">
                 {/* Sync Status - hide in read-only mode */}
-                {!readOnly && cloudSyncEnabled && (
+                {!readOnly && cloudSyncEnabled ? (
                   <div className="flex items-center gap-2 text-xs text-blue-100">
                     {isSyncing ? (
                       <>
@@ -256,44 +256,41 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                       </>
                     )}
                   </div>
+                ) : (
+                  <div />
                 )}
 
-                <div className="flex gap-2 flex-wrap ml-auto">
-                  {/* Hide these buttons in read-only mode */}
+                <div className="flex gap-2">
+                  {/* Hide menu in read-only mode */}
                   {!readOnly && (
-                    <>
-                      {/* Share Button */}
+                    <Dropdown
+                      trigger={
+                        <>
+                          <span>⋮</span>
+                          <span>Menu</span>
+                        </>
+                      }
+                    >
                       {user && (
-                        <button
-                          onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
+                        <DropdownItem
+                          icon={isShared ? '🔗' : '📤'}
+                          label={isShared ? 'Manage Sharing' : 'Share Project'}
+                          onClick={isShared ? () => { setShowShareModal(true); } : handleShareProject}
                           disabled={shareLoading}
-                          className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
-                          title={isShared ? 'Manage share link' : 'Share project publicly'}
-                        >
-                          <span>{isShared ? '🔗' : '📤'}</span>
-                          <span>{isShared ? 'Shared' : 'Share'}</span>
-                        </button>
+                        />
                       )}
-
-                      <Link
-                        to="/templates"
-                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
-                        title="Expense Templates Settings"
-                      >
-                        <span>⚙️</span>
-                        <span>Templates</span>
-                      </Link>
-
-                      {/* User Profile/Login */}
-                      <Link
-                        to={user ? '/profile' : '/login'}
-                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-                        title={user ? 'Profile' : 'Sign In'}
-                      >
-                        <span>{user ? 'Profile' : 'Login'}</span>
-                        {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
-                      </Link>
-                    </>
+                      <DropdownItem
+                        icon="⚙️"
+                        label="Templates"
+                        href="/templates"
+                      />
+                      <DropdownItem
+                        icon="👤"
+                        label={user ? 'Profile' : 'Login'}
+                        href={user ? '/profile' : '/login'}
+                        badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
+                      />
+                    </Dropdown>
                   )}
 
                   <ThemeToggle />
@@ -315,7 +312,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                     : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
                 }`}
               >
-                Property Details
+                Property
               </button>
               <button
                 onClick={() => setActiveTab('units')}
@@ -325,7 +322,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                     : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
                 }`}
               >
-                Units & Expenses
+                Units
               </button>
               <button
                 onClick={() => setActiveTab('summary')}
@@ -335,7 +332,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                     : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
                 }`}
               >
-                Summary & Compare
+                Summary
               </button>
             </div>
           </div>
