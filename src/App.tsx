@@ -4,9 +4,11 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppRouter } from './AppRouter';
 
 function App() {
+  const basename = import.meta.env.PROD ? '/investment-property-calculator' : '/';
+
   return (
     <ErrorBoundary>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <ThemeProvider>
           <AuthProvider>
             <CloudSyncProvider>

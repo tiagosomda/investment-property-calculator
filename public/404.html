@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Investment Property Calculator</title>
+    <script>
+      // Store the path in sessionStorage and redirect to index.html
+      // This allows the SPA router to handle the route
+      sessionStorage.setItem('redirect', location.pathname.slice(0, -1) === '/investment-property-calculator'
+        ? location.pathname.substring('/investment-property-calculator'.length) + location.search + location.hash
+        : location.pathname + location.search + location.hash);
+      location.replace('/investment-property-calculator/');
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
