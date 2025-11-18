@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getSharedProject } from '../firebase/firestore';
 import { saveProject } from '../utils';
 import { CalculatorView } from '../CalculatorView';
@@ -62,12 +62,12 @@ export function SharedPropertyPage() {
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             {error || 'This project is not publicly shared or does not exist.'}
           </p>
-          <a
-            href="/"
+          <Link
+            to="/"
             className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
           >
             Go to Home
-          </a>
+          </Link>
         </div>
       </div>
     );

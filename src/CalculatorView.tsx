@@ -257,7 +257,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                 )}
               </div>
 
-              <div className="flex flex-col xs:flex-row gap-1 sm:gap-2">
+              <div className="flex gap-2 flex-wrap">
                 {/* Hide these buttons in read-only mode */}
                 {!readOnly && (
                   <>
@@ -266,30 +266,30 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                       <button
                         onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
                         disabled={shareLoading}
-                        className="px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
+                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
                         title={isShared ? 'Manage share link' : 'Share project publicly'}
                       >
                         <span>{isShared ? '🔗' : '📤'}</span>
-                        <span className="hidden xs:inline">{isShared ? 'Shared' : 'Share'}</span>
+                        <span>{isShared ? 'Shared' : 'Share'}</span>
                       </button>
                     )}
 
                     <Link
                       to="/templates"
-                      className="px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
+                      className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
                       title="Expense Templates Settings"
                     >
                       <span>⚙️</span>
-                      <span className="hidden xs:inline">Templates</span>
+                      <span>Templates</span>
                     </Link>
 
                     {/* User Profile/Login */}
                     <Link
                       to={user ? '/profile' : '/login'}
-                      className="px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                      className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                       title={user ? 'Profile' : 'Sign In'}
                     >
-                      <span className="hidden xs:inline">{user ? 'Profile' : 'Login'}</span>
+                      <span>{user ? 'Profile' : 'Login'}</span>
                       {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
                     </Link>
                   </>
