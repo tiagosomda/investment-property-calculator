@@ -81,26 +81,9 @@ export function TemplatesPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
-        <div className="container mx-auto px-4 py-4 sm:py-6">
+        <div className="px-4 py-4">
           <div className="space-y-3">
-            {/* Title and Back Button Row */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => navigate(-1)}
-                className="px-3 py-1.5 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors"
-                title="Go back"
-              >
-                ← Back
-              </button>
-              <div className="flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold">Expense Templates</h1>
-                <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
-                  Customize default expense templates for each unit type
-                </p>
-              </div>
-            </div>
-
-            {/* Action Buttons Row */}
+            {/* Action Buttons Row - Top */}
             <div className="flex gap-2 justify-end">
               <Dropdown
                 trigger={
@@ -119,6 +102,23 @@ export function TemplatesPage() {
               </Dropdown>
 
               <ThemeToggle />
+            </div>
+
+            {/* Title and Back Button Row - Bottom */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate(-1)}
+                className="px-3 py-1.5 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors"
+                title="Go back"
+              >
+                ← Back
+              </button>
+              <div className="flex-1">
+                <h1 className="text-xl sm:text-2xl font-bold">Expense Templates</h1>
+                <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                  Customize default expense templates for each unit type
+                </p>
+              </div>
             </div>
           </div>
         </div>
