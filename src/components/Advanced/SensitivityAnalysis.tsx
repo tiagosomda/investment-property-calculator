@@ -4,7 +4,7 @@ import {
   calculateUnitMonthlyRevenue,
   calculateUnitMonthlyExpenses,
   calculatePropertyMonthlyExpenses,
-  calculateMonthlyPayment,
+  getPropertyMortgagePayment,
   formatCurrency,
 } from '../../utils';
 import { STRRevenue } from '../../types';
@@ -59,12 +59,7 @@ export function SensitivityAnalysis() {
         0
       ) + calculatePropertyMonthlyExpenses(property);
 
-    const mortgage = calculateMonthlyPayment(
-      property.purchasePrice,
-      property.downPaymentPercent,
-      property.interestRate,
-      property.loanTerm
-    );
+    const mortgage = getPropertyMortgagePayment(property);
 
     return totalRevenue - totalExpenses - mortgage.monthlyPayment;
   };

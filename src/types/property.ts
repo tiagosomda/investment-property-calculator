@@ -15,6 +15,7 @@ export interface Property {
   downPaymentPercent: number;
   interestRate: number;
   loanTerm: number;
+  monthlyMortgageOverride?: number;
   propertyAddress?: string;
   mlsNumber?: string;
   referenceUrls?: ReferenceUrl[];

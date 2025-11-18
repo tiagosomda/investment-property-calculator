@@ -1,7 +1,10 @@
+import type { Property } from '../types';
+
 export interface MortgagePayment {
   monthlyPayment: number;
   principalAndInterest: number;
   totalLoanAmount: number;
+  isOverridden?: boolean;
 }
 
 export interface AmortizationEntry {
@@ -94,4 +97,27 @@ export function calculateFirstYearPrincipal(
   return schedule
     .slice(0, 12)
     .reduce((sum, entry) => sum + entry.principal, 0);
+}
+
+export function getPropertyMortgagePayment(property: Property): MortgagePayment {
+  // If user has manually overridden the mortgage payment, use that
+  if (property.monthlyMortgageOverride !== undefined && property.monthlyMortgageOverride > 0) {
+    const downPayment = property.purchasePrice * (property.downPaymentPercent / 100);
+    const loanAmount = property.purchasePrice - downPayment;
+
+    return {
+      monthlyPayment: property.monthlyMortgageOverride,
+      principalAndInterest: property.monthlyMortgageOverride,
+      totalLoanAmount: loanAmount,
+      isOverridden: true,
+    };
+  }
+
+  // Otherwise calculate it
+  return calculateMonthlyPayment(
+    property.purchasePrice,
+    property.downPaymentPercent,
+    property.interestRate,
+    property.loanTerm
+  );
 }

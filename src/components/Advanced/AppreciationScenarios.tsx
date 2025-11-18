@@ -6,7 +6,7 @@ import {
   calculateUnitMonthlyRevenue,
   calculateUnitMonthlyExpenses,
   calculatePropertyMonthlyExpenses,
-  calculateMonthlyPayment,
+  getPropertyMortgagePayment,
   formatCurrency,
   formatPercent,
 } from '../../utils';
@@ -30,12 +30,7 @@ export function AppreciationScenarios() {
   );
 
   const propertyExpenses = calculatePropertyMonthlyExpenses(property);
-  const mortgage = calculateMonthlyPayment(
-    property.purchasePrice,
-    property.downPaymentPercent,
-    property.interestRate,
-    property.loanTerm
-  );
+  const mortgage = getPropertyMortgagePayment(property);
 
   const monthlyCashFlow =
     totalMonthlyRevenue - totalUnitExpenses - propertyExpenses - mortgage.monthlyPayment;

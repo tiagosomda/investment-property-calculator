@@ -4,7 +4,7 @@ import {
   calculateUnitMonthlyRevenue,
   calculateUnitMonthlyExpenses,
   calculatePropertyMonthlyExpenses,
-  calculateMonthlyPayment,
+  getPropertyMortgagePayment,
   calculateTotalInvestment,
   calculateFirstYearPrincipal,
   formatCurrency,
@@ -29,12 +29,7 @@ export function PropertySummary() {
   const propertyExpenses = calculatePropertyMonthlyExpenses(property);
   const totalMonthlyExpenses = totalUnitExpenses + propertyExpenses;
 
-  const mortgage = calculateMonthlyPayment(
-    property.purchasePrice,
-    property.downPaymentPercent,
-    property.interestRate,
-    property.loanTerm
-  );
+  const mortgage = getPropertyMortgagePayment(property);
 
   const monthlyCashFlow = totalMonthlyRevenue - totalMonthlyExpenses - mortgage.monthlyPayment;
   const annualCashFlow = monthlyCashFlow * 12;

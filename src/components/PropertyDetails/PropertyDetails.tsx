@@ -1,6 +1,7 @@
 import { useProperty } from '../../contexts';
 import { Card, Input, Button } from '../ui';
 import { ReferenceUrl, ReferenceNote } from '../../types';
+import { getPropertyMortgagePayment, formatCurrency } from '../../utils';
 
 export function PropertyDetails() {
   const { state, dispatch, readOnly } = useProperty();
@@ -9,6 +10,13 @@ export function PropertyDetails() {
   const updateProperty = (updates: Partial<typeof property>) => {
     dispatch({ type: 'UPDATE_PROPERTY', payload: updates });
   };
+
+  const mortgagePayment = getPropertyMortgagePayment(property);
+
+  // Calculate what the mortgage would be without override for comparison
+  const calculatedMortgage = property.monthlyMortgageOverride
+    ? getPropertyMortgagePayment({ ...property, monthlyMortgageOverride: undefined })
+    : mortgagePayment;
 
   const addReferenceUrl = () => {
     const newUrl: ReferenceUrl = {
@@ -119,6 +127,36 @@ export function PropertyDetails() {
             min="1"
             disabled={readOnly}
           />
+        </div>
+
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+          <div className="space-y-2">
+            <Input
+              label="Monthly Mortgage (P&I)"
+              type="number"
+              value={property.monthlyMortgageOverride || ''}
+              onChange={(value) => {
+                const numValue = parseFloat(value);
+                updateProperty({
+                  monthlyMortgageOverride: numValue > 0 ? numValue : undefined
+                });
+              }}
+              prefix="$"
+              step="10"
+              min="0"
+              disabled={readOnly}
+            />
+            {!mortgagePayment.isOverridden && (
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                Calculated: {formatCurrency(calculatedMortgage.monthlyPayment)} (based on purchase price, down payment, interest rate, and loan term)
+              </p>
+            )}
+            {mortgagePayment.isOverridden && (
+              <p className="text-xs text-blue-600 dark:text-blue-400">
+                Using custom value. Clear this field to use calculated amount ({formatCurrency(calculatedMortgage.monthlyPayment)} based on loan terms).
+              </p>
+            )}
+          </div>
         </div>
       </Card>
 
