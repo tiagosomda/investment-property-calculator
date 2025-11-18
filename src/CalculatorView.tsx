@@ -309,7 +309,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
             <div className="flex gap-1 sm:gap-2 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('property')}
-                className={`px-4 py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
+                className={`px-3 py-2.5 sm:px-4 sm:py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
                   activeTab === 'property'
                     ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                     : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
@@ -319,7 +319,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
               </button>
               <button
                 onClick={() => setActiveTab('units')}
-                className={`px-4 py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
+                className={`px-3 py-2.5 sm:px-4 sm:py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
                   activeTab === 'units'
                     ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                     : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
@@ -329,7 +329,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
               </button>
               <button
                 onClick={() => setActiveTab('summary')}
-                className={`px-4 py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
+                className={`px-3 py-2.5 sm:px-4 sm:py-3 font-medium text-sm sm:text-base whitespace-nowrap transition-colors ${
                   activeTab === 'summary'
                     ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                     : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
@@ -364,7 +364,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
       {/* Share Modal */}
       {showShareModal && isShared && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               Share Project
             </h2>
@@ -378,7 +378,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Share Link:
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col xs:flex-row gap-2">
                 <input
                   type="text"
                   value={shareUrl || ''}
@@ -404,7 +404,7 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
               </p>
 
               {/* Add Collaborator Input */}
-              <div className="flex gap-2 mb-3">
+              <div className="flex flex-col xs:flex-row gap-2 mb-3">
                 <input
                   type="email"
                   value={newCollaboratorEmail}
