@@ -204,38 +204,53 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
         <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
           <div className="px-4 py-4">
             <div className="space-y-3">
-              {/* Top Row - Title and Sync Status */}
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
-                {state.projectDescription && (
-                  <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
-                    {state.projectDescription}
-                  </p>
-                )}
-                {/* Sync Status */}
-                {!readOnly && cloudSyncEnabled && (
-                  <div className="flex items-center gap-2 text-xs text-blue-100 mt-1">
-                    {isSyncing ? (
-                      <>
-                        <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-                        <span>Syncing...</span>
-                      </>
-                    ) : syncStatus === 'error' ? (
-                      <>
-                        <div className="w-2 h-2 bg-red-400 rounded-full" />
-                        <span>Sync error</span>
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-2 h-2 bg-green-400 rounded-full" />
-                        <span>Synced to cloud</span>
-                      </>
-                    )}
-                  </div>
+              {/* Top Row - Title, Sync Status, and Share Button */}
+              <div className="flex justify-between items-start gap-4">
+                <div className="flex-1">
+                  <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
+                  {state.projectDescription && (
+                    <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                      {state.projectDescription}
+                    </p>
+                  )}
+                  {/* Sync Status */}
+                  {!readOnly && cloudSyncEnabled && (
+                    <div className="flex items-center gap-2 text-xs text-blue-100 mt-1">
+                      {isSyncing ? (
+                        <>
+                          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                          <span>Syncing...</span>
+                        </>
+                      ) : syncStatus === 'error' ? (
+                        <>
+                          <div className="w-2 h-2 bg-red-400 rounded-full" />
+                          <span>Sync error</span>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-2 h-2 bg-green-400 rounded-full" />
+                          <span>Synced to cloud</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Share Button - aligned right */}
+                {!readOnly && user && (
+                  <button
+                    onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
+                    disabled={shareLoading}
+                    className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
+                    title={isShared ? 'Manage share link' : 'Share project publicly'}
+                  >
+                    <span>{isShared ? '🔗' : '📤'}</span>
+                    <span>{isShared ? 'Shared' : 'Share'}</span>
+                  </button>
                 )}
               </div>
 
-              {/* Bottom Row - Back Button and Action Buttons */}
+              {/* Bottom Row - Back Button and Other Action Buttons */}
               <div className="flex justify-between items-center gap-2">
                 {!readOnly && (
                   <button
@@ -260,19 +275,6 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                   {/* Hide these buttons in read-only mode */}
                   {!readOnly && (
                     <>
-                      {/* Share Button */}
-                      {user && (
-                        <button
-                          onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
-                          disabled={shareLoading}
-                          className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
-                          title={isShared ? 'Manage share link' : 'Share project publicly'}
-                        >
-                          <span>{isShared ? '🔗' : '📤'}</span>
-                          <span>{isShared ? 'Shared' : 'Share'}</span>
-                        </button>
-                      )}
-
                       <Link
                         to="/templates"
                         className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
