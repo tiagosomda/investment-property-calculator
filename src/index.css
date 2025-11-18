@@ -19,6 +19,14 @@
   }
 }
 
+html {
+  background-color: rgb(249 250 251); /* bg-gray-50 */
+}
+
+html.dark {
+  background-color: rgb(17 24 39); /* bg-gray-900 */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -26,4 +34,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(249 250 251); /* bg-gray-50 */
+}
+
+body.dark {
+  background-color: rgb(17 24 39); /* bg-gray-900 */
+}
+
+#root {
+  background-color: rgb(249 250 251); /* bg-gray-50 */
+}
+
+#root.dark {
+  background-color: rgb(17 24 39); /* bg-gray-900 */
 }

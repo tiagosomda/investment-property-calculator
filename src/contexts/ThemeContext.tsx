@@ -20,10 +20,18 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const root = window.document.documentElement;
+    const body = window.document.body;
+    const rootElement = window.document.getElementById('root');
 
     const applyTheme = (newTheme: 'light' | 'dark') => {
       root.classList.remove('light', 'dark');
       root.classList.add(newTheme);
+      body.classList.remove('light', 'dark');
+      body.classList.add(newTheme);
+      if (rootElement) {
+        rootElement.classList.remove('light', 'dark');
+        rootElement.classList.add(newTheme);
+      }
       setEffectiveTheme(newTheme);
     };
 

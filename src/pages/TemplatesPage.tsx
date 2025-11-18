@@ -122,6 +122,15 @@ export function TemplatesPage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 max-w-4xl">
+        {/* Info Card */}
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+          <p className="text-sm text-blue-800 dark:text-blue-400">
+            Templates define the default expense categories for each unit type. When you add a new unit,
+            it will automatically include these expense items. You can customize them here and they will
+            be saved locally in your browser.
+          </p>
+        </div>
+
         {/* Tab Navigation - Responsive */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm mb-6 overflow-hidden">
           {/* Desktop: Horizontal Tabs */}
@@ -178,18 +187,6 @@ export function TemplatesPage() {
               onChange={(expenses) => saveTemplates(activeTab, expenses)}
             />
           </div>
-        </div>
-
-        {/* Info Card */}
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2">
-            About Templates
-          </h3>
-          <p className="text-sm text-blue-800 dark:text-blue-400">
-            Templates define the default expense categories for each unit type. When you add a new unit,
-            it will automatically include these expense items. You can customize them here and they will
-            be saved locally in your browser.
-          </p>
         </div>
       </div>
 

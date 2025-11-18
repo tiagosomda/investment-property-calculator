@@ -71,7 +71,7 @@ export async function saveProjectToFirestore(userId: string, project: Project): 
     updatedAt: serverTimestamp(),
   };
 
-  await setDoc(projectRef, firestoreProject);
+  await setDoc(projectRef, firestoreProject, { merge: true });
 }
 
 // Get project from Firestore
