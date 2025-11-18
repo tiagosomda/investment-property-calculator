@@ -16,7 +16,8 @@ import {
   formatCurrency,
   formatPercent,
 } from '../../utils';
-import { Card, Button, ThemeToggle, ToastContainer, Dropdown, DropdownItem } from '../ui';
+import { deleteProjectFromFirestore } from '../../firebase/firestore';
+import { Card, Button, ThemeToggle, ToastContainer, Dropdown, DropdownItem, Modal } from '../ui';
 import { useToast } from '../../hooks';
 import { useAuth, useCloudSync } from '../../contexts';
 
@@ -29,6 +30,8 @@ export function HomePage() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<{ id: string; name: string } | null>(null);
 
   // Reload projects when cloud sync completes
   useEffect(() => {
@@ -58,11 +61,38 @@ export function HomePage() {
     navigate('/calculator');
   };
 
-  const handleDeleteProject = (id: string, name: string) => {
-    if (confirm(`Are you sure you want to delete "${name}"? This cannot be undone.`)) {
-      deleteProject(id);
-      setProjects(getAllProjects());
+  const handleDeleteClick = (id: string, name: string) => {
+    setProjectToDelete({ id, name });
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!projectToDelete) return;
+
+    const { id, name } = projectToDelete;
+
+    // Delete from localStorage
+    deleteProject(id);
+
+    // Also delete from Firestore if cloud sync is enabled
+    if (user && cloudSyncEnabled) {
+      try {
+        await deleteProjectFromFirestore(id);
+      } catch (error) {
+        console.error('Error deleting project from cloud:', error);
+        showToast('Project deleted locally but failed to delete from cloud', 'warning');
+      }
     }
+
+    setProjects(getAllProjects());
+    setDeleteModalOpen(false);
+    setProjectToDelete(null);
+    showToast(`"${name}" has been deleted`, 'success');
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteModalOpen(false);
+    setProjectToDelete(null);
   };
 
   return (
@@ -96,9 +126,15 @@ export function HomePage() {
                 className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                 title={user ? 'Profile' : 'Sign In'}
               >
-                <span>👤</span>
+                <span>🏠</span>
                 <span>{user ? 'Profile' : 'Login'}</span>
-                {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
+                {user && (
+                  cloudSyncEnabled ? (
+                    <span className="text-base" style={{ filter: 'grayscale(100%) brightness(0) invert(0.6) sepia(1) hue-rotate(80deg) saturate(5)' }}>☁️</span>
+                  ) : (
+                    <span className="text-base opacity-50">☁️</span>
+                  )
+                )}
               </Link>
 
               <ThemeToggle />
@@ -110,16 +146,16 @@ export function HomePage() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your Investment Opportunities</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your Investments</h2>
           <Button onClick={() => setShowCreateForm(!showCreateForm)}>
-            {showCreateForm ? 'Cancel' : '+ New Project'}
+            {showCreateForm ? 'Cancel' : '+ New Investment'}
           </Button>
         </div>
 
         {/* Create Form */}
         {showCreateForm && (
           <Card className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New Project</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New Investment</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
@@ -149,7 +185,7 @@ export function HomePage() {
               </div>
 
               <div className="flex gap-2">
-                <Button onClick={handleCreateProject}>Create Project</Button>
+                <Button onClick={handleCreateProject}>Create</Button>
                 <Button
                   onClick={() => {
                     setShowCreateForm(false);
@@ -284,7 +320,7 @@ export function HomePage() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleDeleteProject(project.id, project.name);
+                          handleDeleteClick(project.id, project.name);
                         }}
                         className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                       >
@@ -300,6 +336,24 @@ export function HomePage() {
 
       {/* Toast Notifications */}
       <ToastContainer toasts={toasts} onClose={removeToast} />
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Delete Project"
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmVariant="danger"
+      >
+        <p>
+          Are you sure you want to delete <strong>"{projectToDelete?.name}"</strong>?
+        </p>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          This action cannot be undone.
+        </p>
+      </Modal>
     </div>
   );
 }

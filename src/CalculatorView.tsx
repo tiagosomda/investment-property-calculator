@@ -290,9 +290,15 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                         className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                         title={user ? 'Profile' : 'Sign In'}
                       >
-                        <span>👤</span>
+                        <span>🏠</span>
                         <span>{user ? 'Profile' : 'Login'}</span>
-                        {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
+                        {user && (
+                          cloudSyncEnabled ? (
+                            <span className="text-base" style={{ filter: 'grayscale(100%) brightness(0) invert(0.6) sepia(1) hue-rotate(80deg) saturate(5)' }}>☁️</span>
+                          ) : (
+                            <span className="text-base opacity-50">☁️</span>
+                          )
+                        )}
                       </Link>
                     </>
                   )}
