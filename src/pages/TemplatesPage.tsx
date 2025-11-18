@@ -83,7 +83,15 @@ export function TemplatesPage() {
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
         <div className="px-4 py-4">
           <div className="space-y-3">
-            {/* Top Row - Back Button and Action Buttons */}
+            {/* Top Row - Title */}
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold">Expense Templates</h1>
+              <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                Customize default expense templates for each unit type
+              </p>
+            </div>
+
+            {/* Bottom Row - Back Button and Action Buttons */}
             <div className="flex justify-between items-center gap-2">
               <button
                 onClick={() => navigate(-1)}
@@ -112,14 +120,6 @@ export function TemplatesPage() {
 
                 <ThemeToggle />
               </div>
-            </div>
-
-            {/* Bottom Row - Title */}
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold">Expense Templates</h1>
-              <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
-                Customize default expense templates for each unit type
-              </p>
             </div>
           </div>
         </div>

@@ -71,7 +71,15 @@ export function HomePage() {
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
         <div className="px-4 py-4">
           <div className="space-y-3">
-            {/* Action Buttons Row - Top */}
+            {/* Title Row - Top */}
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold">Investment Property Calculator</h1>
+              <p className="text-blue-100 text-sm sm:text-base mt-1">
+                Analyze rental properties and track investment performance
+              </p>
+            </div>
+
+            {/* Action Buttons Row - Bottom */}
             <div className="flex gap-2 justify-end">
               <Dropdown
                 trigger={
@@ -95,14 +103,6 @@ export function HomePage() {
               </Dropdown>
 
               <ThemeToggle />
-            </div>
-
-            {/* Title Row - Bottom */}
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Investment Property Calculator</h1>
-              <p className="text-blue-100 text-sm sm:text-base mt-1">
-                Analyze rental properties and track investment performance
-              </p>
             </div>
           </div>
         </div>

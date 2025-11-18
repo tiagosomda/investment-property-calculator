@@ -204,7 +204,38 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
         <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
           <div className="px-4 py-4">
             <div className="space-y-3">
-              {/* Top Row - Back Button and Action Buttons */}
+              {/* Top Row - Title and Sync Status */}
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
+                {state.projectDescription && (
+                  <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                    {state.projectDescription}
+                  </p>
+                )}
+                {/* Sync Status */}
+                {!readOnly && cloudSyncEnabled && (
+                  <div className="flex items-center gap-2 text-xs text-blue-100 mt-1">
+                    {isSyncing ? (
+                      <>
+                        <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                        <span>Syncing...</span>
+                      </>
+                    ) : syncStatus === 'error' ? (
+                      <>
+                        <div className="w-2 h-2 bg-red-400 rounded-full" />
+                        <span>Sync error</span>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-2 h-2 bg-green-400 rounded-full" />
+                        <span>Synced to cloud</span>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Row - Back Button and Action Buttons */}
               <div className="flex justify-between items-center gap-2">
                 {!readOnly && (
                   <button
@@ -260,37 +291,6 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
 
                   <ThemeToggle />
                 </div>
-              </div>
-
-              {/* Bottom Row - Title and Sync Status */}
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
-                {state.projectDescription && (
-                  <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
-                    {state.projectDescription}
-                  </p>
-                )}
-                {/* Sync Status */}
-                {!readOnly && cloudSyncEnabled && (
-                  <div className="flex items-center gap-2 text-xs text-blue-100 mt-1">
-                    {isSyncing ? (
-                      <>
-                        <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-                        <span>Syncing...</span>
-                      </>
-                    ) : syncStatus === 'error' ? (
-                      <>
-                        <div className="w-2 h-2 bg-red-400 rounded-full" />
-                        <span>Sync error</span>
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-2 h-2 bg-green-400 rounded-full" />
-                        <span>Synced to cloud</span>
-                      </>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
           </div>
