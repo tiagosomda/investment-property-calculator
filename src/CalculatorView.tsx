@@ -257,36 +257,42 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                 )}
 
                 <div className="flex gap-2 ml-auto">
-                  {/* Hide menu in read-only mode */}
+                  {/* Hide these buttons in read-only mode */}
                   {!readOnly && (
-                    <Dropdown
-                      trigger={
-                        <>
-                          <span>⋮</span>
-                          <span>Menu</span>
-                        </>
-                      }
-                    >
+                    <>
+                      {/* Share Button */}
                       {user && (
-                        <DropdownItem
-                          icon={isShared ? '🔗' : '📤'}
-                          label={isShared ? 'Manage Sharing' : 'Share Project'}
-                          onClick={isShared ? () => { setShowShareModal(true); } : handleShareProject}
+                        <button
+                          onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
                           disabled={shareLoading}
-                        />
+                          className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
+                          title={isShared ? 'Manage share link' : 'Share project publicly'}
+                        >
+                          <span>{isShared ? '🔗' : '📤'}</span>
+                          <span>{isShared ? 'Shared' : 'Share'}</span>
+                        </button>
                       )}
-                      <DropdownItem
-                        icon="⚙️"
-                        label="Templates"
-                        href="/templates"
-                      />
-                      <DropdownItem
-                        icon="👤"
-                        label={user ? 'Profile' : 'Login'}
-                        href={user ? '/profile' : '/login'}
-                        badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
-                      />
-                    </Dropdown>
+
+                      <Link
+                        to="/templates"
+                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
+                        title="Expense Templates Settings"
+                      >
+                        <span>⚙️</span>
+                        <span>Templates</span>
+                      </Link>
+
+                      {/* User Profile/Login */}
+                      <Link
+                        to={user ? '/profile' : '/login'}
+                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                        title={user ? 'Profile' : 'Sign In'}
+                      >
+                        <span>👤</span>
+                        <span>{user ? 'Profile' : 'Login'}</span>
+                        {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
+                      </Link>
+                    </>
                   )}
 
                   <ThemeToggle />
