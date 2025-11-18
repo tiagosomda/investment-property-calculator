@@ -69,14 +69,17 @@ export function HomePage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
-        <div className="container mx-auto px-4 py-4 sm:py-8">
-          <div className="flex justify-between items-start gap-4">
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="space-y-3">
+            {/* Title Row */}
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold">Investment Property Calculator</h1>
-              <p className="text-blue-100 text-sm sm:text-base mt-2">
+              <h1 className="text-2xl sm:text-3xl font-bold">Investment Property Calculator</h1>
+              <p className="text-blue-100 text-sm sm:text-base mt-1">
                 Analyze rental properties and track investment performance
               </p>
             </div>
+
+            {/* Action Buttons Row */}
             <div className="flex gap-2 flex-wrap">
               <Link
                 to="/templates"

@@ -78,8 +78,9 @@ export function TemplatesPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center gap-4">
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="space-y-3">
+            {/* Title and Back Button Row */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate(-1)}
@@ -88,14 +89,18 @@ export function TemplatesPage() {
               >
                 ← Back
               </button>
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold">Expense Templates</h1>
-                <p className="text-blue-100 text-sm mt-1">
+              <div className="flex-1">
+                <h1 className="text-xl sm:text-2xl font-bold">Expense Templates</h1>
+                <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
                   Customize default expense templates for each unit type
                 </p>
               </div>
             </div>
-            <ThemeToggle />
+
+            {/* Theme Toggle Row */}
+            <div className="flex justify-end">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>

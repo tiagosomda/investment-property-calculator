@@ -203,40 +203,42 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
         {/* Header */}
         <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
           <div className="container mx-auto px-4 py-4 sm:py-6">
-            <div className="flex justify-between items-start gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-3">
-                  {!readOnly && (
-                    <button
-                      onClick={handleBackToHome}
-                      className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
-                      title="Back to Projects"
-                    >
-                      ← Projects
-                    </button>
+            <div className="space-y-3">
+              {/* Title and Back Button Row */}
+              <div className="flex items-center gap-3">
+                {!readOnly && (
+                  <button
+                    onClick={handleBackToHome}
+                    className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
+                    title="Back to Projects"
+                  >
+                    ← Projects
+                  </button>
+                )}
+                {readOnly && (
+                  <Link
+                    to="/"
+                    className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
+                    title="Go to Home"
+                  >
+                    ← Home
+                  </Link>
+                )}
+                <div className="flex-1">
+                  <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
+                  {state.projectDescription && (
+                    <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                      {state.projectDescription}
+                    </p>
                   )}
-                  {readOnly && (
-                    <Link
-                      to="/"
-                      className="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 rounded-lg text-sm font-medium transition-colors"
-                      title="Go to Home"
-                    >
-                      ← Home
-                    </Link>
-                  )}
-                  <div>
-                    <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
-                    {state.projectDescription && (
-                      <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
-                        {state.projectDescription}
-                      </p>
-                    )}
-                  </div>
                 </div>
+              </div>
 
+              {/* Action Buttons and Sync Status Row */}
+              <div className="flex justify-between items-center gap-4">
                 {/* Sync Status - hide in read-only mode */}
                 {!readOnly && cloudSyncEnabled && (
-                  <div className="mt-2 flex items-center gap-2 text-xs text-blue-100">
+                  <div className="flex items-center gap-2 text-xs text-blue-100">
                     {isSyncing ? (
                       <>
                         <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
@@ -255,47 +257,47 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                     )}
                   </div>
                 )}
-              </div>
 
-              <div className="flex gap-2 flex-wrap">
-                {/* Hide these buttons in read-only mode */}
-                {!readOnly && (
-                  <>
-                    {/* Share Button */}
-                    {user && (
-                      <button
-                        onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
-                        disabled={shareLoading}
-                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
-                        title={isShared ? 'Manage share link' : 'Share project publicly'}
+                <div className="flex gap-2 flex-wrap ml-auto">
+                  {/* Hide these buttons in read-only mode */}
+                  {!readOnly && (
+                    <>
+                      {/* Share Button */}
+                      {user && (
+                        <button
+                          onClick={isShared ? () => setShowShareModal(true) : handleShareProject}
+                          disabled={shareLoading}
+                          className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
+                          title={isShared ? 'Manage share link' : 'Share project publicly'}
+                        >
+                          <span>{isShared ? '🔗' : '📤'}</span>
+                          <span>{isShared ? 'Shared' : 'Share'}</span>
+                        </button>
+                      )}
+
+                      <Link
+                        to="/templates"
+                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
+                        title="Expense Templates Settings"
                       >
-                        <span>{isShared ? '🔗' : '📤'}</span>
-                        <span>{isShared ? 'Shared' : 'Share'}</span>
-                      </button>
-                    )}
+                        <span>⚙️</span>
+                        <span>Templates</span>
+                      </Link>
 
-                    <Link
-                      to="/templates"
-                      className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
-                      title="Expense Templates Settings"
-                    >
-                      <span>⚙️</span>
-                      <span>Templates</span>
-                    </Link>
+                      {/* User Profile/Login */}
+                      <Link
+                        to={user ? '/profile' : '/login'}
+                        className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                        title={user ? 'Profile' : 'Sign In'}
+                      >
+                        <span>{user ? 'Profile' : 'Login'}</span>
+                        {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
+                      </Link>
+                    </>
+                  )}
 
-                    {/* User Profile/Login */}
-                    <Link
-                      to={user ? '/profile' : '/login'}
-                      className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-                      title={user ? 'Profile' : 'Sign In'}
-                    >
-                      <span>{user ? 'Profile' : 'Login'}</span>
-                      {cloudSyncEnabled && <span className="text-xs text-green-400">☁️</span>}
-                    </Link>
-                  </>
-                )}
-
-                <ThemeToggle />
+                  <ThemeToggle />
+                </div>
               </div>
             </div>
           </div>
