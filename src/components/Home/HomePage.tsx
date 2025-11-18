@@ -8,7 +8,7 @@ import { TemplateSettings } from '../Templates';
 
 export function HomePage() {
   const { user } = useAuth();
-  const { cloudSyncEnabled, isSyncing } = useCloudSync();
+  const { cloudSyncEnabled } = useCloudSync();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectListItem[]>(getAllProjects());
   const [showCreateForm, setShowCreateForm] = useState(false);
