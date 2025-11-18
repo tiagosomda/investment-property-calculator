@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CalculatorView } from './CalculatorView';
 import { HomePage } from './components/Home';
-import { LoginPage, ProfilePage, SharedPropertyPage } from './pages';
+import { LoginPage, ProfilePage, SharedPropertyPage, TemplatesPage } from './pages';
 import { useAuth } from './contexts';
 
 // Protected route wrapper
@@ -32,6 +32,7 @@ export function AppRouter() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/templates" element={<TemplatesPage />} />
       <Route path="/shared/:projectId" element={<SharedPropertyPage />} />
       <Route
         path="/profile"

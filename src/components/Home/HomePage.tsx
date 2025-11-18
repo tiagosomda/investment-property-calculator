@@ -19,7 +19,6 @@ import {
 import { Card, Button, ThemeToggle, ToastContainer } from '../ui';
 import { useToast } from '../../hooks';
 import { useAuth, useCloudSync } from '../../contexts';
-import { TemplateSettings } from '../Templates';
 
 export function HomePage() {
   const { user } = useAuth();
@@ -28,7 +27,6 @@ export function HomePage() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectListItem[]>(getAllProjects());
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [showTemplateSettings, setShowTemplateSettings] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
 
@@ -73,14 +71,14 @@ export function HomePage() {
               </p>
             </div>
             <div className="flex flex-col xs:flex-row gap-1 sm:gap-2">
-              <button
-                onClick={() => setShowTemplateSettings(true)}
+              <Link
+                to="/templates"
                 className="px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
                 title="Expense Templates Settings"
               >
                 <span>⚙️</span>
                 <span className="hidden xs:inline">Templates</span>
-              </button>
+              </Link>
 
               {/* User Profile/Login */}
               <Link
@@ -288,11 +286,6 @@ export function HomePage() {
           </div>
         )}
       </div>
-
-      {/* Template Settings Modal */}
-      {showTemplateSettings && (
-        <TemplateSettings onClose={() => setShowTemplateSettings(false)} showToast={showToast} />
-      )}
 
       {/* Toast Notifications */}
       <ToastContainer toasts={toasts} onClose={removeToast} />

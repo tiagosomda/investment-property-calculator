@@ -5,7 +5,6 @@ import { PropertyDetails } from './components/PropertyDetails';
 import { UnitList } from './components/Units';
 import { PropertySummary } from './components/Summary';
 import { ComparisonDashboard } from './components/Comparison';
-import { TemplateSettings } from './components/Templates';
 import { AppreciationScenarios, SensitivityAnalysis } from './components/Advanced';
 import { ThemeToggle, ToastContainer } from './components/ui';
 import { useToast } from './hooks';
@@ -23,7 +22,6 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
   const { cloudSyncEnabled, syncStatus, isSyncing } = useCloudSync();
   const { toasts, showToast, removeToast } = useToast();
   const [activeTab, setActiveTab] = useState<'property' | 'units' | 'summary'>('property');
-  const [showTemplateSettings, setShowTemplateSettings] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [isShared, setIsShared] = useState(false);
   const [shareLoading, setShareLoading] = useState(false);
@@ -276,14 +274,14 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                       </button>
                     )}
 
-                    <button
-                      onClick={() => setShowTemplateSettings(true)}
+                    <Link
+                      to="/templates"
                       className="px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
                       title="Expense Templates Settings"
                     >
                       <span>⚙️</span>
                       <span className="hidden xs:inline">Templates</span>
-                    </button>
+                    </Link>
 
                     {/* User Profile/Login */}
                     <Link
@@ -355,11 +353,6 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
           )}
         </div>
       </div>
-
-      {/* Template Settings Modal */}
-      {showTemplateSettings && (
-        <TemplateSettings onClose={() => setShowTemplateSettings(false)} showToast={showToast} />
-      )}
 
       {/* Share Modal */}
       {showShareModal && isShared && (
