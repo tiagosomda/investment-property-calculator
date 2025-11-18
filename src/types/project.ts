@@ -12,6 +12,7 @@ export interface Project {
   createdAt: string;
   updatedAt: string;
   isShared?: boolean;
+  sharedWith?: string[]; // Array of email addresses with edit access
 }
 
 export interface ProjectListItem {

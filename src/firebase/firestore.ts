@@ -178,3 +178,65 @@ export async function isProjectShared(projectId: string): Promise<boolean> {
 
   return false;
 }
+
+// Add a collaborator to a project
+export async function addCollaborator(projectId: string, email: string): Promise<void> {
+  const projectRef = doc(db, PROPERTIES_COLLECTION, projectId);
+  const projectSnap = await getDoc(projectRef);
+
+  if (!projectSnap.exists()) {
+    throw new Error('Project not found');
+  }
+
+  const data = projectSnap.data() as FirestoreProject;
+  const currentCollaborators = data.sharedWith || [];
+
+  // Don't add if already a collaborator
+  if (currentCollaborators.includes(email)) {
+    return;
+  }
+
+  await setDoc(
+    projectRef,
+    {
+      sharedWith: [...currentCollaborators, email],
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+}
+
+// Remove a collaborator from a project
+export async function removeCollaborator(projectId: string, email: string): Promise<void> {
+  const projectRef = doc(db, PROPERTIES_COLLECTION, projectId);
+  const projectSnap = await getDoc(projectRef);
+
+  if (!projectSnap.exists()) {
+    throw new Error('Project not found');
+  }
+
+  const data = projectSnap.data() as FirestoreProject;
+  const currentCollaborators = data.sharedWith || [];
+
+  await setDoc(
+    projectRef,
+    {
+      sharedWith: currentCollaborators.filter((e) => e !== email),
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+}
+
+// Get list of collaborators for a project
+export async function getCollaborators(projectId: string): Promise<string[]> {
+  const projectRef = doc(db, PROPERTIES_COLLECTION, projectId);
+  const projectSnap = await getDoc(projectRef);
+
+  if (projectSnap.exists()) {
+    const data = projectSnap.data() as FirestoreProject;
+    return data.sharedWith || [];
+  }
+
+  return [];
+}
