@@ -16,7 +16,7 @@ Use the provided script to automatically upload all secrets from your `.env.loca
 - Install GitHub CLI: https://cli.github.com/
 - Authenticate: `gh auth login`
 
-**On macOS/Linux:**
+**On macOS/Linux (Bash):**
 ```bash
 bash setup-secrets.sh
 ```
@@ -24,6 +24,11 @@ bash setup-secrets.sh
 **On Windows (PowerShell):**
 ```powershell
 .\setup-secrets.ps1
+```
+
+**Cross-platform (Python 3):**
+```bash
+python setup-secrets.py
 ```
 
 The script will read your `.env.local` file and upload all environment variables as GitHub Secrets automatically.
