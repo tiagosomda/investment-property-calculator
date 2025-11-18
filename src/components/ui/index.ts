@@ -4,3 +4,4 @@ export * from './Button';
 export * from './ThemeToggle';
 export * from './Toast';
 export * from './Dropdown';
+export * from './Modal';
