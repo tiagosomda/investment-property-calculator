@@ -1,7 +1,21 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ProjectListItem } from '../../types';
-import { getAllProjects, deleteProject, createNewProject, saveProject, setCurrentProjectId, getProject } from '../../utils';
+import {
+  getAllProjects,
+  deleteProject,
+  createNewProject,
+  saveProject,
+  setCurrentProjectId,
+  getProject,
+  calculateUnitMonthlyRevenue,
+  calculateUnitMonthlyExpenses,
+  calculatePropertyMonthlyExpenses,
+  getPropertyMortgagePayment,
+  calculateTotalInvestment,
+  formatCurrency,
+  formatPercent,
+} from '../../utils';
 import { Card, Button, ThemeToggle } from '../ui';
 import { useAuth, useCloudSync } from '../../contexts';
 import { TemplateSettings } from '../Templates';
@@ -162,9 +176,28 @@ export function HomePage() {
               .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
               .map((project) => {
                 const fullProject = getProject(project.id);
-                const purchasePrice = fullProject?.property.purchasePrice || 0;
-                const downPayment = fullProject?.property.downPaymentPercent || 0;
-                const unitCount = fullProject?.units.length || 0;
+                if (!fullProject) return null;
+
+                const { property, units } = fullProject;
+
+                // Calculate totals
+                const totalMonthlyRevenue = units.reduce(
+                  (sum, unit) => sum + calculateUnitMonthlyRevenue(unit),
+                  0
+                );
+
+                const totalUnitExpenses = units.reduce(
+                  (sum, unit) => sum + calculateUnitMonthlyExpenses(unit, property.purchasePrice),
+                  0
+                );
+
+                const propertyExpenses = calculatePropertyMonthlyExpenses(property);
+                const mortgage = getPropertyMortgagePayment(property);
+                const totalMonthlyExpenses = totalUnitExpenses + propertyExpenses;
+                const monthlyCashFlow = totalMonthlyRevenue - totalMonthlyExpenses - mortgage.monthlyPayment;
+                const annualCashFlow = monthlyCashFlow * 12;
+                const totalInvestment = calculateTotalInvestment(property);
+                const cashOnCashReturn = totalInvestment > 0 ? (annualCashFlow / totalInvestment) * 100 : 0;
 
                 return (
                   <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
@@ -179,16 +212,44 @@ export function HomePage() {
                       )}
                       <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
                         <div className="flex justify-between">
-                          <span className="text-gray-500 dark:text-gray-400">Purchase Price:</span>
-                          <span className="font-semibold">${purchasePrice.toLocaleString()}</span>
+                          <span className="text-gray-500 dark:text-gray-400">Unit Expenses:</span>
+                          <span className="font-semibold text-red-600 dark:text-red-400">
+                            -{formatCurrency(totalUnitExpenses)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-500 dark:text-gray-400">Down Payment:</span>
-                          <span className="font-semibold">{downPayment}%</span>
+                          <span className="text-gray-500 dark:text-gray-400">Property Expenses:</span>
+                          <span className="font-semibold text-red-600 dark:text-red-400">
+                            -{formatCurrency(propertyExpenses)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-500 dark:text-gray-400">Units:</span>
-                          <span className="font-semibold">{unitCount}</span>
+                          <span className="text-gray-500 dark:text-gray-400">Mortgage (P&I):</span>
+                          <span className="font-semibold text-red-600 dark:text-red-400">
+                            -{formatCurrency(mortgage.monthlyPayment)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-1 mt-1">
+                          <span className="text-gray-500 dark:text-gray-400">Monthly Cash Flow:</span>
+                          <span className={`font-bold ${monthlyCashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                            {formatCurrency(monthlyCashFlow)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Annual Cash Flow:</span>
+                          <span className={`font-semibold ${annualCashFlow >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                            {formatCurrency(annualCashFlow)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Total Investment:</span>
+                          <span className="font-semibold">{formatCurrency(totalInvestment)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-500 dark:text-gray-400">Cash on Cash Return:</span>
+                          <span className={`font-bold ${cashOnCashReturn >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                            {formatPercent(cashOnCashReturn)}
+                          </span>
                         </div>
                       </div>
                     </div>
