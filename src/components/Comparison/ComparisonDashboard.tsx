@@ -1,5 +1,5 @@
+import { useState, useEffect } from 'react';
 import { useProperty } from '../../contexts';
-import { Card } from '../ui';
 import {
   calculateUnitMonthlyRevenue,
   calculateUnitMonthlyExpenses,
@@ -12,8 +12,38 @@ import {
 } from '../../utils';
 
 export function ComparisonDashboard() {
-  const { state } = useProperty();
+  const { state, dispatch } = useProperty();
   const { property, units, comparison } = state;
+
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const saved = localStorage.getItem('comparison-collapsed');
+    return saved ? JSON.parse(saved) : true;
+  });
+
+  const [editingHysa, setEditingHysa] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(false);
+  const [hysaInput, setHysaInput] = useState(comparison.hysaRate.toString());
+  const [indexInput, setIndexInput] = useState(comparison.indexFundTotalRate.toString());
+
+  useEffect(() => {
+    localStorage.setItem('comparison-collapsed', JSON.stringify(isCollapsed));
+  }, [isCollapsed]);
+
+  const handleHysaChange = (value: string) => {
+    const num = parseFloat(value);
+    if (!isNaN(num) && num >= 0 && num <= 100) {
+      dispatch({ type: 'UPDATE_COMPARISON', payload: { hysaRate: num } });
+      localStorage.setItem('comparison-hysa-rate', num.toString());
+    }
+  };
+
+  const handleIndexChange = (value: string) => {
+    const num = parseFloat(value);
+    if (!isNaN(num) && num >= 0 && num <= 100) {
+      dispatch({ type: 'UPDATE_COMPARISON', payload: { indexFundTotalRate: num } });
+      localStorage.setItem('comparison-index-rate', num.toString());
+    }
+  };
 
   // Calculate property metrics
   const totalMonthlyRevenue = units.reduce(
@@ -53,8 +83,20 @@ export function ComparisonDashboard() {
   const index5Year = totalInvestment * Math.pow(1 + comparison.indexFundTotalRate / 100, 5);
 
   return (
-    <Card title="Investment Comparison">
-      <div className="overflow-x-auto">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <button
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        className="w-full flex items-center justify-between p-4 sm:p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+      >
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Investment Comparison</h2>
+        <span className="text-gray-500 dark:text-gray-400 text-xl">
+          {isCollapsed ? '▼' : '▲'}
+        </span>
+      </button>
+
+      {!isCollapsed && (
+        <div className="px-4 pb-4 sm:px-6 sm:pb-6">
+          <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-200 dark:border-gray-700">
@@ -96,9 +138,71 @@ export function ComparisonDashboard() {
               <td className="text-right py-2 px-2 font-semibold bg-blue-50 dark:bg-blue-900/30 text-gray-900 dark:text-white">
                 {formatPercent(totalInvestment > 0 ? (totalReturn / totalInvestment) * 100 : 0)}
               </td>
-              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatPercent(comparison.hysaRate)}</td>
               <td className="text-right py-2 px-2 text-gray-900 dark:text-white">
-                {formatPercent(comparison.indexFundTotalRate)}
+                {editingHysa ? (
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={hysaInput}
+                    onChange={(e) => setHysaInput(e.target.value)}
+                    onBlur={() => {
+                      handleHysaChange(hysaInput);
+                      setEditingHysa(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleHysaChange(hysaInput);
+                        setEditingHysa(false);
+                      }
+                    }}
+                    className="w-16 px-1 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-right"
+                    autoFocus
+                  />
+                ) : (
+                  <span
+                    onClick={() => {
+                      setEditingHysa(true);
+                      setHysaInput(comparison.hysaRate.toString());
+                    }}
+                    className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-1 rounded"
+                    title="Click to edit"
+                  >
+                    {formatPercent(comparison.hysaRate)}
+                  </span>
+                )}
+              </td>
+              <td className="text-right py-2 px-2 text-gray-900 dark:text-white">
+                {editingIndex ? (
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={indexInput}
+                    onChange={(e) => setIndexInput(e.target.value)}
+                    onBlur={() => {
+                      handleIndexChange(indexInput);
+                      setEditingIndex(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleIndexChange(indexInput);
+                        setEditingIndex(false);
+                      }
+                    }}
+                    className="w-16 px-1 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-right"
+                    autoFocus
+                  />
+                ) : (
+                  <span
+                    onClick={() => {
+                      setEditingIndex(true);
+                      setIndexInput(comparison.indexFundTotalRate.toString());
+                    }}
+                    className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-1 rounded"
+                    title="Click to edit"
+                  >
+                    {formatPercent(comparison.indexFundTotalRate)}
+                  </span>
+                )}
               </td>
             </tr>
             <tr>
@@ -109,40 +213,21 @@ export function ComparisonDashboard() {
               <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(hysa5Year)}</td>
               <td className="text-right py-2 px-2 text-gray-900 dark:text-white">{formatCurrency(index5Year)}</td>
             </tr>
-            <tr>
-              <td className="sticky left-0 bg-white dark:bg-gray-800 py-2 pr-4 text-gray-700 dark:text-gray-200">Liquidity</td>
-              <td className="text-right py-2 px-2 bg-blue-50 dark:bg-blue-900/30">
-                <span className="text-orange-600 dark:text-orange-400 font-semibold">Low</span>
-              </td>
-              <td className="text-right py-2 px-2">
-                <span className="text-green-600 dark:text-green-400 font-semibold">High</span>
-              </td>
-              <td className="text-right py-2 px-2">
-                <span className="text-green-600 dark:text-green-400 font-semibold">High</span>
-              </td>
-            </tr>
-            <tr>
-              <td className="sticky left-0 bg-white dark:bg-gray-800 py-2 pr-4 text-gray-700 dark:text-gray-200">Work Required</td>
-              <td className="text-right py-2 px-2 bg-blue-50 dark:bg-blue-900/30">
-                <span className="text-orange-600 dark:text-orange-400 font-semibold">Moderate-High</span>
-              </td>
-              <td className="text-right py-2 px-2">
-                <span className="text-green-600 dark:text-green-400 font-semibold">None</span>
-              </td>
-              <td className="text-right py-2 px-2">
-                <span className="text-green-600 dark:text-green-400 font-semibold">None</span>
-              </td>
-            </tr>
           </tbody>
         </table>
-      </div>
+          </div>
 
-      <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-        <p>
-          * Year 5 wealth projection is simplified and assumes consistent cash flow, no
-          appreciation, and compound growth for alternative investments.
-        </p>
-      </div>
-    </Card>
+          <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+            <p>
+              * Year 5 wealth projection is simplified and assumes consistent cash flow, no
+              appreciation, and compound growth for alternative investments.
+            </p>
+            <p className="mt-1">
+              * Click on HYSA or Index Fund return rates to edit them. Changes are saved globally.
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

@@ -355,9 +355,9 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
           {activeTab === 'summary' && (
             <div className="space-y-6">
               <PropertySummary />
-              <ComparisonDashboard />
               <AppreciationScenarios />
               <SensitivityAnalysis />
+              <ComparisonDashboard />
             </div>
           )}
         </div>

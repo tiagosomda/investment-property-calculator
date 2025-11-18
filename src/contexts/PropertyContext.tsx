@@ -39,10 +39,15 @@ const defaultProperty: Property = {
   hoaFees: 0,
 };
 
-const defaultComparison: ComparisonRates = {
-  hysaRate: 3.0,
-  indexFundTotalRate: 10.0,
-  indexDividendRate: 2.0,
+const getDefaultComparison = (): ComparisonRates => {
+  const savedHysa = localStorage.getItem('comparison-hysa-rate');
+  const savedIndex = localStorage.getItem('comparison-index-rate');
+
+  return {
+    hysaRate: savedHysa ? parseFloat(savedHysa) : 3.0,
+    indexFundTotalRate: savedIndex ? parseFloat(savedIndex) : 10.0,
+    indexDividendRate: 2.0,
+  };
 };
 
 const initialState: PropertyState = {
@@ -51,7 +56,7 @@ const initialState: PropertyState = {
   projectDescription: '',
   property: defaultProperty,
   units: [],
-  comparison: defaultComparison,
+  comparison: getDefaultComparison(),
 };
 
 function propertyReducer(state: PropertyState, action: PropertyAction): PropertyState {
