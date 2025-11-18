@@ -83,29 +83,8 @@ export function TemplatesPage() {
       <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
         <div className="px-4 py-4">
           <div className="space-y-3">
-            {/* Action Buttons Row - Top */}
-            <div className="flex gap-2 justify-end">
-              <Dropdown
-                trigger={
-                  <>
-                    <span>⋮</span>
-                    <span>Menu</span>
-                  </>
-                }
-              >
-                <DropdownItem
-                  icon="👤"
-                  label={user ? 'Profile' : 'Login'}
-                  href={user ? '/profile' : '/login'}
-                  badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
-                />
-              </Dropdown>
-
-              <ThemeToggle />
-            </div>
-
-            {/* Title and Back Button Row - Bottom */}
-            <div className="flex items-center gap-3">
+            {/* Top Row - Back Button and Action Buttons */}
+            <div className="flex justify-between items-center gap-2">
               <button
                 onClick={() => navigate(-1)}
                 className="px-3 py-1.5 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors"
@@ -113,12 +92,34 @@ export function TemplatesPage() {
               >
                 ← Back
               </button>
-              <div className="flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold">Expense Templates</h1>
-                <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
-                  Customize default expense templates for each unit type
-                </p>
+
+              <div className="flex gap-2 ml-auto">
+                <Dropdown
+                  trigger={
+                    <>
+                      <span>⋮</span>
+                      <span>Menu</span>
+                    </>
+                  }
+                >
+                  <DropdownItem
+                    icon="👤"
+                    label={user ? 'Profile' : 'Login'}
+                    href={user ? '/profile' : '/login'}
+                    badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
+                  />
+                </Dropdown>
+
+                <ThemeToggle />
               </div>
+            </div>
+
+            {/* Bottom Row - Title */}
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold">Expense Templates</h1>
+              <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                Customize default expense templates for each unit type
+              </p>
             </div>
           </div>
         </div>

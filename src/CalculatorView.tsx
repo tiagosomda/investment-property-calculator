@@ -204,45 +204,8 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
         <div className="bg-blue-600 dark:bg-blue-900 text-white shadow-lg">
           <div className="px-4 py-4">
             <div className="space-y-3">
-              {/* Action Buttons Row - Top */}
-              <div className="flex justify-end gap-2">
-                {/* Hide menu in read-only mode */}
-                {!readOnly && (
-                  <Dropdown
-                    trigger={
-                      <>
-                        <span>⋮</span>
-                        <span>Menu</span>
-                      </>
-                    }
-                  >
-                    {user && (
-                      <DropdownItem
-                        icon={isShared ? '🔗' : '📤'}
-                        label={isShared ? 'Manage Sharing' : 'Share Project'}
-                        onClick={isShared ? () => { setShowShareModal(true); } : handleShareProject}
-                        disabled={shareLoading}
-                      />
-                    )}
-                    <DropdownItem
-                      icon="⚙️"
-                      label="Templates"
-                      href="/templates"
-                    />
-                    <DropdownItem
-                      icon="👤"
-                      label={user ? 'Profile' : 'Login'}
-                      href={user ? '/profile' : '/login'}
-                      badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
-                    />
-                  </Dropdown>
-                )}
-
-                <ThemeToggle />
-              </div>
-
-              {/* Title and Back Button Row - Bottom */}
-              <div className="flex items-center gap-3">
+              {/* Top Row - Back Button and Action Buttons */}
+              <div className="flex justify-between items-center gap-2">
                 {!readOnly && (
                   <button
                     onClick={handleBackToHome}
@@ -261,31 +224,69 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                     ← Home
                   </Link>
                 )}
-                <div className="flex-1">
-                  <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
-                  {state.projectDescription && (
-                    <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
-                      {state.projectDescription}
-                    </p>
+
+                <div className="flex gap-2 ml-auto">
+                  {/* Hide menu in read-only mode */}
+                  {!readOnly && (
+                    <Dropdown
+                      trigger={
+                        <>
+                          <span>⋮</span>
+                          <span>Menu</span>
+                        </>
+                      }
+                    >
+                      {user && (
+                        <DropdownItem
+                          icon={isShared ? '🔗' : '📤'}
+                          label={isShared ? 'Manage Sharing' : 'Share Project'}
+                          onClick={isShared ? () => { setShowShareModal(true); } : handleShareProject}
+                          disabled={shareLoading}
+                        />
+                      )}
+                      <DropdownItem
+                        icon="⚙️"
+                        label="Templates"
+                        href="/templates"
+                      />
+                      <DropdownItem
+                        icon="👤"
+                        label={user ? 'Profile' : 'Login'}
+                        href={user ? '/profile' : '/login'}
+                        badge={cloudSyncEnabled ? <span className="text-xs text-green-400">☁️</span> : undefined}
+                      />
+                    </Dropdown>
                   )}
+
+                  <ThemeToggle />
                 </div>
+              </div>
+
+              {/* Bottom Row - Title and Sync Status */}
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold">{state.projectName}</h1>
+                {state.projectDescription && (
+                  <p className="text-blue-100 text-xs sm:text-sm mt-0.5">
+                    {state.projectDescription}
+                  </p>
+                )}
                 {/* Sync Status */}
                 {!readOnly && cloudSyncEnabled && (
-                  <div className="flex items-center gap-2 text-xs text-blue-100">
+                  <div className="flex items-center gap-2 text-xs text-blue-100 mt-1">
                     {isSyncing ? (
                       <>
                         <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-                        <span className="hidden sm:inline">Syncing...</span>
+                        <span>Syncing...</span>
                       </>
                     ) : syncStatus === 'error' ? (
                       <>
                         <div className="w-2 h-2 bg-red-400 rounded-full" />
-                        <span className="hidden sm:inline">Sync error</span>
+                        <span>Sync error</span>
                       </>
                     ) : (
                       <>
                         <div className="w-2 h-2 bg-green-400 rounded-full" />
-                        <span className="hidden sm:inline">Synced to cloud</span>
+                        <span>Synced to cloud</span>
                       </>
                     )}
                   </div>
