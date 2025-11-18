@@ -68,21 +68,24 @@ def parse_env_line(line):
 def set_github_secret(key, value):
     """Set a GitHub secret using gh CLI."""
     try:
-        process = subprocess.Popen(
-            ["gh", "secret", "set", key, "--body", "-"],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
+        # Use --body with value directly (more reliable than piping on Windows)
+        result = subprocess.run(
+            ["gh", "secret", "set", key, "--body", value],
+            capture_output=True,
+            text=True,
+            check=False
         )
-        process.communicate(input=value)
 
-        if process.returncode != 0:
-            print(f"Warning: Failed to set secret {key}")
+        if result.returncode != 0:
+            print(f"  ✗ Failed to set secret")
+            if result.stderr:
+                print(f"  Error: {result.stderr.strip()}")
             return False
+
+        print(f"  ✓ Success (length: {len(value)} chars)")
         return True
     except Exception as e:
-        print(f"Error setting secret {key}: {e}")
+        print(f"  ✗ Error: {e}")
         return False
 
 
@@ -107,7 +110,12 @@ def main():
         for line in f:
             key, value = parse_env_line(line)
 
-            if key and value:
+            if key:
+                # Skip empty values
+                if not value:
+                    print(f"Skipping secret: {key} (empty value)")
+                    continue
+
                 print(f"Setting secret: {key}")
                 if set_github_secret(key, value):
                     secrets_count += 1
