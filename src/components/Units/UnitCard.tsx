@@ -84,27 +84,14 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
       <Modal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleRemove}
         title="Remove Unit"
+        confirmText="Remove Unit"
+        confirmVariant="danger"
       >
-        <div className="space-y-4">
-          <p className="text-gray-700 dark:text-gray-300">
-            Are you sure you want to remove <strong>{unit.label}</strong>? This action cannot be undone.
-          </p>
-          <div className="flex justify-end gap-2">
-            <Button
-              onClick={() => setShowDeleteModal(false)}
-              variant="secondary"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleRemove}
-              variant="danger"
-            >
-              Remove Unit
-            </Button>
-          </div>
-        </div>
+        <p className="text-gray-700 dark:text-gray-300">
+          Are you sure you want to remove <strong>{unit.label}</strong>? This action cannot be undone.
+        </p>
       </Modal>
     </Card>
   );

@@ -111,15 +111,6 @@ export function HomePage() {
 
             {/* Action Buttons Row - Bottom */}
             <div className="flex gap-2 justify-end">
-              <Link
-                to="/templates"
-                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
-                title="Expense Templates Settings"
-              >
-                <span>⚙️</span>
-                <span>Templates</span>
-              </Link>
-
               {/* User Profile/Login */}
               <Link
                 to={user ? '/profile' : '/login'}
@@ -130,6 +121,15 @@ export function HomePage() {
                   cloudSyncEnabled ? 'bg-green-400' : 'bg-gray-400'
                 }`} />
                 <span>{user ? 'Profile' : 'Login'}</span>
+              </Link>
+
+              <Link
+                to="/templates"
+                className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2"
+                title="Expense Templates Settings"
+              >
+                <span>⚙️</span>
+                <span>Templates</span>
               </Link>
 
               <ThemeToggle />
