@@ -279,16 +279,11 @@ export function CalculatorView({ readOnly = false, projectId: externalProjectId 
                       <Link
                         to={user ? '/profile' : '/login'}
                         className="px-3 py-2 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-                        title={user ? 'Profile' : 'Sign In'}
+                        title={user ? (cloudSyncEnabled ? 'Profile (Sync Enabled)' : 'Profile (Sync Disabled)') : 'Sign In'}
                       >
-                        <div className="relative">
-                          <span>👤</span>
-                          <span
-                            className={`absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full ${
-                              cloudSyncEnabled ? 'bg-green-400' : 'bg-gray-400'
-                            }`}
-                          />
-                        </div>
+                        <span className={`w-2 h-2 rounded-full ${
+                          cloudSyncEnabled ? 'bg-green-400' : 'bg-gray-400'
+                        }`} />
                         <span>{user ? 'Profile' : 'Login'}</span>
                       </Link>
 
