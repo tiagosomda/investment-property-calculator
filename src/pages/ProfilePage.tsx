@@ -22,6 +22,8 @@ export function ProfilePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [displayName, setDisplayName] = useState(user?.displayName || '');
 
   const handleSignOut = async () => {
     try {
@@ -65,6 +67,34 @@ export function ProfilePage() {
       console.error('Manual sync error:', err);
       setError(err.message || 'Failed to sync');
     }
+  };
+
+  const handleSaveDisplayName = async () => {
+    if (!user) return;
+
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const { updateProfile } = await import('firebase/auth');
+      await updateProfile(user, {
+        displayName: displayName.trim() || null,
+      });
+      setSuccess('Display name updated successfully!');
+      setIsEditingName(false);
+    } catch (err: any) {
+      console.error('Update display name error:', err);
+      setError(err.message || 'Failed to update display name');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setDisplayName(user?.displayName || '');
+    setIsEditingName(false);
+    setError('');
   };
 
   const formatSyncTime = (date: Date | null) => {
@@ -120,14 +150,53 @@ export function ProfilePage() {
             Account Information
           </h2>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              <label className="text-sm font-medium text-gray-600 dark:text-gray-400 block mb-2">
                 Display Name
               </label>
-              <p className="text-gray-900 dark:text-white">
-                {user?.displayName || 'Not set'}
-              </p>
+              {isEditingName ? (
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    placeholder="Enter your display name"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    disabled={loading}
+                  />
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleSaveDisplayName}
+                      disabled={loading}
+                      size="sm"
+                    >
+                      {loading ? 'Saving...' : 'Save'}
+                    </Button>
+                    <Button
+                      onClick={handleCancelEdit}
+                      disabled={loading}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between">
+                  <p className="text-gray-900 dark:text-white">
+                    {user?.displayName || 'Not set'}
+                  </p>
+                  <Button
+                    onClick={() => setIsEditingName(true)}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    Edit
+                  </Button>
+                </div>
+              )}
             </div>
 
             <div>
