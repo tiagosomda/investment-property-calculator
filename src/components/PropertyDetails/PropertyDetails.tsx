@@ -64,10 +64,10 @@ export function PropertyDetails() {
 
   return (
     <div className="space-y-6">
-      <Card title="Project Information">
+      <Card title="Information">
         <div className="grid grid-cols-1 gap-4">
           <Input
-            label="Project Name"
+            label="Name"
             type="text"
             value={state.projectName}
             onChange={(value) => updateProjectInfo({ name: value })}

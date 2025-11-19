@@ -42,7 +42,7 @@ export function HomePage() {
 
   const handleCreateProject = () => {
     if (!newProjectName.trim()) {
-      showToast('Please enter a project name', 'warning');
+      showToast('Please enter a name', 'warning');
       return;
     }
 
@@ -159,7 +159,7 @@ export function HomePage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                  Project Name <span className="text-red-500 dark:text-red-400">*</span>
+                  Name <span className="text-red-500 dark:text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -342,7 +342,7 @@ export function HomePage() {
         isOpen={deleteModalOpen}
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
-        title="Delete Project"
+        title="Delete"
         confirmText="Delete"
         cancelText="Cancel"
         confirmVariant="danger"
