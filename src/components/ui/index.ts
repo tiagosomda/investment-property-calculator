@@ -5,3 +5,4 @@ export * from './ThemeToggle';
 export * from './Toast';
 export * from './Dropdown';
 export * from './Modal';
+export * from './CollapsibleInfo';

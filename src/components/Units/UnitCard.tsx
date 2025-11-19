@@ -48,12 +48,13 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
             onClick={() => setIsExpanded(!isExpanded)}
             variant="secondary"
             size="sm"
+            title={isExpanded ? 'Collapse' : 'Expand'}
           >
-            {isExpanded ? 'Collapse' : 'Expand'}
+            {isExpanded ? '▲' : '▼'}
           </Button>
           {!readOnly && (
-            <Button onClick={handleRemove} variant="danger" size="sm">
-              Remove
+            <Button onClick={handleRemove} variant="danger" size="sm" title="Remove">
+              ×
             </Button>
           )}
         </div>

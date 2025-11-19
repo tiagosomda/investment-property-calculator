@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useProperty } from '../../contexts';
-import { Card } from '../ui';
+import { Card, CollapsibleInfo } from '../ui';
 import {
   calculateTotalInvestment,
   calculateUnitMonthlyRevenue,
@@ -162,12 +162,25 @@ export function AppreciationScenarios() {
         </table>
       </div>
 
-      <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+      <CollapsibleInfo storageKey="appreciation-scenarios-info">
         <p>
-          * Assumes consistent cash flow and doesn't account for inflation, tax benefits, or
-          changes in rental rates.
+          <strong>Property Appreciation Scenarios</strong> project your investment returns under different property value growth assumptions.
         </p>
-      </div>
+        <ul className="list-disc pl-5 space-y-1 mt-2">
+          <li><strong>Current Value:</strong> Your property's purchase price (starting point).</li>
+          <li><strong>Future Value:</strong> Projected property value based on the appreciation rate. For example, at 3% annual appreciation, a $300,000 property becomes ~$348,000 in 5 years.</li>
+          <li><strong>Appreciation Gain:</strong> The increase in property value. This is equity you can access through refinancing or selling.</li>
+          <li><strong>Total Cash Flow:</strong> Sum of all monthly cash flows over the projection period.</li>
+          <li><strong>Equity Built:</strong> Combination of appreciation and mortgage principal paid down over time.</li>
+          <li><strong>Total ROI:</strong> Your complete return including cash flow, appreciation, and principal paydown, expressed as a percentage of your initial investment.</li>
+        </ul>
+        <p className="mt-2">
+          <strong>Typical appreciation rates:</strong> Urban areas often see 3-5% annually, though this varies significantly by location and economic conditions. Conservative investors use 2-3%, while optimistic scenarios might use 5%+.
+        </p>
+        <p className="mt-2">
+          <em>Note:</em> This is a simplified projection that assumes consistent cash flow and doesn't account for inflation, tax benefits, rent increases, or changes in expenses.
+        </p>
+      </CollapsibleInfo>
     </Card>
   );
 }

@@ -1,5 +1,5 @@
 import { useProperty } from '../../contexts';
-import { Card } from '../ui';
+import { Card, CollapsibleInfo } from '../ui';
 import {
   calculateUnitMonthlyRevenue,
   calculateUnitMonthlyExpenses,
@@ -93,6 +93,21 @@ export function PropertySummary() {
               </span>
             </div>
           </div>
+
+          <CollapsibleInfo storageKey="property-summary-cashflow-info">
+            <p>
+              <strong>Monthly Cash Flow</strong> represents the net amount of money you receive each month after all expenses and mortgage payments.
+            </p>
+            <ul className="list-disc pl-5 space-y-1 mt-2">
+              <li><strong>Total Revenue:</strong> Sum of all rental income from your units based on their rental type (STR/MTR/LTR) and occupancy rates.</li>
+              <li><strong>Unit Expenses:</strong> Operating costs specific to each unit, such as cleaning fees, utilities, maintenance, and management fees.</li>
+              <li><strong>Property Expenses:</strong> Property-wide costs like insurance, property taxes, HOA fees, and property management.</li>
+              <li><strong>Mortgage (P&I):</strong> Principal and Interest payments on your loan. This doesn't include property taxes or insurance if they're paid separately.</li>
+            </ul>
+            <p className="mt-2">
+              <strong>Positive cash flow</strong> means the property generates more income than expenses, while <strong>negative cash flow</strong> requires you to contribute money each month.
+            </p>
+          </CollapsibleInfo>
         </div>
 
         {/* Return Metrics */}
@@ -128,6 +143,21 @@ export function PropertySummary() {
               </span>
             </div>
           </div>
+
+          <CollapsibleInfo storageKey="property-summary-return-info">
+            <p>
+              <strong>Return Metrics</strong> help you understand the profitability and efficiency of your investment.
+            </p>
+            <ul className="list-disc pl-5 space-y-1 mt-2">
+              <li><strong>Total Investment:</strong> Your upfront capital including down payment, closing costs, and renovation expenses. This is the "cash out of pocket" you're investing.</li>
+              <li><strong>Cash-on-Cash Return:</strong> Annual cash flow divided by total investment. This shows the percentage return on your actual cash invested. For example, 10% means you earn $10,000 annually for every $100,000 invested.</li>
+              <li><strong>First Year Principal Paydown:</strong> The amount of mortgage principal you pay down in the first year. This builds equity and is part of your return even though it's not cash in hand.</li>
+              <li><strong>Total Return:</strong> Combines cash flow AND principal paydown to show your complete first-year return. This is a more comprehensive measure than cash-on-cash alone.</li>
+            </ul>
+            <p className="mt-2">
+              A good rental property typically targets 8-12% cash-on-cash return, but this varies by market and strategy. Total return is often significantly higher when including principal paydown and appreciation.
+            </p>
+          </CollapsibleInfo>
         </div>
       </div>
     </Card>

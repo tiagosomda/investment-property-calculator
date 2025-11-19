@@ -9,6 +9,7 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   'aria-label'?: string;
+  title?: string;
 }
 
 export function Button({
@@ -20,6 +21,7 @@ export function Button({
   className = '',
   disabled = false,
   'aria-label': ariaLabel,
+  title,
 }: ButtonProps) {
   const baseStyles = 'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900';
 
@@ -43,6 +45,7 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
+      title={title}
       className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${disabledStyles} ${className}`}
     >
       {children}

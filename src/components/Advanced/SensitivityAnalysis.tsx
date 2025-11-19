@@ -1,5 +1,5 @@
 import { useProperty } from '../../contexts';
-import { Card } from '../ui';
+import { Card, CollapsibleInfo } from '../ui';
 import {
   calculateUnitMonthlyRevenue,
   calculateUnitMonthlyExpenses,
@@ -205,12 +205,28 @@ export function SensitivityAnalysis() {
           </div>
         )}
 
-        <div className="text-xs text-gray-500 dark:text-gray-400">
+        <CollapsibleInfo storageKey="sensitivity-analysis-info">
           <p>
-            * Sensitivity analysis shows how changes in key variables affect monthly cash
-            flow. Use this to understand your risk exposure.
+            <strong>Sensitivity Analysis</strong> shows how changes in key variables (like occupancy and rates) impact your cash flow, helping you understand risks and set realistic expectations.
           </p>
-        </div>
+          <ul className="list-disc pl-5 space-y-1 mt-2">
+            <li><strong>Occupancy Rate Impact:</strong> Tests how your cash flow changes if units are rented more or less frequently than expected. Lower occupancy = lower revenue = lower (or negative) cash flow.</li>
+            <li><strong>Nightly Rate Impact (STR only):</strong> Shows the effect of pricing changes on your STR units. This helps you understand the impact of seasonal pricing, competition, or market changes.</li>
+            <li><strong>Change Column:</strong> Shows how much better (green, positive) or worse (red, negative) each scenario is compared to your baseline assumptions.</li>
+          </ul>
+          <p className="mt-2">
+            <strong>Why this matters:</strong> Real estate investing involves uncertainty. Markets change, competition increases, and properties need repairs. Understanding how sensitive your returns are to these changes helps you:
+          </p>
+          <ul className="list-disc pl-5 space-y-1 mt-2">
+            <li>Identify which variables have the biggest impact on your success</li>
+            <li>Build in safety margins (e.g., assume lower occupancy than market average)</li>
+            <li>Prepare for worst-case scenarios and know when the deal stops making sense</li>
+            <li>Make informed decisions about pricing and marketing strategies</li>
+          </ul>
+          <p className="mt-2">
+            <strong>Best practice:</strong> Conservative investors often model scenarios at -10% to -20% from optimistic assumptions to ensure the deal still works in tougher conditions.
+          </p>
+        </CollapsibleInfo>
       </div>
     </Card>
   );

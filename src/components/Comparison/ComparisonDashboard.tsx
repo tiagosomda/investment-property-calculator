@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useProperty } from '../../contexts';
+import { CollapsibleInfo } from '../ui';
 import {
   calculateUnitMonthlyRevenue,
   calculateUnitMonthlyExpenses,
@@ -217,15 +218,32 @@ export function ComparisonDashboard() {
         </table>
           </div>
 
-          <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+          <CollapsibleInfo storageKey="investment-comparison-info">
             <p>
-              * Year 5 wealth projection is simplified and assumes consistent cash flow, no
-              appreciation, and compound growth for alternative investments.
+              <strong>Investment Comparison</strong> helps you evaluate your rental property investment against alternative uses of your capital.
             </p>
-            <p className="mt-1">
-              * Click on HYSA or Index Fund return rates to edit them. Changes are saved globally.
+            <ul className="list-disc pl-5 space-y-1 mt-2">
+              <li><strong>Initial Investment:</strong> The same amount of capital invested in each option for fair comparison.</li>
+              <li><strong>Annual Cash Return:</strong> Money you can actually spend each year. Real estate generates rental income, HYSA pays interest, index funds pay dividends.</li>
+              <li><strong>Annual Total Return:</strong> Complete return including both cash and appreciation/growth. For real estate, this includes cash flow + principal paydown. For investments, this includes dividends + value appreciation.</li>
+              <li><strong>Return Rate:</strong> Annual total return as a percentage of your investment. Click HYSA and Index Fund rates to edit them based on current market conditions.</li>
+              <li><strong>Year 5 Wealth:</strong> Projected total value after 5 years, including both your original investment and all accumulated returns.</li>
+            </ul>
+            <p className="mt-2">
+              <strong>Typical market assumptions (as of 2024-2025):</strong>
             </p>
-          </div>
+            <ul className="list-disc pl-5 space-y-1 mt-2">
+              <li><strong>HYSA (High-Yield Savings Account):</strong> 4-5% with no risk, fully liquid, FDIC insured</li>
+              <li><strong>Index Funds (S&P 500):</strong> ~10% historical average total return (7% appreciation + 2-3% dividends), but with market volatility and risk</li>
+              <li><strong>Real Estate:</strong> Returns vary widely by property and management, typically 8-15% total return with proper management</li>
+            </ul>
+            <p className="mt-2">
+              <strong>Key differences:</strong> Real estate offers tax benefits, leverage (using borrowed money), and forced appreciation through improvements, but requires active management and is less liquid. HYSA offers safety and liquidity but lower returns. Index funds offer passive growth but market risk.
+            </p>
+            <p className="mt-2">
+              <em>Note:</em> This is a simplified comparison. Real estate has additional benefits (tax deductions, depreciation) and costs (vacancies, repairs, time) not fully captured here.
+            </p>
+          </CollapsibleInfo>
         </div>
       )}
     </div>
