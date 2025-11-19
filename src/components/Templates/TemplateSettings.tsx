@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { UnitType } from '../../types';
 import { Button } from '../ui';
 import { TemplateEditor } from './TemplateEditor';
-import { strDefaultExpenses, mtrDefaultExpenses, ltrDefaultExpenses } from '../../utils';
+import { strDefaultExpenses, mtrDefaultExpenses, ltrDefaultExpenses, genericDefaultExpenses } from '../../utils';
 
 interface TemplateSettingsProps {
   onClose: () => void;
@@ -20,6 +20,7 @@ export function TemplateSettings({ onClose, showToast }: TemplateSettingsProps) 
       STR: strDefaultExpenses,
       MTR: mtrDefaultExpenses,
       LTR: ltrDefaultExpenses,
+      Generic: genericDefaultExpenses,
     };
   });
 
@@ -34,6 +35,7 @@ export function TemplateSettings({ onClose, showToast }: TemplateSettingsProps) 
       STR: strDefaultExpenses,
       MTR: mtrDefaultExpenses,
       LTR: ltrDefaultExpenses,
+      Generic: genericDefaultExpenses,
     };
     saveTemplates(type, defaults[type]);
   };

@@ -6,7 +6,7 @@ import { UnitCard } from './UnitCard';
 export function UnitList() {
   const { state, dispatch, readOnly } = useProperty();
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newUnitType, setNewUnitType] = useState<'STR' | 'MTR' | 'LTR'>('STR');
+  const [newUnitType, setNewUnitType] = useState<'STR' | 'MTR' | 'LTR' | 'Generic'>('STR');
   const [newUnitLabel, setNewUnitLabel] = useState('');
 
   const handleAddUnit = () => {
@@ -38,8 +38,8 @@ export function UnitList() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 Unit Type
               </label>
-              <div className="flex gap-2">
-                {(['STR', 'MTR', 'LTR'] as const).map((type) => (
+              <div className="flex gap-2 flex-wrap">
+                {(['STR', 'MTR', 'LTR', 'Generic'] as const).map((type) => (
                   <button
                     key={type}
                     onClick={() => setNewUnitType(type)}

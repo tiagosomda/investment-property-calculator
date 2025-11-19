@@ -13,7 +13,7 @@ interface PropertyState {
 
 type PropertyAction =
   | { type: 'UPDATE_PROPERTY'; payload: Partial<Property> }
-  | { type: 'ADD_UNIT'; payload: { type: 'STR' | 'MTR' | 'LTR'; label: string } }
+  | { type: 'ADD_UNIT'; payload: { type: 'STR' | 'MTR' | 'LTR' | 'Generic'; label: string } }
   | { type: 'REMOVE_UNIT'; payload: string }
   | { type: 'UPDATE_UNIT'; payload: { id: string; updates: Partial<Unit> } }
   | { type: 'UPDATE_COMPARISON'; payload: Partial<ComparisonRates> }
@@ -86,6 +86,9 @@ function propertyReducer(state: PropertyState, action: PropertyAction): Property
           break;
         case 'LTR':
           revenue = { monthlyRent: 0, annualVacancyPercent: 5 };
+          break;
+        case 'Generic':
+          revenue = { monthlyRevenue: 0 };
           break;
       }
 

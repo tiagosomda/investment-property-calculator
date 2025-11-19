@@ -104,6 +104,14 @@ export const ltrDefaultExpenses: Omit<Expense, 'id'>[] = [
   },
 ];
 
+export const genericDefaultExpenses: Omit<Expense, 'id'>[] = [
+  {
+    name: 'Maintenance Reserve',
+    calculationType: 'percent-revenue',
+    value: 5,
+  },
+];
+
 export function getDefaultExpenses(unitType: UnitType): Omit<Expense, 'id'>[] {
   // Try to load custom templates from localStorage
   try {
@@ -126,6 +134,8 @@ export function getDefaultExpenses(unitType: UnitType): Omit<Expense, 'id'>[] {
       return mtrDefaultExpenses;
     case 'LTR':
       return ltrDefaultExpenses;
+    case 'Generic':
+      return genericDefaultExpenses;
     default:
       return [];
   }

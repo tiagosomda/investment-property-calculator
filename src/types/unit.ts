@@ -1,6 +1,6 @@
 import { Expense } from './expense';
 
-export type UnitType = 'STR' | 'MTR' | 'LTR';
+export type UnitType = 'STR' | 'MTR' | 'LTR' | 'Generic';
 
 export interface STRRevenue {
   nightlyRate: number;
@@ -21,7 +21,11 @@ export interface LTRRevenue {
   annualVacancyPercent: number;
 }
 
-export type UnitRevenue = STRRevenue | MTRRevenue | LTRRevenue;
+export interface GenericRevenue {
+  monthlyRevenue: number;
+}
+
+export type UnitRevenue = STRRevenue | MTRRevenue | LTRRevenue | GenericRevenue;
 
 export interface Unit {
   id: string;
@@ -44,4 +48,5 @@ export interface UnitDefaults {
   LTR: {
     annualVacancyPercent: 5;
   };
+  Generic: Record<string, never>;
 }

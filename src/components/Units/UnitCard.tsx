@@ -5,6 +5,7 @@ import { Card, Button } from '../ui';
 import { STRInputs } from './STRInputs';
 import { MTRInputs } from './MTRInputs';
 import { LTRInputs } from './LTRInputs';
+import { GenericInputs } from './GenericInputs';
 import { ExpenseList } from '../Expenses/ExpenseList';
 import { UnitSummary } from '../Summary/UnitSummary';
 
@@ -29,21 +30,19 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
   return (
     <Card className="border-l-4 border-l-blue-500 dark:border-l-blue-400">
       <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <input
-              type="text"
-              value={unit.label}
-              onChange={(e) => updateUnit({ label: e.target.value })}
-              disabled={readOnly}
-              className={`text-lg font-semibold bg-transparent text-gray-900 dark:text-white border-b border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:border-blue-500 focus:outline-none ${readOnly ? 'cursor-not-allowed opacity-60' : ''}`}
-            />
-            <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded">
-              {unit.type}
-            </span>
-          </div>
+        <div className="flex-1 flex items-center gap-2 mb-2 min-w-0">
+          <input
+            type="text"
+            value={unit.label}
+            onChange={(e) => updateUnit({ label: e.target.value })}
+            disabled={readOnly}
+            className={`text-lg font-semibold bg-transparent text-gray-900 dark:text-white border-b border-transparent hover:border-gray-300 dark:hover:border-gray-600 focus:border-blue-500 focus:outline-none w-[70%] ${readOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+          />
+          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded whitespace-nowrap">
+            {unit.type}
+          </span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           <Button
             onClick={() => setIsExpanded(!isExpanded)}
             variant="secondary"
@@ -67,6 +66,7 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
             {unit.type === 'STR' && <STRInputs unit={unit} updateUnit={updateUnit} readOnly={readOnly} />}
             {unit.type === 'MTR' && <MTRInputs unit={unit} updateUnit={updateUnit} readOnly={readOnly} />}
             {unit.type === 'LTR' && <LTRInputs unit={unit} updateUnit={updateUnit} readOnly={readOnly} />}
+            {unit.type === 'Generic' && <GenericInputs unit={unit} updateUnit={updateUnit} readOnly={readOnly} />}
           </div>
 
           <div>

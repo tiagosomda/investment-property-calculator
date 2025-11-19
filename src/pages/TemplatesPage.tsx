@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { UnitType } from '../types';
 import { Button, ThemeToggle } from '../components/ui';
 import { TemplateEditor } from '../components/Templates/TemplateEditor';
-import { strDefaultExpenses, mtrDefaultExpenses, ltrDefaultExpenses } from '../utils';
+import { strDefaultExpenses, mtrDefaultExpenses, ltrDefaultExpenses, genericDefaultExpenses } from '../utils';
 import { useToast } from '../hooks';
 import { ToastContainer } from '../components/ui';
 import { useAuth, useCloudSync } from '../contexts';
@@ -23,6 +23,7 @@ export function TemplatesPage() {
       STR: strDefaultExpenses,
       MTR: mtrDefaultExpenses,
       LTR: ltrDefaultExpenses,
+      Generic: genericDefaultExpenses,
     };
   });
 
@@ -37,6 +38,7 @@ export function TemplatesPage() {
       STR: strDefaultExpenses,
       MTR: mtrDefaultExpenses,
       LTR: ltrDefaultExpenses,
+      Generic: genericDefaultExpenses,
     };
     saveTemplates(type, defaults[type]);
     showToast(`${type} template reset to defaults`, 'success');
@@ -98,7 +100,7 @@ export function TemplatesPage() {
                 className="px-3 py-1.5 bg-blue-700 dark:bg-blue-800 hover:bg-blue-800 dark:hover:bg-blue-900 rounded-lg text-sm font-medium transition-colors"
                 title="Go back"
               >
-                ← Back
+                ←
               </button>
 
               <div className="flex gap-2 ml-auto">
@@ -141,7 +143,7 @@ export function TemplatesPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm mb-6 overflow-hidden">
           {/* Desktop: Horizontal Tabs */}
           <div className="hidden sm:flex border-b border-gray-200 dark:border-gray-700">
-            {(['STR', 'MTR', 'LTR'] as UnitType[]).map((type) => (
+            {(['STR', 'MTR', 'LTR', 'Generic'] as UnitType[]).map((type) => (
               <button
                 key={type}
                 onClick={() => setActiveTab(type)}
@@ -169,6 +171,7 @@ export function TemplatesPage() {
               <option value="STR">STR Templates</option>
               <option value="MTR">MTR Templates</option>
               <option value="LTR">LTR Templates</option>
+              <option value="Generic">Generic Templates</option>
             </select>
           </div>
 

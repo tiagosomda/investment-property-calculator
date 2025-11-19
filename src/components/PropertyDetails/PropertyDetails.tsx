@@ -58,8 +58,39 @@ export function PropertyDetails() {
     updateProperty({ referenceNotes: (property.referenceNotes || []).filter((note) => note.id !== id) });
   };
 
+  const updateProjectInfo = (updates: { name?: string; description?: string }) => {
+    dispatch({ type: 'UPDATE_PROJECT_INFO', payload: updates });
+  };
+
   return (
     <div className="space-y-6">
+      <Card title="Project Information">
+        <div className="grid grid-cols-1 gap-4">
+          <Input
+            label="Project Name"
+            type="text"
+            value={state.projectName}
+            onChange={(value) => updateProjectInfo({ name: value })}
+            placeholder="My Investment Property"
+            disabled={readOnly}
+          />
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+              Project Description (Optional)
+            </label>
+            <textarea
+              value={state.projectDescription || ''}
+              onChange={(e) => updateProjectInfo({ description: e.target.value })}
+              placeholder="Add notes about this project..."
+              rows={2}
+              disabled={readOnly}
+              className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${readOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+            />
+          </div>
+        </div>
+      </Card>
+
       <Card title="Basic Information">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">

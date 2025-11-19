@@ -4,6 +4,7 @@ import {
   STRRevenue,
   MTRRevenue,
   LTRRevenue,
+  GenericRevenue,
   Property,
 } from '../types';
 
@@ -28,6 +29,10 @@ export function calculateUnitMonthlyRevenue(unit: Unit): number {
       const revenue = unit.revenue as LTRRevenue;
       const effectiveOccupancy = 1 - revenue.annualVacancyPercent / 100;
       return revenue.monthlyRent * effectiveOccupancy;
+    }
+    case 'Generic': {
+      const revenue = unit.revenue as GenericRevenue;
+      return revenue.monthlyRevenue;
     }
     default:
       return 0;
