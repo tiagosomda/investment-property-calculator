@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
 import { Unit } from '../../types';
 import { useProperty } from '../../contexts';
-import { Card, Button } from '../ui';
+import { Card, Button, Modal } from '../ui';
 import { STRInputs } from './STRInputs';
 import { MTRInputs } from './MTRInputs';
 import { LTRInputs } from './LTRInputs';
@@ -16,11 +16,11 @@ interface UnitCardProps {
 export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
   const { dispatch, readOnly } = useProperty();
   const [isExpanded, setIsExpanded] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleRemove = () => {
-    if (confirm(`Remove ${unit.label}?`)) {
-      dispatch({ type: 'REMOVE_UNIT', payload: unit.id });
-    }
+    dispatch({ type: 'REMOVE_UNIT', payload: unit.id });
+    setShowDeleteModal(false);
   };
 
   const updateUnit = (updates: Partial<Unit>) => {
@@ -52,7 +52,7 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
             {isExpanded ? '▲' : '▼'}
           </Button>
           {!readOnly && (
-            <Button onClick={handleRemove} variant="danger" size="sm" title="Remove">
+            <Button onClick={() => setShowDeleteModal(true)} variant="danger" size="sm" title="Remove">
               ×
             </Button>
           )}
@@ -79,6 +79,33 @@ export const UnitCard = memo(function UnitCard({ unit }: UnitCardProps) {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Remove Unit"
+      >
+        <div className="space-y-4">
+          <p className="text-gray-700 dark:text-gray-300">
+            Are you sure you want to remove <strong>{unit.label}</strong>? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-2">
+            <Button
+              onClick={() => setShowDeleteModal(false)}
+              variant="secondary"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleRemove}
+              variant="danger"
+            >
+              Remove Unit
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Card>
   );
 });
